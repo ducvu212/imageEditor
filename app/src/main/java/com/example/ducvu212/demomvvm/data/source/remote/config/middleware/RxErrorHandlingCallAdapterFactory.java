@@ -2,9 +2,10 @@ package com.example.ducvu212.demomvvm.data.source.remote.config.middleware;
 
 import android.text.TextUtils;
 import android.util.Log;
-import com.fstyle.structure_android.data.source.remote.config.error.BaseException;
-import com.fstyle.structure_android.data.source.remote.config.response.ErrorResponse;
+import com.example.ducvu212.demomvvm.data.source.remote.config.error.BaseException;
+import com.example.ducvu212.demomvvm.data.source.remote.config.response.ErrorResponse;
 import com.google.gson.Gson;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
@@ -25,7 +26,6 @@ import retrofit2.CallAdapter;
 import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * ErrorHandling:

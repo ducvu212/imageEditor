@@ -2,7 +2,7 @@ package com.example.ducvu212.demomvvm.data.source.remote.config.service;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import com.fstyle.structure_android.utils.Constant;
+import com.example.ducvu212.demomvvm.utils.Constant;
 
 /**
  * Created by le.quang.dao on 10/03/2017.

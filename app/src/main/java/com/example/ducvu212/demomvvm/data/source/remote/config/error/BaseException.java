@@ -1,7 +1,7 @@
 package com.example.ducvu212.demomvvm.data.source.remote.config.error;
 
 import android.support.annotation.Nullable;
-import com.fstyle.structure_android.data.source.remote.config.response.ErrorResponse;
+import com.example.ducvu212.demomvvm.data.source.remote.config.response.ErrorResponse;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
