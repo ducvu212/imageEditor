@@ -1,4 +1,4 @@
-package com.example.ducvu212.demomvvm.screen.screen;
+package com.example.ducvu212.demomvvm.screen.main;
 
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -16,12 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.example.ducvu212.demomvvm.R;
-import com.example.ducvu212.demomvvm.databinding.ActivityHomeBinding;
+import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
+import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
+import com.example.ducvu212.demomvvm.databinding.ActivityMainBinding;
+import com.example.ducvu212.demomvvm.screen.home.HomeFragment;
+import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ActivityHomeBinding mHomeBinding;
+    private ActivityMainBinding mMainBinding;
+    private MainViewModel mMainViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,21 +36,47 @@ public class MainActivity extends AppCompatActivity
             getWindow().setStatusBarColor(
                     ContextCompat.getColor(this, R.color.color_material_blue_400));
         }
-        mHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        init();
+    }
 
-        Toolbar toolbar = mHomeBinding.appbar.toolbar;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mMainViewModel.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mMainViewModel.onStop();
+        super.onStop();
+    }
+
+    private void init() {
+        initBinding();
+        initNavigation();
+    }
+
+    private void initBinding() {
+        mMainViewModel = new MainViewModel(this,
+                new ImageRepository(ImageRemoteDataSource.getsInstance(),
+                        ImageLocalDataSource.getsInstance()));
+        mMainViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
+        mMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mMainBinding.setViewModel(mMainViewModel);
+        mMainBinding.executePendingBindings();
+    }
+
+    private void initNavigation() {
+        Toolbar toolbar = mMainBinding.appbar.toolbar;
         setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = mHomeBinding.drawerLayout;
+        DrawerLayout drawer = mMainBinding.drawerLayout;
         ActionBarDrawerToggle toggle =
-                new ActionBarDrawerToggle(this, drawer, toolbar,
-                        R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
+                        R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = mHomeBinding.navView;
+        NavigationView navigationView = mMainBinding.navView;
         navigationView.setNavigationItemSelectedListener(this);
-
         displaySelectedScreen(R.id.nav_home);
     }
 
@@ -82,6 +114,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         switch (itemId) {
             case R.id.nav_home:
+                fragment = HomeFragment.newInstance();
                 break;
             case R.id.nav_offline:
                 break;
@@ -93,7 +126,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction().add(R.id.frame_main, fragment).commit();
         }
-        DrawerLayout drawer = mHomeBinding.drawerLayout;
+        DrawerLayout drawer = mMainBinding.drawerLayout;
         drawer.closeDrawer(GravityCompat.START);
     }
 }

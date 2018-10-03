@@ -9,11 +9,12 @@ public final class Constant {
         // No-op
     }
 
-    public static final String END_POINT_URL = "https://api.github.com";
+    public static final String BASE_URL = "https://api.unsplash.com/";
 
-    // For bundle
-    public static final String ARGUMENT_LIST_USER = "ARGUMENT_LIST_USER";
-    public static final String ARGUMENT_USER_ID = "ARGUMENT_USER_ID";
+    //Logging
+    public static final String LOGGING_REQUEST = "Request";
+    public static final String LOGGING_RESPONE = "Respone";
+    public static final String LOGGING_VERSION = "version";
 
     public static final String BREAK_LINE = "\n";
 }

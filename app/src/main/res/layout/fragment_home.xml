@@ -3,13 +3,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.ducvu212.demomvvm.screen.home.HomeViewModel"/>
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:focusableInTouchMode="true">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_400"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/text_new"
@@ -18,7 +35,7 @@
                 android:layout_marginTop="@dimen/dp_16"
                 android:text="@string/title_news"
                 android:textColor="@color/color_black"
-                android:textSize="@dimen/dp_20"
+                android:textSize="@dimen/sp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recycler_collection"/>
@@ -53,14 +70,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_collection"/>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager_image"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_200"
-                app:layout_constraintTop_toTopOf="parent"/>
-
         </android.support.constraint.ConstraintLayout>
-
     </ScrollView>
-
 </layout>
