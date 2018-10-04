@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
+import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.model.ItemViewPager;
 import com.example.ducvu212.demomvvm.databinding.ItemRandomImageBinding;
 import java.util.ArrayList;
@@ -18,11 +19,17 @@ import java.util.List;
  */
 public class RandomPagerAdapter extends PagerAdapter {
 
-    private List<ItemViewPager> mRandomList;
+    private List<Image> mRandomList;
 
-    RandomPagerAdapter(List<ItemViewPager> list) {
+    RandomPagerAdapter() {
         mRandomList = new ArrayList<>();
-        mRandomList = list;
+    }
+
+    public void setRandomList(List<Image> list) {
+        if (list.size() > 0) {
+            mRandomList.clear();
+            mRandomList.addAll(list);
+        }
     }
 
     @Override
@@ -31,7 +38,9 @@ public class RandomPagerAdapter extends PagerAdapter {
                 DataBindingUtil.inflate(LayoutInflater.from(container.getContext()),
                         R.layout.item_random_image, container, false);
         View view = binding.getRoot();
-        binding.setItem(mRandomList.get(position));
+        binding.setItem(
+                new ItemViewPager.Builder().mPath(mRandomList.get(position).getUrls().getFull())
+                        .build());
         ViewPager viewPager = (ViewPager) container;
         viewPager.addView(view, 0);
         return view;

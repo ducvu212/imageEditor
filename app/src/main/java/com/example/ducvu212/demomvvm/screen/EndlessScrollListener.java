@@ -1,0 +1,43 @@
+package com.example.ducvu212.demomvvm.screen;
+
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+/**
+ * Created by CuD HniM on 18/10/04.
+ */
+public abstract class EndlessScrollListener extends RecyclerView.OnScrollListener {
+
+    private LinearLayoutManager mManager;
+    private boolean mIsLoading;
+
+    protected EndlessScrollListener(LinearLayoutManager manager) {
+        mManager = manager;
+    }
+
+    @Override
+    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+        assert mManager != null;
+        int totalItemCount = mManager.getItemCount();
+        int lastVisibleItem = mManager.findLastVisibleItemPosition();
+        int firstVisiableItem = mManager.findFirstVisibleItemPosition();
+        int visibleItemCount = mManager.getChildCount();
+        int visibleThreshold = 5;
+        if (mIsLoading && totalItemCount > (lastVisibleItem + visibleThreshold)) {
+            mIsLoading = false;
+        }
+        if (!mIsLoading
+                && (visibleItemCount + firstVisiableItem) >= totalItemCount
+                && firstVisiableItem >= 0
+                && totalItemCount >= 10) {
+            if (mManager != null) {
+                OnNewsLoadMore();
+            }
+            mIsLoading = true;
+        }
+    }
+
+    protected abstract void OnNewsLoadMore();
+}

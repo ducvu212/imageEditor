@@ -30,14 +30,20 @@ public class ImageRemoteDataSource implements ImageDataSource.ImageRemoteDataSou
 
     @Override
     public Single<List<Image>> getRandomImages() {
-        return ApiClient.getInstance()
-                .create(ApiInterface.class).getRandomsImage(BuildConfig.API_KEY, NUMBER_RANDOM);
+        return createApiInterface().getRandomsImage(BuildConfig.API_KEY, NUMBER_RANDOM);
     }
 
     @Override
-    public Single<List<Collection>> getCollections() {
-        return ApiClient.getInstance()
-                .create(ApiInterface.class)
-                .getCollections(BuildConfig.API_KEY);
+    public Single<List<Collection>> getCollections(int page) {
+        return createApiInterface().getCollections(page, BuildConfig.API_KEY);
+    }
+
+    @Override
+    public Single<List<Image>> getNewImages(int page, String apiKey) {
+        return createApiInterface().getNewImage(page, apiKey);
+    }
+
+    private ApiInterface createApiInterface() {
+        return ApiClient.getInstance().create(ApiInterface.class);
     }
 }

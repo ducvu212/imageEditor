@@ -5,7 +5,7 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by le.quang.dao on 10/03/2017.
+ * Created by CuD HniM on 18/10/03.
  */
 
 public class MainApplication extends Application {

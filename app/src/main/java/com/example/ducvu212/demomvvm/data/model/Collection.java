@@ -2,69 +2,75 @@ package com.example.ducvu212.demomvvm.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Collection implements Parcelable {
 
-    @SerializedName("mId")
-    @Expose
-    public int mId;
-    @SerializedName("mTitle")
-    @Expose
-    public String mTitle;
-    @SerializedName("mDescription")
-    @Expose
-    public Object mDescription;
-    @SerializedName("mPublished_at")
-    @Expose
-    public String mPublishedAt;
-    @SerializedName("mUpdated_at")
-    @Expose
-    public String mUpdatedAt;
-    @SerializedName("mFeatured")
-    @Expose
-    public boolean mFeatured;
-    @SerializedName("mTotal_photos")
-    @Expose
-    public int mTotalPhotos;
-    @SerializedName("mImage")
-    @Expose
-    public Image mImage;
-    public final static Parcelable.Creator<Collection> CREATOR = new Creator<Collection>() {
-        public Collection createFromParcel(Parcel in) {
-            return new Collection(in);
+    public static final Creator<Collection> CREATOR = new Creator<Collection>() {
+        @Override
+        public Collection createFromParcel(Parcel source) {
+            return new Collection(source);
         }
 
+        @Override
         public Collection[] newArray(int size) {
-            return (new Collection[size]);
+            return new Collection[size];
         }
     };
+    @SerializedName("id")
+    @Expose
+    private Integer mId;
+    @SerializedName("title")
+    @Expose
+    private String mTitle;
+    @SerializedName("description")
+    @Expose
+    private String mDescription;
+    @SerializedName("published_at")
+    @Expose
+    private String mPublishedAt;
+    @SerializedName("updated_at")
+    @Expose
+    private String mUpdatedAt;
+    @SerializedName("featured")
+    @Expose
+    private Boolean mFeatured;
+    @SerializedName("total_photos")
+    @Expose
+    private Integer mTotalPhotos;
+    @SerializedName("cover_photo")
+    @Expose
+    private CoverPhoto mCoverPhoto;
+
+    private Collection(Builder builder) {
+        setId(builder.mId);
+        setTitle(builder.mTitle);
+        setDescription(builder.mDescription);
+        setPublishedAt(builder.mPublishedAt);
+        setUpdatedAt(builder.mUpdatedAt);
+        setFeatured(builder.mFeatured);
+        setTotalPhotos(builder.mTotalPhotos);
+        setCoverPhoto(builder.mCoverPhoto);
+    }
 
     protected Collection(Parcel in) {
-        this.mId = ((int) in.readValue((int.class.getClassLoader())));
-        this.mTitle = ((String) in.readValue((String.class.getClassLoader())));
-        this.mDescription = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.mPublishedAt = ((String) in.readValue((String.class.getClassLoader())));
-        this.mUpdatedAt = ((String) in.readValue((String.class.getClassLoader())));
-        this.mFeatured = ((boolean) in.readValue((boolean.class.getClassLoader())));
-        this.mTotalPhotos = ((int) in.readValue((int.class.getClassLoader())));
-        this.mImage = ((Image) in.readValue((Image.class.getClassLoader())));
+        mId = (Integer) in.readValue(Integer.class.getClassLoader());
+        mTitle = in.readString();
+        mDescription = in.readString();
+        mPublishedAt = in.readString();
+        mUpdatedAt = in.readString();
+        mFeatured = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        mTotalPhotos = (Integer) in.readValue(Integer.class.getClassLoader());
+        mCoverPhoto = in.readParcelable(CoverPhoto.class.getClassLoader());
     }
 
-    public String getUrlImageCollection() {
-        String url = mImage.getUrls().getFull();
-        return url;
+    public CoverPhoto getCoverPhoto() {
+        return mCoverPhoto;
     }
 
-
-    public int getId() {
-        return mId;
-    }
-
-    public void setId(int id) {
-        mId = id;
+    public void setCoverPhoto(CoverPhoto coverPhoto) {
+        mCoverPhoto = coverPhoto;
     }
 
     public String getTitle() {
@@ -75,12 +81,12 @@ public class Collection implements Parcelable {
         mTitle = title;
     }
 
-    public Object getDescription() {
-        return mDescription;
+    public Integer getId() {
+        return mId;
     }
 
-    public void setDescription(Object description) {
-        mDescription = description;
+    public void setId(Integer id) {
+        mId = id;
     }
 
     public String getPublishedAt() {
@@ -99,85 +105,102 @@ public class Collection implements Parcelable {
         mUpdatedAt = updatedAt;
     }
 
-    public boolean isFeatured() {
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    public Boolean getFeatured() {
         return mFeatured;
     }
 
-    public void setFeatured(boolean featured) {
+    public void setFeatured(Boolean featured) {
         mFeatured = featured;
     }
 
-    public int getTotalPhotos() {
+    public Integer getTotalPhotos() {
         return mTotalPhotos;
     }
 
-    public void setTotalPhotos(int totalPhotos) {
+    public void setTotalPhotos(Integer totalPhotos) {
         mTotalPhotos = totalPhotos;
     }
 
-    public Image getImage() {
-        return mImage;
-    }
-
-    public void setImage(Image image) {
-        mImage = image;
-    }
-
-    public Collection() {
-    }
-
-    public Collection withMId(int mId) {
-        this.mId = mId;
-        return this;
-    }
-
-    public Collection withMTitle(String mTitle) {
-        this.mTitle = mTitle;
-        return this;
-    }
-
-    public Collection withMDescription(Object mDescription) {
-        this.mDescription = mDescription;
-        return this;
-    }
-
-    public Collection withMPublishedAt(String mPublishedAt) {
-        this.mPublishedAt = mPublishedAt;
-        return this;
-    }
-
-    public Collection withMUpdatedAt(String mUpdatedAt) {
-        this.mUpdatedAt = mUpdatedAt;
-        return this;
-    }
-
-    public Collection withMFeatured(boolean mFeatured) {
-        this.mFeatured = mFeatured;
-        return this;
-    }
-
-    public Collection withMTotalPhotos(int mTotalPhotos) {
-        this.mTotalPhotos = mTotalPhotos;
-        return this;
-    }
-
-    public Collection withMImage(Image mImage) {
-        this.mImage = mImage;
-        return this;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(mId);
-        dest.writeValue(mTitle);
-        dest.writeValue(mDescription);
-        dest.writeValue(mPublishedAt);
-        dest.writeValue(mUpdatedAt);
-        dest.writeValue(mFeatured);
-        dest.writeValue(mTotalPhotos);
-        dest.writeValue(mImage);
-    }
-
+    @Override
     public int describeContents() {
         return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(mId);
+        dest.writeString(mTitle);
+        dest.writeString(mDescription);
+        dest.writeString(mPublishedAt);
+        dest.writeString(mUpdatedAt);
+        dest.writeValue(mFeatured);
+        dest.writeValue(mTotalPhotos);
+        dest.writeParcelable(mCoverPhoto, flags);
+    }
+
+    public static final class Builder {
+        private Integer mId;
+        private String mTitle;
+        private String mDescription;
+        private String mPublishedAt;
+        private String mUpdatedAt;
+        private Boolean mFeatured;
+        private Integer mTotalPhotos;
+        private CoverPhoto mCoverPhoto;
+
+        public Builder() {
+        }
+
+        public Builder mId(Integer id) {
+            mId = id;
+            return this;
+        }
+
+        public Builder mTitle(String title) {
+            mTitle = title;
+            return this;
+        }
+
+        public Builder mDescription(String description) {
+            mDescription = description;
+            return this;
+        }
+
+        public Builder mPublishedAt(String publishedAt) {
+            mPublishedAt = publishedAt;
+            return this;
+        }
+
+        public Builder mUpdatedAt(String updatedAt) {
+            mUpdatedAt = updatedAt;
+            return this;
+        }
+
+        public Builder mFeatured(Boolean featured) {
+            mFeatured = featured;
+            return this;
+        }
+
+        public Builder mTotalPhotos(Integer totalPhotos) {
+            mTotalPhotos = totalPhotos;
+            return this;
+        }
+
+        public Builder mCoverPhoto(CoverPhoto val) {
+            mCoverPhoto = val;
+            return this;
+        }
+
+        public Collection build() {
+            return new Collection(this);
+        }
     }
 }

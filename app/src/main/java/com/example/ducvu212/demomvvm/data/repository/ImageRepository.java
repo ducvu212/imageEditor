@@ -39,7 +39,11 @@ public class ImageRepository {
         return mRemoteDataSource.getRandomImages();
     }
 
-    public Single<List<Collection>> getCollections() {
-        return mRemoteDataSource.getCollections();
+    public Single<List<Collection>> getCollections(int page) {
+        return mRemoteDataSource.getCollections(page);
+    }
+
+    public Single<List<Image>> getNewImages(int page, String apiKey) {
+        return mRemoteDataSource.getNewImages(page, apiKey);
     }
 }

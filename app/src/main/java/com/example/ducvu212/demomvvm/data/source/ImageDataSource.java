@@ -24,6 +24,8 @@ public interface ImageDataSource {
     interface ImageRemoteDataSource {
         Single<List<Image>> getRandomImages();
 
-        Single<List<Collection>> getCollections();
+        Single<List<Collection>> getCollections(int page);
+
+        Single<List<Image>> getNewImages(int page, String apiKey);
     }
 }

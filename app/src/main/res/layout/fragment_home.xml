@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -32,7 +33,7 @@
                 android:id="@+id/text_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_8"
                 android:text="@string/title_news"
                 android:textColor="@color/color_black"
                 android:textSize="@dimen/sp_20"
@@ -44,7 +45,7 @@
                 android:id="@+id/text_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_8"
                 android:text="@string/title_collection"
                 android:textColor="@color/color_black"
                 android:textSize="@dimen/sp_20"
@@ -54,10 +55,13 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_new_image"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_16"
-                app:layout_constraintTop_toBottomOf="@+id/text_new"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_new"
+                bind:recyclerAdapter="@{viewModel.getNewObservableField()}"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_collection"
@@ -68,7 +72,20 @@
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_collection"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_collection"
+                bind:recyclerAdapter="@{viewModel.getCollectionObservableField()}">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_new_image"
+                style="?android:attr/progressBarStyle"/>
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="adapter"
-            type="com.example.ducvu212.demomvvm.screen.home.RandomPagerAdapter"/>
-
-        <variable
             name="item"
             type="com.example.ducvu212.demomvvm.data.model.ItemViewPager"/>
     </data>
@@ -22,8 +18,7 @@
             android:id="@+id/image_view_random"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_8"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

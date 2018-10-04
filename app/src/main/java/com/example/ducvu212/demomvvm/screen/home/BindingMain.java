@@ -1,5 +1,6 @@
 package com.example.ducvu212.demomvvm.screen.home;
 
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 import com.example.ducvu212.demomvvm.R;
@@ -15,32 +16,34 @@ public class BindingMain {
 
     private static int mWidth;
     private static float mRatio;
+    private Context mContext;
 
-    public BindingMain(int width, float ratio) {
+    BindingMain(Context context, int width, float ratio) {
         mWidth = width;
         mRatio = ratio;
+        mContext = context;
     }
 
     @BindingAdapter({ "loadImg" })
     public static void loadImage(ImageView imageView, String url) {
-        createCreator(url).networkPolicy(NetworkPolicy.OFFLINE).into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
+        createCreator(mWidth, (int) (mWidth * mRatio), url).networkPolicy(NetworkPolicy.OFFLINE)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
 
-            }
+                    }
 
-            @Override
-            public void onError(Exception e) {
-                createCreator(url).into(imageView);
-            }
-        });
+                    @Override
+                    public void onError(Exception e) {
+                        createCreator(mWidth, (int) (mWidth * mRatio), url).into(imageView);
+                    }
+                });
     }
 
-    private static RequestCreator createCreator(String url) {
+    private static RequestCreator createCreator(int width, int height, String url) {
         return Picasso.get()
                 .load(url)
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .resize(mWidth, (int) (mWidth * mRatio))
+                .placeholder(R.drawable.ic_launcher_foreground).resize(width, height)
                 .centerCrop();
     }
 }
