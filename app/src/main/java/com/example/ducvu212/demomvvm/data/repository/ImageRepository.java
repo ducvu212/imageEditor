@@ -1,5 +1,6 @@
 package com.example.ducvu212.demomvvm.data.repository;
 
+import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
@@ -36,5 +37,9 @@ public class ImageRepository {
 
     public Single<List<Image>> getRandomImage() {
         return mRemoteDataSource.getRandomImages();
+    }
+
+    public Single<List<Collection>> getCollections() {
+        return mRemoteDataSource.getCollections();
     }
 }

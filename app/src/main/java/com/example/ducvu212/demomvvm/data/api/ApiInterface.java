@@ -1,5 +1,6 @@
 package com.example.ducvu212.demomvvm.data.api;
 
+import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import io.reactivex.Single;
 import java.util.List;
@@ -10,4 +11,8 @@ public interface ApiInterface {
 
     @GET("photos?client_id")
     Single<List<Image>> getRandomsImage(@Query("client_id") String apiKey);
+
+
+    @GET("collections?client_id")
+    Single<List<Collection>> getCollections(@Query("client_id") String apiKey);
 }

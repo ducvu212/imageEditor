@@ -3,6 +3,7 @@ package com.example.ducvu212.demomvvm.data.source.remote;
 import com.example.ducvu212.demomvvm.BuildConfig;
 import com.example.ducvu212.demomvvm.data.api.ApiClient;
 import com.example.ducvu212.demomvvm.data.api.ApiInterface;
+import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.source.ImageDataSource;
 import io.reactivex.Single;
@@ -31,5 +32,12 @@ public class ImageRemoteDataSource implements ImageDataSource.ImageRemoteDataSou
         return ApiClient.getInstance()
                 .create(ApiInterface.class)
                 .getRandomsImage(BuildConfig.API_KEY);
+    }
+
+    @Override
+    public Single<List<Collection>> getCollections() {
+        return ApiClient.getInstance()
+                .create(ApiInterface.class)
+                .getCollections(BuildConfig.API_KEY);
     }
 }
