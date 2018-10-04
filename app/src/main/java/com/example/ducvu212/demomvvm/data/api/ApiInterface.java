@@ -8,6 +8,7 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
-    @GET("photos?client_id")
-    Single<List<Image>> getRandomsImage(@Query("client_id") String apiKey);
+    @GET("photos/random?client_id")
+    Single<List<Image>> getRandomsImage(@Query("client_id") String apiKey,
+            @Query("count") int count);
 }

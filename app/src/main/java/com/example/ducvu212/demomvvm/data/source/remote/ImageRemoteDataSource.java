@@ -14,6 +14,7 @@ import java.util.List;
 public class ImageRemoteDataSource implements ImageDataSource.ImageRemoteDataSource {
 
     private static ImageRemoteDataSource sInstance;
+    private static final int NUMBER_RANDOM = 10;
 
     public static synchronized ImageRemoteDataSource getsInstance() {
         if (sInstance == null) {
@@ -29,7 +30,6 @@ public class ImageRemoteDataSource implements ImageDataSource.ImageRemoteDataSou
     @Override
     public Single<List<Image>> getRandomImages() {
         return ApiClient.getInstance()
-                .create(ApiInterface.class)
-                .getRandomsImage(BuildConfig.API_KEY);
+                .create(ApiInterface.class).getRandomsImage(BuildConfig.API_KEY, NUMBER_RANDOM);
     }
 }
