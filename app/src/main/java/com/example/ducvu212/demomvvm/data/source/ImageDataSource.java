@@ -1,5 +1,6 @@
 package com.example.ducvu212.demomvvm.data.source;
 
+import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import io.reactivex.Single;
 import java.util.List;
@@ -22,5 +23,7 @@ public interface ImageDataSource {
      */
     interface ImageRemoteDataSource {
         Single<List<Image>> getRandomImages();
+
+        Single<List<Collection>> getCollections();
     }
 }

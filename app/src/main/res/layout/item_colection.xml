@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="collection"
+            type="com.example.ducvu212.demomvvm.data.model.Collection" />
+
+    </data>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_130">
 
         <ImageView
             android:id="@+id/image_collection"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/a"
+            bind:loadImg="@{collection.getUrlImageCollection()}"
+            />
+
+        <TextView
+            android:id="@+id/text_title_collection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient"
+            android:padding="@dimen/dp_4"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@{collection.mTitle}"
+            />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
