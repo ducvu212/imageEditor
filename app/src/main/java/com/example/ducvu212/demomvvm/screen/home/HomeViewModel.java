@@ -17,6 +17,7 @@ import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
+import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
 import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -126,7 +127,10 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
                     mImages.addAll(images);
                     initRandomImages();
                     mRandomData.setValue(mImages);
-                }, throwable -> mRandomData.setValue(null));
+                }, throwable -> {
+                    mRandomData.setValue(null);
+                    DisplayUtils.makeToast(mContext, throwable.getMessage());
+                });
         mCompositeDisposable.add(disposable);
         return mRandomData;
     }
@@ -139,7 +143,10 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
                 .subscribe(collections -> {
                     mCollections.addAll(collections);
                     mCollectionData.setValue(mCollections);
-                }, throwable -> mCollectionData.setValue(null));
+                }, throwable -> {
+                    mCollectionData.setValue(null);
+                    DisplayUtils.makeToast(mContext, throwable.getMessage());
+                });
         mCompositeDisposable.add(disposable);
         return mCollectionData;
     }
@@ -152,7 +159,10 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
                 .subscribe(images -> {
                     mNewList.addAll(images);
                     mNewData.setValue(mNewList);
-                }, throwable -> mNewData.setValue(null));
+                }, throwable -> {
+                    mNewData.setValue(null);
+                    DisplayUtils.makeToast(mContext, throwable.getMessage());
+                });
         mCompositeDisposable.add(disposable);
         return mNewData;
     }
@@ -191,7 +201,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
         float ratio = (100 * height) / width;
-        new BindingMain(width, (float) (ratio * 0.01));
+        new BindingHome(width, (float) (ratio * 0.01));
     }
 
     private class RandomTimer extends TimerTask {
