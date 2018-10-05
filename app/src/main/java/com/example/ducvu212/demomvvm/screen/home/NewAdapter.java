@@ -56,7 +56,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
         }
 
         void binding(Image image) {
-            mBinding.setItem(new ItemViewPager.Builder().mPath(image.getUrls().getFull())
+            mBinding.setItem(new ItemViewPager.Builder().mPath(image.getUrls().getRegular())
                     .mLikeByUser(image.getLikedByUser())
                     .mUserName(image.getUser().getUsername())
                     .build());

@@ -11,12 +11,12 @@ import com.squareup.picasso.RequestCreator;
 /**
  * Created by CuD HniM on 18/10/03.
  */
-public class BindingMain {
+public class BindingHome {
 
     private static int mWidth;
     private static float mRatio;
 
-    BindingMain(int width, float ratio) {
+    BindingHome(int width, float ratio) {
         mWidth = width;
         mRatio = ratio;
     }
