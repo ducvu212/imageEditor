@@ -3,9 +3,7 @@ package com.example.ducvu212.demomvvm.screen.main;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LifecycleRegistry;
-import android.content.Context;
 import android.support.annotation.NonNull;
-import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
 import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
@@ -15,13 +13,11 @@ import io.reactivex.disposables.CompositeDisposable;
  */
 public class MainViewModel extends BaseViewModel implements LifecycleOwner {
 
-    private Context mContext;
     private BaseSchedulerProvider mSchedulerProvider;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private LifecycleRegistry mLifecycleRegistry;
 
-    public MainViewModel(Context context, ImageRepository repository) {
-        mContext = context;
+    MainViewModel() {
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
     }

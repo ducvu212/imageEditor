@@ -33,11 +33,11 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
                 && firstVisiableItem >= 0
                 && totalItemCount >= 10) {
             if (mManager != null) {
-                OnNewsLoadMore();
+                OnLoadMore();
             }
             mIsLoading = true;
         }
     }
 
-    protected abstract void OnNewsLoadMore();
+    protected abstract void OnLoadMore();
 }

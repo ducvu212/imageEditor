@@ -24,8 +24,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
     }
 
     void setNewImages(List<Image> newImages) {
-        mNewImages.clear();
-        mNewImages.addAll(newImages);
+        mNewImages.addAll(newImages.subList(mNewImages.size(), newImages.size()));
     }
 
     @NonNull

@@ -1,6 +1,5 @@
 package com.example.ducvu212.demomvvm.screen.home;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 import com.example.ducvu212.demomvvm.R;
@@ -16,12 +15,10 @@ public class BindingMain {
 
     private static int mWidth;
     private static float mRatio;
-    private Context mContext;
 
-    BindingMain(Context context, int width, float ratio) {
+    BindingMain(int width, float ratio) {
         mWidth = width;
         mRatio = ratio;
-        mContext = context;
     }
 
     @BindingAdapter({ "loadImg" })

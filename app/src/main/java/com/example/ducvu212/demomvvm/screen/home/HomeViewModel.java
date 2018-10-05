@@ -81,7 +81,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
 
     @Override
     protected void onStart() {
-        subcribeData();
+        subscribeData();
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
 
@@ -157,7 +157,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         return mNewData;
     }
 
-    private void subcribeData() {
+    private void subscribeData() {
         getRandomImage(mAdapter).observe(this, images -> {
             mAdapter.notifyDataSetChanged();
             mAdapter.setRandomList(images);
@@ -191,7 +191,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
         float ratio = (100 * height) / width;
-        new BindingMain(mContext, width, (float) (ratio * 0.01));
+        new BindingMain(width, (float) (ratio * 0.01));
     }
 
     private class RandomTimer extends TimerTask {

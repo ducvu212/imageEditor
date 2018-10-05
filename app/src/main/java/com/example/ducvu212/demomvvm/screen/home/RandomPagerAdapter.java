@@ -25,7 +25,7 @@ public class RandomPagerAdapter extends PagerAdapter {
         mRandomList = new ArrayList<>();
     }
 
-    public void setRandomList(List<Image> list) {
+    void setRandomList(List<Image> list) {
         if (list.size() > 0) {
             mRandomList.clear();
             mRandomList.addAll(list);
@@ -33,7 +33,7 @@ public class RandomPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ItemRandomImageBinding binding =
                 DataBindingUtil.inflate(LayoutInflater.from(container.getContext()),
                         R.layout.item_random_image, container, false);
@@ -52,8 +52,8 @@ public class RandomPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
-        return view == o;
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return view == object;
     }
 
     @Override

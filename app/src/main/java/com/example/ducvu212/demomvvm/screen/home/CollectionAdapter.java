@@ -14,20 +14,20 @@ import java.util.List;
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.CollectionHolder> {
     private List<Collection> mCollections;
 
-    public CollectionAdapter() {
+    CollectionAdapter() {
         mCollections = new ArrayList<>();
     }
 
     void setCollections(List<Collection> collections) {
-        mCollections.clear();
-        mCollections.addAll(collections);
+        mCollections.addAll(collections.subList(mCollections.size(), collections.size()));
     }
 
     @NonNull
     @Override
     public CollectionHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        ItemColectionBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                R.layout.item_colection, viewGroup, false);
+        ItemColectionBinding binding =
+                DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+                        R.layout.item_colection, viewGroup, false);
         return new CollectionHolder(binding);
     }
 

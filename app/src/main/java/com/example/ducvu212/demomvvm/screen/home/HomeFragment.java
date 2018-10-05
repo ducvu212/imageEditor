@@ -22,6 +22,7 @@ import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel mViewModel;
+    private FragmentHomeBinding mBinding;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -35,34 +36,42 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentHomeBinding binding =
+        mBinding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        mViewModel = new HomeViewModel(getContext(), binding.viewPagerImage,
+        initBinding();
+        return mBinding.getRoot();
+    }
+
+    private void initBinding() {
+        mViewModel = new HomeViewModel(getContext(), mBinding.viewPagerImage,
                 new ImageRepository(ImageRemoteDataSource.getsInstance(),
                         ImageLocalDataSource.getsInstance()));
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
-        binding.setViewModel(mViewModel);
-        binding.recyclerCollection.setLayoutManager(
+        mBinding.setViewModel(mViewModel);
+        initViews();
+    }
+
+    private void initViews() {
+        mBinding.recyclerCollection.setLayoutManager(
                 new LinearLayoutManager(getContext().getApplicationContext(),
                         LinearLayoutManager.HORIZONTAL, false));
-        binding.recyclerNewImage.setLayoutManager(
+        mBinding.recyclerNewImage.setLayoutManager(
                 new LinearLayoutManager(getContext().getApplicationContext()));
-        binding.recyclerNewImage.addOnScrollListener(new EndlessScrollListener(
-                (LinearLayoutManager) binding.recyclerNewImage.getLayoutManager()) {
+        mBinding.recyclerNewImage.addOnScrollListener(new EndlessScrollListener(
+                (LinearLayoutManager) mBinding.recyclerNewImage.getLayoutManager()) {
             @Override
-            protected void OnNewsLoadMore() {
-                binding.progressBar.setVisibility(View.VISIBLE);
-                mViewModel.OnNewsLoadMore(binding.progressBar);
+            protected void OnLoadMore() {
+                mBinding.progressBar.setVisibility(View.VISIBLE);
+                mViewModel.OnNewsLoadMore(mBinding.progressBar);
             }
         });
-        binding.recyclerCollection.addOnScrollListener(new EndlessScrollListener(
-                (LinearLayoutManager) binding.recyclerCollection.getLayoutManager()) {
+        mBinding.recyclerCollection.addOnScrollListener(new EndlessScrollListener(
+                (LinearLayoutManager) mBinding.recyclerCollection.getLayoutManager()) {
             @Override
-            protected void OnNewsLoadMore() {
+            protected void OnLoadMore() {
                 mViewModel.OnCollectionLoadMore();
             }
         });
-        return binding.getRoot();
     }
 
     @Override

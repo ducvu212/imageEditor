@@ -16,9 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.example.ducvu212.demomvvm.R;
-import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
-import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
-import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.databinding.ActivityMainBinding;
 import com.example.ducvu212.demomvvm.screen.home.HomeFragment;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
@@ -57,9 +54,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initBinding() {
-        mMainViewModel = new MainViewModel(this,
-                new ImageRepository(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance()));
+        mMainViewModel = new MainViewModel();
         mMainViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mMainBinding.setViewModel(mMainViewModel);
