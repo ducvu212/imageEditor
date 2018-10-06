@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Instrumented test, which will execute on an Android device.
  *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * @see <image_avatar href="http://d.android.com/tools/testing">Testing documentation</image_avatar>
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {

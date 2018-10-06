@@ -37,6 +37,15 @@ public class BindingHome {
                 });
     }
 
+    @BindingAdapter({ "loadLike" })
+    public static void loadLike(ImageView imageView, boolean isLike) {
+        if (isLike) {
+            imageView.setImageResource(R.drawable.ic_like);
+        } else {
+            imageView.setImageResource(R.drawable.ic_un_like);
+        }
+    }
+
     private static RequestCreator createCreator(int width, int height, String url) {
         return Picasso.get()
                 .load(url)

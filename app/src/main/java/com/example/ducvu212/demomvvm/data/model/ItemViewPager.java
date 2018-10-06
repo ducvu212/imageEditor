@@ -9,6 +9,8 @@ import android.os.Parcelable;
 public class ItemViewPager implements Parcelable {
 
     private String mPath;
+    private String mUserName;
+    private boolean mLikeByUser;
     public static final Creator<ItemViewPager> CREATOR = new Creator<ItemViewPager>() {
         @Override
         public ItemViewPager createFromParcel(Parcel source) {
@@ -20,8 +22,6 @@ public class ItemViewPager implements Parcelable {
             return new ItemViewPager[size];
         }
     };
-    private String mUserName;
-    private boolean mLikeByUser;
 
     public String getPath() {
         return mPath;
@@ -31,17 +31,7 @@ public class ItemViewPager implements Parcelable {
         mPath = path;
     }
 
-    private ItemViewPager(Builder builder) {
-        setPath(builder.mPath);
-        setUserName(builder.mUserName);
-        setLikeByUser(builder.mLikeByUser);
-    }
-
-    protected ItemViewPager(Parcel in) {
-        this.mPath = in.readString();
-        this.mUserName = in.readString();
-        this.mLikeByUser = in.readByte() != 0;
-    }
+    private boolean mDownloaded;
 
     public String getUserName() {
         return mUserName;
@@ -49,6 +39,20 @@ public class ItemViewPager implements Parcelable {
 
     public void setUserName(String userName) {
         mUserName = userName;
+    }
+
+    private ItemViewPager(Builder builder) {
+        setPath(builder.mPath);
+        setUserName(builder.mUserName);
+        setLikeByUser(builder.mLikeByUser);
+        setDownloaded(builder.mDownloaded);
+    }
+
+    protected ItemViewPager(Parcel in) {
+        mPath = in.readString();
+        mUserName = in.readString();
+        mLikeByUser = in.readByte() != 0;
+        mDownloaded = in.readByte() != 0;
     }
 
     public boolean isLikeByUser() {
@@ -59,6 +63,14 @@ public class ItemViewPager implements Parcelable {
         mLikeByUser = likeByUser;
     }
 
+    public boolean isDownloaded() {
+        return mDownloaded;
+    }
+
+    public void setDownloaded(boolean downloaded) {
+        mDownloaded = downloaded;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -66,15 +78,17 @@ public class ItemViewPager implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mPath);
-        dest.writeString(this.mUserName);
-        dest.writeByte(this.mLikeByUser ? (byte) 1 : (byte) 0);
+        dest.writeString(mPath);
+        dest.writeString(mUserName);
+        dest.writeByte(mLikeByUser ? (byte) 1 : (byte) 0);
+        dest.writeByte(mDownloaded ? (byte) 1 : (byte) 0);
     }
 
     public static final class Builder {
         private String mPath;
         private String mUserName;
         private boolean mLikeByUser;
+        private boolean mDownloaded;
 
         public Builder() {
         }
@@ -91,6 +105,11 @@ public class ItemViewPager implements Parcelable {
 
         public Builder mLikeByUser(boolean val) {
             mLikeByUser = val;
+            return this;
+        }
+
+        public Builder mDownloaded(boolean val) {
+            mDownloaded = val;
             return this;
         }
 

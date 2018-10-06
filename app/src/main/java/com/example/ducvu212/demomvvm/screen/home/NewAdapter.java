@@ -1,7 +1,9 @@
 package com.example.ducvu212.demomvvm.screen.home;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,9 +19,13 @@ import java.util.List;
  */
 public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
 
+    private Context mContext;
     private List<Image> mNewImages;
+    private FragmentManager mManager;
 
-    NewAdapter() {
+    NewAdapter(Context context, FragmentManager manager) {
+        mContext = context.getApplicationContext();
+        mManager = manager;
         mNewImages = new ArrayList<>();
     }
 
@@ -38,7 +44,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull NewHolder newHolder, int i) {
-        newHolder.binding(mNewImages.get(i));
+        newHolder.binding(mContext, mManager, mNewImages.get(i));
     }
 
     @Override
@@ -55,11 +61,12 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
             mBinding = itemView;
         }
 
-        void binding(Image image) {
+        void binding(Context context, FragmentManager manager, Image image) {
             mBinding.setItem(new ItemViewPager.Builder().mPath(image.getUrls().getRegular())
                     .mLikeByUser(image.getLikedByUser())
                     .mUserName(image.getUser().getUsername())
                     .build());
+            mBinding.setListener(new HandleItemClick(context, manager));
             mBinding.executePendingBindings();
         }
     }

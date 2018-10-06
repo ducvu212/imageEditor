@@ -9,6 +9,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.widget.ProgressBar;
@@ -57,7 +58,8 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
     private ObservableField<RandomPagerAdapter> mRandomObservableField = new ObservableField<>();
     private ObservableField<CollectionAdapter> mCollectionObservableField = new ObservableField<>();
 
-    HomeViewModel(Context context, ViewPager viewPager, ImageRepository repository) {
+    HomeViewModel(Context context, ViewPager viewPager, FragmentManager manager,
+            ImageRepository repository) {
         mContext = context;
         initImageSize();
         mLifecycleRegistry = new LifecycleRegistry(this);
@@ -71,7 +73,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         mCollections = new ArrayList<>();
         mNewList = new ArrayList<>();
         mCollectionAdapter = new CollectionAdapter();
-        mNewAdapter = new NewAdapter();
+        mNewAdapter = new NewAdapter(mContext, manager);
     }
 
     @NonNull

@@ -20,4 +20,5 @@
     <dimen name="dp_130">130dp</dimen>
     <dimen name="dp_10">10dp</dimen>
     <dimen name="dp_64">64dp</dimen>
+    <dimen name="dp_48">48dp</dimen>
 </resources>

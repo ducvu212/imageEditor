@@ -1,11 +1,14 @@
 package com.example.ducvu212.demomvvm.screen.home;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
@@ -21,29 +24,41 @@ import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
  */
 public class HomeFragment extends Fragment {
 
+    public static final String TAG = HomeFragment.class.getSimpleName();
+    private static HomeFragment sInstance;
     private HomeViewModel mViewModel;
     private FragmentHomeBinding mBinding;
+    private FragmentActivity mContext;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
     public static HomeFragment newInstance() {
-        return new HomeFragment();
+        if (sInstance == null) {
+            sInstance = new HomeFragment();
+        }
+        return sInstance;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = (FragmentActivity) context;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mBinding =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         initBinding();
         return mBinding.getRoot();
     }
 
     private void initBinding() {
-        mViewModel = new HomeViewModel(getContext(), mBinding.viewPagerImage,
+        mViewModel = new HomeViewModel(mContext, mBinding.viewPagerImage,
+                mContext.getSupportFragmentManager(),
                 new ImageRepository(ImageRemoteDataSource.getsInstance(),
                         ImageLocalDataSource.getsInstance()));
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
@@ -52,11 +67,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initViews() {
-        mBinding.recyclerCollection.setLayoutManager(
-                new LinearLayoutManager(getContext().getApplicationContext(),
-                        LinearLayoutManager.HORIZONTAL, false));
-        mBinding.recyclerNewImage.setLayoutManager(
-                new LinearLayoutManager(getContext().getApplicationContext()));
         mBinding.recyclerNewImage.addOnScrollListener(new EndlessScrollListener(
                 (LinearLayoutManager) mBinding.recyclerNewImage.getLayoutManager()) {
             @Override
@@ -84,5 +94,13 @@ public class HomeFragment extends Fragment {
     public void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

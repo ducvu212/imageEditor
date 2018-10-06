@@ -18,7 +18,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/color_material_blue_400"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -26,7 +27,7 @@
             android:id="@+id/frame_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize" />
+            android:layout_marginTop="?attr/actionBarSize"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

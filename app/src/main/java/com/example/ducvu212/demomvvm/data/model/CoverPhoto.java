@@ -61,15 +61,15 @@ public class CoverPhoto implements Parcelable {
     }
 
     protected CoverPhoto(Parcel in) {
-        this.mId = in.readString();
-        this.mCreatedAt = in.readString();
-        this.mUpdatedAt = in.readString();
-        this.mWidth = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.mHeight = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.mDescription = in.readString();
-        this.mUrls = in.readParcelable(UrlImage.class.getClassLoader());
-        this.mLinks = in.readParcelable(Links.class.getClassLoader());
-        this.mUser = in.readParcelable(User.class.getClassLoader());
+        mId = in.readString();
+        mCreatedAt = in.readString();
+        mUpdatedAt = in.readString();
+        mWidth = (Integer) in.readValue(Integer.class.getClassLoader());
+        mHeight = (Integer) in.readValue(Integer.class.getClassLoader());
+        mDescription = in.readString();
+        mUrls = in.readParcelable(UrlImage.class.getClassLoader());
+        mLinks = in.readParcelable(Links.class.getClassLoader());
+        mUser = in.readParcelable(User.class.getClassLoader());
     }
 
     public String getId() {
@@ -151,15 +151,15 @@ public class CoverPhoto implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mId);
-        dest.writeString(this.mCreatedAt);
-        dest.writeString(this.mUpdatedAt);
-        dest.writeValue(this.mWidth);
-        dest.writeValue(this.mHeight);
-        dest.writeString(this.mDescription);
-        dest.writeParcelable(this.mUrls, flags);
-        dest.writeParcelable(this.mLinks, flags);
-        dest.writeParcelable(this.mUser, flags);
+        dest.writeString(mId);
+        dest.writeString(mCreatedAt);
+        dest.writeString(mUpdatedAt);
+        dest.writeValue(mWidth);
+        dest.writeValue(mHeight);
+        dest.writeString(mDescription);
+        dest.writeParcelable(mUrls, flags);
+        dest.writeParcelable(mLinks, flags);
+        dest.writeParcelable(mUser, flags);
     }
 
     public static final class Builder {
