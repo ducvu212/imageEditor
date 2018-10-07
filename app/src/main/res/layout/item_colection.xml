@@ -7,6 +7,10 @@
     <data>
 
         <variable
+            name="listener"
+            type="com.example.ducvu212.demomvvm.screen.home.HandleItemClick"/>
+
+        <variable
             name="collection"
             type="com.example.ducvu212.demomvvm.data.model.Collection"/>
 
@@ -21,7 +25,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:onClick="@{() -> listener.OnItemCollectionClickListener(collection)}">
 
             <ImageView
                 android:id="@+id/image_collection"

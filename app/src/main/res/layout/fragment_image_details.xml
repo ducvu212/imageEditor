@@ -14,6 +14,10 @@
             name="viewModel"
             type="com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewModel"/>
 
+        <variable
+            name="listener"
+            type="com.example.ducvu212.demomvvm.screen.details.HandleImageClick"/>
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -22,17 +26,6 @@
         android:background="@android:color/white"
         android:clickable="true"
         android:focusable="true">
-
-        <ImageView
-            android:id="@+id/image_view_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_24"
-            android:layout_marginStart="@dimen/dp_24"
-            android:layout_marginTop="@dimen/dp_8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back"/>
 
         <ImageView
             android:id="@+id/image_view_content"
@@ -82,6 +75,7 @@
             android:layout_marginEnd="@dimen/dp_64"
             android:layout_marginRight="@dimen/dp_64"
             android:layout_marginTop="@dimen/dp_8"
+            android:onClick="@{() -> listener.OnLikeClickListener(item)}"
             app:layout_constraintBottom_toBottomOf="@+id/view"
             app:layout_constraintEnd_toStartOf="@+id/image_view_download"
             app:layout_constraintTop_toTopOf="@+id/view"
@@ -96,9 +90,11 @@
             android:layout_marginEnd="@dimen/dp_64"
             android:layout_marginRight="@dimen/dp_64"
             android:layout_marginTop="@dimen/dp_8"
+            android:onClick="@{() -> listener.OnDownloadClickListener(item)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_edit"
             app:layout_constraintTop_toTopOf="@+id/view"
+            bind:loadDownload="@{item.isDownloaded()}"
             app:srcCompat="@drawable/ic_download"/>
 
         <ImageView

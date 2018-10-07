@@ -18,6 +18,9 @@ import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
+import com.example.ducvu212.demomvvm.screen.home.adapter.CollectionAdapter;
+import com.example.ducvu212.demomvvm.screen.home.adapter.NewAdapter;
+import com.example.ducvu212.demomvvm.screen.home.adapter.RandomPagerAdapter;
 import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
 import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
@@ -72,7 +75,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         mImages = new ArrayList<>();
         mCollections = new ArrayList<>();
         mNewList = new ArrayList<>();
-        mCollectionAdapter = new CollectionAdapter();
+        mCollectionAdapter = new CollectionAdapter(context, manager);
         mNewAdapter = new NewAdapter(mContext, manager);
     }
 

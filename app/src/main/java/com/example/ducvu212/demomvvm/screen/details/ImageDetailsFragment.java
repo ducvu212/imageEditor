@@ -1,6 +1,10 @@
 package com.example.ducvu212.demomvvm.screen.details;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,14 +18,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemViewPager;
+import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
+import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.databinding.FragmentImageDetailsBinding;
 import com.example.ducvu212.demomvvm.screen.base.BaseFragment;
 import com.example.ducvu212.demomvvm.screen.home.BindingHome;
+import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
+import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 
 /**
  * ImageDetails Screen.
  */
-public class ImageDetailsFragment extends BaseFragment {
+public class ImageDetailsFragment extends BaseFragment implements ImageDetailsViewListener {
 
     public static final String TAG = ImageDetailsFragment.class.getSimpleName();
     private static final String ARGUMENT_IMAGE = "ARGUMENT_IMAGE";
@@ -29,6 +38,7 @@ public class ImageDetailsFragment extends BaseFragment {
     private ImageDetailsViewModel mViewModel;
     private FragmentImageDetailsBinding mBinding;
     private ActionBar mActionBar;
+    private BroadcastReceiver mOnComplete;
 
     public static ImageDetailsFragment newInstance(ItemViewPager itemViewPager) {
         ImageDetailsFragment fragment = new ImageDetailsFragment();
@@ -47,7 +57,11 @@ public class ImageDetailsFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new ImageDetailsViewModel();
+        //        ImageDatabase database = ImageDatabase.getInstance(mContext);
+        mViewModel = new ImageDetailsViewModel(mContext,
+                ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
+                        ImageLocalDataSource.getsInstance()), this);
+        mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mActionBar = ((AppCompatActivity) mContext).getSupportActionBar();
     }
 
@@ -58,6 +72,7 @@ public class ImageDetailsFragment extends BaseFragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_image_details, container,
                 false);
         mBinding.setViewModel(mViewModel);
+        mBinding.setListener(new HandleImageClick(mViewModel));
         return mBinding.getRoot();
     }
 
@@ -69,17 +84,26 @@ public class ImageDetailsFragment extends BaseFragment {
         if (getArguments() != null) {
             ItemViewPager itemViewPager = getArguments().getParcelable(ARGUMENT_IMAGE);
             mBinding.setItem(itemViewPager);
-            String urlImage = itemViewPager.getPath();
+            String urlImage = itemViewPager.getRawImage();
             BindingHome.loadImage(mBinding.imageViewContent, urlImage);
         }
+        mOnComplete = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mBinding.imageViewDownload.setClickable(false);
+                BindingDetails.loadDownloaded(mBinding.imageViewDownload, true);
+            }
+        };
+        mContext.registerReceiver(mOnComplete,
+                new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -89,11 +113,36 @@ public class ImageDetailsFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         mViewModel.onStart();
+        if (((AppCompatActivity) mContext).getSupportActionBar() != null) {
+            ((AppCompatActivity) mContext).getSupportActionBar()
+                    .setTitle(getResources().getString(R.string.title_images_details));
+        }
     }
 
     @Override
     public void onStop() {
         mViewModel.onStop();
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        mContext.unregisterReceiver(mOnComplete);
+        super.onDestroy();
+    }
+
+    @Override
+    public void updateLikeButton(boolean isLike) {
+        BindingDetails.loadLike(mBinding.imageViewLike, isLike);
+    }
+
+    @Override
+    public void updateDownloadButton(boolean isDownloaded) {
+        BindingDetails.loadDownloaded(mBinding.imageViewDownload, isDownloaded);
+    }
+
+    @Override
+    public void downloadStatus(String status) {
+        DisplayUtils.makeToast(mContext, status);
     }
 }

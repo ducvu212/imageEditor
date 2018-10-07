@@ -1,11 +1,15 @@
 package com.example.ducvu212.demomvvm.screen.main;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -19,24 +23,26 @@ import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.databinding.ActivityMainBinding;
 import com.example.ducvu212.demomvvm.screen.base.BaseActivity;
 import com.example.ducvu212.demomvvm.screen.home.HomeFragment;
+import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
+import java.io.File;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int MY_PERMISSION = 111;
     private ActivityMainBinding mMainBinding;
     private MainViewModel mMainViewModel;
     private ActionBarDrawerToggle mToggle;
     private FragmentManager.OnBackStackChangedListener mBackStackListener;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(
-                    ContextCompat.getColor(this, R.color.color_material_blue_400));
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        init();
     }
 
     @Override
@@ -45,10 +51,21 @@ public class MainActivity extends BaseActivity
         mMainViewModel.onStart();
     }
 
-    @Override
-    protected void onStop() {
-        mMainViewModel.onStop();
-        super.onStop();
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if (dir != null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
     }
 
     private void init() {
@@ -86,14 +103,14 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onBackPressed() {
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        checkPer();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(
+                    ContextCompat.getColor(this, R.color.color_material_blue_400));
         }
+        init();
     }
 
     @Override
@@ -153,5 +170,38 @@ public class MainActivity extends BaseActivity
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onStop() {
+        mMainViewModel.onStop();
+        deleteCache(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void checkPer() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            DisplayUtils.makeToast(this, getString(R.string.permission_error));
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, MY_PERMISSION);
+        }
     }
 }

@@ -6,11 +6,9 @@ import android.os.Parcelable;
 /**
  * Created by CuD HniM on 18/10/03.
  */
+//@Entity(tableName = "images")
 public class ItemViewPager implements Parcelable {
 
-    private String mPath;
-    private String mUserName;
-    private boolean mLikeByUser;
     public static final Creator<ItemViewPager> CREATOR = new Creator<ItemViewPager>() {
         @Override
         public ItemViewPager createFromParcel(Parcel source) {
@@ -22,6 +20,17 @@ public class ItemViewPager implements Parcelable {
             return new ItemViewPager[size];
         }
     };
+    //    @NonNull
+    //    @PrimaryKey(autoGenerate = true)
+    //    @ColumnInfo(name = "id")
+    private int mId;
+    //    @ColumnInfo(name = "path")
+    private String mPath;
+    //    @ColumnInfo(name = "username")
+    private String mUserName;
+    //    @ColumnInfo(name = "like")
+    private boolean mLikeByUser;
+    private String mImageId;
 
     public String getPath() {
         return mPath;
@@ -31,7 +40,7 @@ public class ItemViewPager implements Parcelable {
         mPath = path;
     }
 
-    private boolean mDownloaded;
+    private String mRawImage;
 
     public String getUserName() {
         return mUserName;
@@ -41,17 +50,26 @@ public class ItemViewPager implements Parcelable {
         mUserName = userName;
     }
 
+    //    @ColumnInfo(name = "download")
+    private boolean mDownloaded;
+
     private ItemViewPager(Builder builder) {
+        setId(builder.mId);
         setPath(builder.mPath);
         setUserName(builder.mUserName);
         setLikeByUser(builder.mLikeByUser);
+        setImageId(builder.mImageId);
+        setRawImage(builder.mRawImage);
         setDownloaded(builder.mDownloaded);
     }
 
     protected ItemViewPager(Parcel in) {
+        mId = in.readInt();
         mPath = in.readString();
         mUserName = in.readString();
         mLikeByUser = in.readByte() != 0;
+        mImageId = in.readString();
+        mRawImage = in.readString();
         mDownloaded = in.readByte() != 0;
     }
 
@@ -71,6 +89,30 @@ public class ItemViewPager implements Parcelable {
         mDownloaded = downloaded;
     }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+    public String getImageId() {
+        return mImageId;
+    }
+
+    public void setImageId(String imageId) {
+        mImageId = imageId;
+    }
+
+    public String getRawImage() {
+        return mRawImage;
+    }
+
+    public void setRawImage(String rawImage) {
+        mRawImage = rawImage;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -78,9 +120,12 @@ public class ItemViewPager implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
         dest.writeString(mPath);
         dest.writeString(mUserName);
         dest.writeByte(mLikeByUser ? (byte) 1 : (byte) 0);
+        dest.writeString(mImageId);
+        dest.writeString(mRawImage);
         dest.writeByte(mDownloaded ? (byte) 1 : (byte) 0);
     }
 
@@ -88,7 +133,10 @@ public class ItemViewPager implements Parcelable {
         private String mPath;
         private String mUserName;
         private boolean mLikeByUser;
+        private String mImageId;
+        private String mRawImage;
         private boolean mDownloaded;
+        private int mId;
 
         public Builder() {
         }
@@ -98,23 +146,38 @@ public class ItemViewPager implements Parcelable {
             return this;
         }
 
-        public Builder mUserName(String val) {
-            mUserName = val;
+        public Builder mUserName(String userName) {
+            mUserName = userName;
             return this;
         }
 
-        public Builder mLikeByUser(boolean val) {
-            mLikeByUser = val;
+        public Builder mLikeByUser(boolean likeByUser) {
+            mLikeByUser = likeByUser;
             return this;
         }
 
-        public Builder mDownloaded(boolean val) {
-            mDownloaded = val;
+        public Builder mImageId(String imageId) {
+            mImageId = imageId;
+            return this;
+        }
+
+        public Builder mRawImage(String rawImage) {
+            mRawImage = rawImage;
+            return this;
+        }
+
+        public Builder mDownloaded(boolean downloaded) {
+            mDownloaded = downloaded;
             return this;
         }
 
         public ItemViewPager build() {
             return new ItemViewPager(this);
+        }
+
+        public Builder mId(int id) {
+            mId = id;
+            return this;
         }
     }
 }

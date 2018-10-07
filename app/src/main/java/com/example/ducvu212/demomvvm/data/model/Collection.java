@@ -81,7 +81,7 @@ public class Collection implements Parcelable {
         mTitle = title;
     }
 
-    public Integer getId() {
+    public int getId() {
         return mId;
     }
 

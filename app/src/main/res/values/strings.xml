@@ -10,5 +10,7 @@
     <string name="title_news">News</string>
     <string name="title_collection">Collection</string>
     <string name="max_length_author">12</string>
+    <string name="permission_error">Permission Denied !</string>
+    <string name="title_images_details">Image Details</string>
 
 </resources>

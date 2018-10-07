@@ -1,4 +1,4 @@
-package com.example.ducvu212.demomvvm.screen.home;
+package com.example.ducvu212.demomvvm.screen.home.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -11,6 +11,7 @@ import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.model.ItemViewPager;
 import com.example.ducvu212.demomvvm.databinding.ItemRandomImageBinding;
+import com.example.ducvu212.demomvvm.screen.home.HandleItemClick;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,13 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
     private List<Image> mNewImages;
     private FragmentManager mManager;
 
-    NewAdapter(Context context, FragmentManager manager) {
+    public NewAdapter(Context context, FragmentManager manager) {
         mContext = context.getApplicationContext();
         mManager = manager;
         mNewImages = new ArrayList<>();
     }
 
-    void setNewImages(List<Image> newImages) {
+    public void setNewImages(List<Image> newImages) {
         mNewImages.addAll(newImages.subList(mNewImages.size(), newImages.size()));
     }
 
@@ -65,6 +66,8 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
             mBinding.setItem(new ItemViewPager.Builder().mPath(image.getUrls().getRegular())
                     .mLikeByUser(image.getLikedByUser())
                     .mUserName(image.getUser().getUsername())
+                    .mImageId(image.getId())
+                    .mRawImage(image.getUrls().getRaw())
                     .build());
             mBinding.setListener(new HandleItemClick(context, manager));
             mBinding.executePendingBindings();

@@ -1,4 +1,4 @@
-package com.example.ducvu212.demomvvm.screen.home;
+package com.example.ducvu212.demomvvm.screen.home.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -21,11 +21,11 @@ public class RandomPagerAdapter extends PagerAdapter {
 
     private List<Image> mRandomList;
 
-    RandomPagerAdapter() {
+    public RandomPagerAdapter() {
         mRandomList = new ArrayList<>();
     }
 
-    void setRandomList(List<Image> list) {
+    public void setRandomList(List<Image> list) {
         if (list.size() > 0) {
             mRandomList.clear();
             mRandomList.addAll(list);
@@ -38,8 +38,12 @@ public class RandomPagerAdapter extends PagerAdapter {
                 DataBindingUtil.inflate(LayoutInflater.from(container.getContext()),
                         R.layout.item_random_image, container, false);
         View view = binding.getRoot();
-        binding.setItem(
-                new ItemViewPager.Builder().mPath(mRandomList.get(position).getUrls().getFull())
+        Image image = mRandomList.get(position);
+        binding.setItem(new ItemViewPager.Builder().mPath(image.getUrls().getRegular())
+                .mLikeByUser(image.getLikedByUser())
+                .mUserName(image.getUser().getUsername())
+                .mImageId(image.getId())
+                .mRawImage(image.getUrls().getRaw())
                         .build());
         ViewPager viewPager = (ViewPager) container;
         viewPager.addView(view, 0);

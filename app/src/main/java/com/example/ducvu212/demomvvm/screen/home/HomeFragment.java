@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initBinding() {
+        //        ImageDatabase database = ImageDatabase.getInstance(mContext);
         mViewModel = new HomeViewModel(mContext, mBinding.viewPagerImage,
                 mContext.getSupportFragmentManager(),
                 new ImageRepository(ImageRemoteDataSource.getsInstance(),

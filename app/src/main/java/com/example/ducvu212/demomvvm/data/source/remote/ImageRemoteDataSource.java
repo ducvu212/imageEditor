@@ -1,11 +1,13 @@
 package com.example.ducvu212.demomvvm.data.source.remote;
 
+import android.app.DownloadManager;
 import com.example.ducvu212.demomvvm.BuildConfig;
 import com.example.ducvu212.demomvvm.data.api.ApiClient;
 import com.example.ducvu212.demomvvm.data.api.ApiInterface;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.source.ImageDataSource;
+import com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewListener;
 import io.reactivex.Single;
 import java.util.List;
 
@@ -41,6 +43,17 @@ public class ImageRemoteDataSource implements ImageDataSource.ImageRemoteDataSou
     @Override
     public Single<List<Image>> getNewImages(int page, String apiKey) {
         return createApiInterface().getNewImage(page, apiKey);
+    }
+
+    @Override
+    public Single<List<Image>> getCollectionImages(int id, int page, String apiKey) {
+        return createApiInterface().getCollectionDetails(id, page, apiKey);
+    }
+
+    @Override
+    public void downloadImage(DownloadManager manager, String url, String name,
+            ImageDetailsViewListener listener) {
+        new Download(manager, listener).download(url, name);
     }
 
     private ApiInterface createApiInterface() {

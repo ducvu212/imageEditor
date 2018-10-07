@@ -1,9 +1,11 @@
 package com.example.ducvu212.demomvvm.data.repository;
 
+import android.app.DownloadManager;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
+import com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewListener;
 import io.reactivex.Single;
 import java.util.List;
 
@@ -45,5 +47,26 @@ public class ImageRepository {
 
     public Single<List<Image>> getNewImages(int page, String apiKey) {
         return mRemoteDataSource.getNewImages(page, apiKey);
+    }
+
+    //    public Flowable<List<ItemViewPager>> getAllImages() {
+    //        return mLocalDataSource.getAllImages();
+    //    }
+    //
+    //    public void insertImage(ItemViewPager itemViewPager) {
+    //        mLocalDataSource.insertImage(itemViewPager);
+    //    }
+    //
+    //    public void deleteImage(ItemViewPager itemViewPager) {
+    //        mLocalDataSource.deleteImage(itemViewPager);
+    //    }
+
+    public void dowloadImage(DownloadManager manager, String url, String name,
+            ImageDetailsViewListener listener) {
+        mRemoteDataSource.downloadImage(manager, url, name, listener);
+    }
+
+    public Single<List<Image>> getCollectionsDetails(int id, int page, String apiKey) {
+        return mRemoteDataSource.getCollectionImages(id, page, apiKey);
     }
 }
