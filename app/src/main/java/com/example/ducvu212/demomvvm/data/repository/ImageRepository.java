@@ -3,9 +3,12 @@ package com.example.ducvu212.demomvvm.data.repository;
 import android.app.DownloadManager;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
+import com.example.ducvu212.demomvvm.data.model.RecentSearch;
+import com.example.ducvu212.demomvvm.data.model.SearchRespond;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewListener;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import java.util.List;
 
@@ -68,5 +71,25 @@ public class ImageRepository {
 
     public Single<List<Image>> getCollectionsDetails(int id, int page, String apiKey) {
         return mRemoteDataSource.getCollectionImages(id, page, apiKey);
+    }
+
+    public Single<SearchRespond> searchCollection(int page, String query, String apiKey) {
+        return mRemoteDataSource.searchCollection(page, query, apiKey);
+    }
+
+    public Maybe<List<String>> getKeyTrendCollections() {
+        return mLocalDataSource.getTrends();
+    }
+
+    public Maybe<List<RecentSearch>> getRecentSearchs() {
+        return mLocalDataSource.getRecentSearch();
+    }
+
+    public void addRecentSearchToRealm(RecentSearch recentSearch) {
+        mLocalDataSource.putRecentSearchToRealm(recentSearch);
+    }
+
+    public void deleteRecentSearch(RecentSearch recentSearch) {
+        mLocalDataSource.deleteRecentSearch(recentSearch);
     }
 }

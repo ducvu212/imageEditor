@@ -28,9 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="f3f3f3" />
-                            <entry key="outputName" value="ic_arrow_back" />
-                            <entry key="sourceFile" value="C:\Users\aaa\Desktop\like.svg" />
+                            <entry key="opacityPercent" value="70" />
+                            <entry key="outputName" value="ic_arrow_back_black_24dp" />
+                            <entry key="sourceFile" value="C:\Users\Hung" />
                           </map>
                         </option>
                       </PersistentState>

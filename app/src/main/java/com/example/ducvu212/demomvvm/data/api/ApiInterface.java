@@ -2,6 +2,7 @@ package com.example.ducvu212.demomvvm.data.api;
 
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
+import com.example.ducvu212.demomvvm.data.model.SearchRespond;
 import io.reactivex.Single;
 import java.util.List;
 import retrofit2.http.GET;
@@ -23,5 +24,10 @@ public interface ApiInterface {
 
     @GET("collections/{id}/photos")
     Single<List<Image>> getCollectionDetails(@Path("id") int id, @Query("page") int page,
+            @Query("client_id") String apiKey);
+
+    @GET("search/collections")
+    Single<SearchRespond> searchCollection(@Query("page") int page,
+            @Query("query") String query,
             @Query("client_id") String apiKey);
 }

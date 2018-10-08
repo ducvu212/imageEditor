@@ -23,13 +23,13 @@ public class HandleItemClick {
 
     public void OnItemClickListener(ItemViewPager itemViewPager) {
         FragmentTransactionUtils.addFragment(mManager,
-                ImageDetailsFragment.newInstance(itemViewPager), R.id.relative_main,
+                ImageDetailsFragment.newInstance(itemViewPager), R.id.frame_main,
                 ImageDetailsFragment.TAG, true);
     }
 
     public void OnItemCollectionClickListener(Collection collection) {
         FragmentTransactionUtils.addFragment(mManager,
                 CollectionFragment.newInstance(collection.getId(), collection.getTitle()),
-                R.id.relative_main, CollectionFragment.TAG, true);
+                R.id.frame_main, CollectionFragment.TAG, true);
     }
 }

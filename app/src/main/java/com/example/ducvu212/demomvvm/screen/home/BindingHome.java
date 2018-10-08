@@ -16,7 +16,7 @@ public class BindingHome {
     private static int mWidth;
     private static float mRatio;
 
-    BindingHome(int width, float ratio) {
+    public BindingHome(int width, float ratio) {
         mWidth = width;
         mRatio = ratio;
     }
