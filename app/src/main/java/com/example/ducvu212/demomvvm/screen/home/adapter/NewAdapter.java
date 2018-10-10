@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.Image;
-import com.example.ducvu212.demomvvm.data.model.ItemViewPager;
-import com.example.ducvu212.demomvvm.databinding.ItemRandomImageBinding;
+import com.example.ducvu212.demomvvm.data.model.ImageRandom;
+import com.example.ducvu212.demomvvm.databinding.ItemNewBinding;
 import com.example.ducvu212.demomvvm.screen.home.HandleItemClick;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
     @NonNull
     @Override
     public NewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        ItemRandomImageBinding binding =
+        ItemNewBinding binding =
                 DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
-                        R.layout.item_random_image, viewGroup, false);
+                        R.layout.item_new, viewGroup, false);
         return new NewHolder(binding);
     }
 
@@ -55,16 +55,16 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
 
     static class NewHolder extends RecyclerView.ViewHolder {
 
-        private ItemRandomImageBinding mBinding;
+        private ItemNewBinding mBinding;
 
-        NewHolder(@NonNull ItemRandomImageBinding itemView) {
+        NewHolder(@NonNull ItemNewBinding itemView) {
             super(itemView.getRoot());
             mBinding = itemView;
         }
 
         void binding(Context context, FragmentManager manager, Image image) {
-            mBinding.setItem(new ItemViewPager.Builder().mPath(image.getUrls().getRegular())
-                    .mLikeByUser(image.getLikedByUser())
+            mBinding.setItem(new ImageRandom.Builder().mPath(image.getUrls().getRegular())
+                    .mLikeByUser(image.getLikedByUser() ? 1 : 0)
                     .mUserName(image.getUser().getUsername())
                     .mImageId(image.getId())
                     .mRawImage(image.getUrls().getRaw())

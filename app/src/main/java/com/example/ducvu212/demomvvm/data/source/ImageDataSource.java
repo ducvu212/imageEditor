@@ -1,15 +1,15 @@
 package com.example.ducvu212.demomvvm.data.source;
 
 import android.app.DownloadManager;
+import android.graphics.Bitmap;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
-import com.example.ducvu212.demomvvm.data.model.RecentSearch;
-import com.example.ducvu212.demomvvm.data.model.SearchRespond;
+import com.example.ducvu212.demomvvm.data.model.ImageRandom;
 import com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewListener;
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by CuD HniM on 18/10/03.
@@ -21,19 +21,17 @@ public interface ImageDataSource {
      */
 
     interface ImageLocalDataSource {
-        //        Flowable<List<ItemViewPager>> getAllImages();
-        //
-        //        void insertImage(ItemViewPager... itemViewPager);
-        //
-        //        void deleteImage(ItemViewPager itemViewPager);
+        Flowable<List<ImageRandom>> getAllImages();
 
-        Maybe<List<String>> getTrends();
+        ImageRandom getImageById(String id);
 
-        Maybe<List<RecentSearch>> getRecentSearch();
+        void insertImage(ImageRandom imageRandom);
 
-        void putRecentSearchToRealm(RecentSearch recentSearch);
+        void deleteImage(ImageRandom imageRandom);
 
-        void deleteRecentSearch(RecentSearch recentSearch);
+        void updateImage(ImageRandom imageRandom);
+
+        void updateDownload(ImageRandom imageRandom);
     }
 
     /**
@@ -51,7 +49,6 @@ public interface ImageDataSource {
         void downloadImage(DownloadManager manager, String url, String name,
                 ImageDetailsViewListener listener);
 
-        Single<SearchRespond> searchCollection(int page, String query, String apiKey);
-
+        Bitmap getBitmapFromUrl(String url) throws ExecutionException, InterruptedException;
     }
 }

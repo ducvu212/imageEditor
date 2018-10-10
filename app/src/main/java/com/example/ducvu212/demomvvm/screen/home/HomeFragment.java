@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.data.source.local.ImageDatabase;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.databinding.FragmentHomeBinding;
@@ -50,18 +51,17 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         initBinding();
         return mBinding.getRoot();
     }
 
     private void initBinding() {
-        //        ImageDatabase database = ImageDatabase.getInstance(mContext);
+        ImageDatabase database = ImageDatabase.getInstance(mContext);
         mViewModel = new HomeViewModel(mContext, mBinding.viewPagerImage,
                 mContext.getSupportFragmentManager(),
                 new ImageRepository(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance()));
+                        ImageLocalDataSource.getsInstance(database.mImageDAO())));
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mBinding.setViewModel(mViewModel);
         initViews();

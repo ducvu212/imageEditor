@@ -12,10 +12,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.ProgressBar;
 import com.example.ducvu212.demomvvm.BuildConfig;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
+import com.example.ducvu212.demomvvm.data.model.ImageRandom;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
 import com.example.ducvu212.demomvvm.screen.home.adapter.CollectionAdapter;
@@ -23,6 +25,7 @@ import com.example.ducvu212.demomvvm.screen.home.adapter.NewAdapter;
 import com.example.ducvu212.demomvvm.screen.home.adapter.RandomPagerAdapter;
 import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
 import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
@@ -51,6 +54,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
     private NewAdapter mNewAdapter;
     private List<Image> mImages;
     private ViewPager mPager;
+    private ImageRandom mImageRandom;
     private int mPageNumber = 1;
     private int mPageCollectionNumber = 1;
     private ProgressBar mProgressBar;
@@ -64,7 +68,6 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
     HomeViewModel(Context context, ViewPager viewPager, FragmentManager manager,
             ImageRepository repository) {
         mContext = context;
-        initImageSize();
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
         mRepository = repository;
@@ -77,6 +80,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         mNewList = new ArrayList<>();
         mCollectionAdapter = new CollectionAdapter(context, manager);
         mNewAdapter = new NewAdapter(mContext, manager);
+        initImageSize();
     }
 
     @NonNull
@@ -88,6 +92,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
     @Override
     protected void onStart() {
         subscribeData();
+        //        getAllImage();
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
 
@@ -104,6 +109,21 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         mProgressBar = progressBar;
         mPageNumber++;
         getNews(mNewAdapter, mPageNumber);
+    }
+
+    private void getAllImage() {
+        Disposable disposable = mRepository.getAllImages()
+                .subscribeOn(mSchedulerProvider.io())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe(imageRandoms -> {
+                    for (ImageRandom image : imageRandoms) {
+                        Log.d("TAGGGGGGHIHIHIHI",
+                                image.getImageId() + "\t" + image.getLikeByUser() + "\n");
+                        insertImage(image);
+                    }
+                }, throwable -> DisplayUtils.makeToast(mContext, throwable.getMessage()), () -> {
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     void OnCollectionLoadMore() {
@@ -164,6 +184,14 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
                 .subscribe(images -> {
                     mNewList.addAll(images);
                     mNewData.setValue(mNewList);
+                    for (Image image : images) {
+                        ImageRandom imageRandom = new ImageRandom.Builder().mImageId(image.getId())
+                                .mRawImage(image.getUrls().getRaw())
+                                .mPath(image.getUrls().getRegular())
+                                .mUserName(image.getUser().getUsername())
+                                .build();
+                        insertImage(imageRandom);
+                    }
                 }, throwable -> {
                     mNewData.setValue(null);
                     DisplayUtils.makeToast(mContext, throwable.getMessage());
@@ -192,6 +220,36 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         });
     }
 
+    //    private void getUserById(ImageRandom imageRandom) {
+    //        mImageRandom = null;
+    //        Disposable disposable = Observable.create(emitter -> {
+    //            mImageRandom = mRepository.getImageById(imageRandom.getImageId());
+    //            emitter.onComplete();
+    //        }).subscribeOn(mSchedulerProvider.io()).observeOn(mSchedulerProvider.ui())
+    // .subscribe(o -> {
+    //
+    //        }, throwable -> {
+    //
+    //        }, () -> {
+    //
+    //        });
+    //        if (mImageRandom == null) {
+    //            insertImage(imageRandom);
+    //        }
+    //        mCompositeDisposable.add(disposable);
+    //    }
+    //
+    //    private void updateDataNews(List<Image> images) {
+    //        for (Image image : images) {
+    //            ImageRandom imageRandom = new ImageRandom.Builder().mImageId(image.getId())
+    //                    .mRawImage(image.getUrls().getRaw())
+    //                    .mPath(image.getUrls().getRegular())
+    //                    .mUserName(image.getUser().getUsername())
+    //                    .build();
+    //            getUserById(imageRandom);
+    //        }
+    //    }
+
     private void initRandomImages() {
         mAdapter = new RandomPagerAdapter();
         mAdapter.setRandomList(mImages);
@@ -205,8 +263,8 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
-        float ratio = (100 * height) / width;
-        new BindingHome(width, (float) (ratio * 0.01));
+        float ratio = (100 * mPager.getMeasuredHeight()) / width;
+        new BindingHome(width, height, (float) (ratio * 0.01));
     }
 
     private class RandomTimer extends TimerTask {
@@ -222,5 +280,17 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
                 mIndex++;
             });
         }
+    }
+
+    void insertImage(ImageRandom imageRandom) {
+        Disposable disposable = Observable.create(emitter -> {
+            mRepository.insertImage(imageRandom);
+            emitter.onComplete();
+        }).subscribeOn(mSchedulerProvider.io()).observeOn(mSchedulerProvider.ui()).subscribe(o -> {
+
+        }, throwable -> DisplayUtils.makeToast(mContext, throwable.getMessage()), () -> {
+
+        });
+        mCompositeDisposable.add(disposable);
     }
 }

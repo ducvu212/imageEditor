@@ -5,9 +5,9 @@ package com.example.ducvu212.demomvvm.screen.details;
  */
 public interface ImageDetailsViewListener {
 
-    void updateLikeButton(boolean isLike);
+    void updateLikeButton(int like);
 
-    void updateDownloadButton(boolean isDownloaded);
+    void updateDownloadButton(int lownloaded);
 
     void downloadStatus(String status);
 }

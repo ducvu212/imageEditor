@@ -1,16 +1,17 @@
 package com.example.ducvu212.demomvvm.data.repository;
 
 import android.app.DownloadManager;
+import android.graphics.Bitmap;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
-import com.example.ducvu212.demomvvm.data.model.RecentSearch;
-import com.example.ducvu212.demomvvm.data.model.SearchRespond;
+import com.example.ducvu212.demomvvm.data.model.ImageRandom;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewListener;
-import io.reactivex.Maybe;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by CuD HniM on 18/10/03.
@@ -52,17 +53,17 @@ public class ImageRepository {
         return mRemoteDataSource.getNewImages(page, apiKey);
     }
 
-    //    public Flowable<List<ItemViewPager>> getAllImages() {
-    //        return mLocalDataSource.getAllImages();
-    //    }
-    //
-    //    public void insertImage(ItemViewPager itemViewPager) {
-    //        mLocalDataSource.insertImage(itemViewPager);
-    //    }
-    //
-    //    public void deleteImage(ItemViewPager itemViewPager) {
-    //        mLocalDataSource.deleteImage(itemViewPager);
-    //    }
+    public Flowable<List<ImageRandom>> getAllImages() {
+        return mLocalDataSource.getAllImages();
+    }
+
+    public void insertImage(ImageRandom itemViewPager) {
+        mLocalDataSource.insertImage(itemViewPager);
+    }
+
+    public void deleteImage(ImageRandom itemViewPager) {
+        mLocalDataSource.deleteImage(itemViewPager);
+    }
 
     public void dowloadImage(DownloadManager manager, String url, String name,
             ImageDetailsViewListener listener) {
@@ -73,23 +74,19 @@ public class ImageRepository {
         return mRemoteDataSource.getCollectionImages(id, page, apiKey);
     }
 
-    public Single<SearchRespond> searchCollection(int page, String query, String apiKey) {
-        return mRemoteDataSource.searchCollection(page, query, apiKey);
+    public ImageRandom getImageById(String id) {
+        return mLocalDataSource.getImageById(id);
     }
 
-    public Maybe<List<String>> getKeyTrendCollections() {
-        return mLocalDataSource.getTrends();
+    public void updateImage(ImageRandom imageRandom) {
+        mLocalDataSource.updateImage(imageRandom);
     }
 
-    public Maybe<List<RecentSearch>> getRecentSearchs() {
-        return mLocalDataSource.getRecentSearch();
+    public void updateDownload(ImageRandom imageRandom) {
+        mLocalDataSource.updateDownload(imageRandom);
     }
 
-    public void addRecentSearchToRealm(RecentSearch recentSearch) {
-        mLocalDataSource.putRecentSearchToRealm(recentSearch);
-    }
-
-    public void deleteRecentSearch(RecentSearch recentSearch) {
-        mLocalDataSource.deleteRecentSearch(recentSearch);
+    public Bitmap getBitmap(String url) throws ExecutionException, InterruptedException {
+        return mRemoteDataSource.getBitmapFromUrl(url);
     }
 }

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.Image;
-import com.example.ducvu212.demomvvm.data.model.ItemViewPager;
+import com.example.ducvu212.demomvvm.data.model.ImageRandom;
 import com.example.ducvu212.demomvvm.databinding.ItemRandomImageBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +39,12 @@ public class RandomPagerAdapter extends PagerAdapter {
                         R.layout.item_random_image, container, false);
         View view = binding.getRoot();
         Image image = mRandomList.get(position);
-        binding.setItem(new ItemViewPager.Builder().mPath(image.getUrls().getRegular())
-                .mLikeByUser(image.getLikedByUser())
+        binding.setItem(new ImageRandom.Builder().mPath(image.getUrls().getRegular())
+                .mLikeByUser(image.getLikedByUser() ? 1 : 0)
                 .mUserName(image.getUser().getUsername())
                 .mImageId(image.getId())
                 .mRawImage(image.getUrls().getRaw())
-                        .build());
+                .build());
         ViewPager viewPager = (ViewPager) container;
         viewPager.addView(view, 0);
         return view;

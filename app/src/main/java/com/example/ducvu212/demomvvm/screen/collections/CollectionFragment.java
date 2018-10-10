@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.data.source.local.ImageDatabase;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.databinding.FragmentCollectionBinding;
@@ -19,9 +20,6 @@ import com.example.ducvu212.demomvvm.screen.EndlessScrollListener;
 import com.example.ducvu212.demomvvm.screen.base.BaseFragment;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 
-/**
- * Mvp Screen.
- */
 public class CollectionFragment extends BaseFragment {
 
     public static final String TAG = CollectionFragment.class.getSimpleName();
@@ -55,10 +53,11 @@ public class CollectionFragment extends BaseFragment {
             mCollectionId = getArguments().getInt(ARGUMENT_COLLECTION_ID);
             mCollectionName = getArguments().getString(ARGUMENT_COLLECTION_NAME);
         }
+        ImageDatabase database = ImageDatabase.getInstance(mContext);
         mViewModel = new CollectionViewModel(mContext,
                 ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance()), mContext.getSupportFragmentManager(),
-                mCollectionId);
+                        ImageLocalDataSource.getsInstance(database.mImageDAO())),
+                mContext.getSupportFragmentManager(), mCollectionId);
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
     }
 

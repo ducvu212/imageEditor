@@ -17,8 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
-import com.example.ducvu212.demomvvm.data.model.ItemViewPager;
+import com.example.ducvu212.demomvvm.data.model.ImageRandom;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.data.source.local.ImageDatabase;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.databinding.FragmentImageDetailsBinding;
@@ -40,10 +41,10 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
     private ActionBar mActionBar;
     private BroadcastReceiver mOnComplete;
 
-    public static ImageDetailsFragment newInstance(ItemViewPager itemViewPager) {
+    public static ImageDetailsFragment newInstance(ImageRandom imageRandom) {
         ImageDetailsFragment fragment = new ImageDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARGUMENT_IMAGE, itemViewPager);
+        args.putParcelable(ARGUMENT_IMAGE, imageRandom);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,10 +58,10 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        ImageDatabase database = ImageDatabase.getInstance(mContext);
+        ImageDatabase database = ImageDatabase.getInstance(mContext);
         mViewModel = new ImageDetailsViewModel(mContext,
                 ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance()), this);
+                        ImageLocalDataSource.getsInstance(database.mImageDAO())), this);
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mActionBar = ((AppCompatActivity) mContext).getSupportActionBar();
     }
@@ -72,7 +73,7 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_image_details, container,
                 false);
         mBinding.setViewModel(mViewModel);
-        mBinding.setListener(new HandleImageClick(mViewModel));
+        mBinding.setListener(new HandleImageClick(mContext, mViewModel));
         return mBinding.getRoot();
     }
 
@@ -82,20 +83,32 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         if (getArguments() != null) {
-            ItemViewPager itemViewPager = getArguments().getParcelable(ARGUMENT_IMAGE);
-            mBinding.setItem(itemViewPager);
-            String urlImage = itemViewPager.getRawImage();
-            BindingHome.loadImage(mBinding.imageViewContent, urlImage);
+            ImageRandom imageRandom = getArguments().getParcelable(ARGUMENT_IMAGE);
+            ImageRandom imageCheck = mViewModel.getUserById(imageRandom);
+            mBinding.setItem(imageRandom);
+            if (imageCheck == null) {
+                updateUI(imageRandom);
+            } else {
+                updateUI(imageCheck);
+            }
         }
         mOnComplete = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 mBinding.imageViewDownload.setClickable(false);
-                BindingDetails.loadDownloaded(mBinding.imageViewDownload, true);
+                mViewModel.updateDownload();
+                updateDownload(1);
             }
         };
         mContext.registerReceiver(mOnComplete,
                 new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    private void updateUI(ImageRandom imageRandom) {
+        String urlImage = imageRandom.getRawImage();
+        updateLike(imageRandom.getLikeByUser());
+        updateDownload(imageRandom.getDownloaded());
+        BindingHome.loadImage(mBinding.imageViewContent, urlImage);
     }
 
     @Override
@@ -132,17 +145,33 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
     }
 
     @Override
-    public void updateLikeButton(boolean isLike) {
-        BindingDetails.loadLike(mBinding.imageViewLike, isLike);
+    public void updateLikeButton(int like) {
+        updateLike(like);
     }
 
     @Override
-    public void updateDownloadButton(boolean isDownloaded) {
-        BindingDetails.loadDownloaded(mBinding.imageViewDownload, isDownloaded);
+    public void updateDownloadButton(int downloaded) {
+        updateDownload(downloaded);
     }
 
     @Override
     public void downloadStatus(String status) {
         DisplayUtils.makeToast(mContext, status);
+    }
+
+    private void updateLike(int like) {
+        if (like == 1) {
+            mBinding.imageViewLike.setImageResource(R.drawable.ic_like);
+        } else {
+            mBinding.imageViewLike.setImageResource(R.drawable.ic_un_like);
+        }
+    }
+
+    private void updateDownload(int download) {
+        if (download == 1) {
+            mBinding.imageViewDownload.setImageResource(R.drawable.ic_downloaded);
+        } else {
+            mBinding.imageViewDownload.setImageResource(R.drawable.ic_download);
+        }
     }
 }

@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="com.example.ducvu212.demomvvm.data.model.ItemViewPager"/>
+            type="com.example.ducvu212.demomvvm.data.model.ImageRandom"/>
 
         <variable
             name="viewModel"
@@ -31,7 +31,6 @@
             android:id="@+id/image_view_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -44,7 +43,7 @@
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_48"
-            android:background="@color/color_material_blue_400_alpha_48"
+            android:background="@color/color_material_blue_400"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -79,8 +78,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/view"
             app:layout_constraintEnd_toStartOf="@+id/image_view_download"
             app:layout_constraintTop_toTopOf="@+id/view"
-            app:srcCompat="@drawable/ic_un_like"
-            bind:loadLike="@{item.isLikeByUser()}"/>
+            app:srcCompat="@drawable/ic_un_like"/>
 
         <ImageView
             android:id="@+id/image_view_download"
@@ -94,7 +92,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_view_edit"
             app:layout_constraintTop_toTopOf="@+id/view"
-            bind:loadDownload="@{item.isDownloaded()}"
             app:srcCompat="@drawable/ic_download"/>
 
         <ImageView
@@ -107,6 +104,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/view"
             app:layout_constraintTop_toTopOf="@+id/view"
+            android:onClick="@{() -> listener.OnEditClickListener(item)}"
             app:srcCompat="@drawable/ic_edit"/>
 
     </android.support.constraint.ConstraintLayout>

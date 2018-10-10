@@ -14,10 +14,9 @@ import java.io.IOException;
 public class Download {
 
     private static final String IMAGE_PATH_DOWNLOAD = "sdcard/Download/ImageEditor";
-    private static final String FILE_HEADER = "Location";
     private static final String PATH_DOWNLOAD = "sdcard/Download/";
-    private static final String IMAGE_DIRECTORY = "/ImageEditor/";
-    private static final String IMAGE_FILE_EXTENSION = ".png";
+    public static final String IMAGE_DIRECTORY = "/ImageEditor/";
+    public static final String IMAGE_FILE_EXTENSION = ".png";
     private String mPathFile;
     private String mDirectPath;
     private ImageDetailsViewListener mListener;
@@ -35,7 +34,7 @@ public class Download {
         request.setAllowedNetworkTypes(
                 DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setAllowedOverRoaming(false);
-        request.setTitle("Downloading");
+        request.setTitle("Downloading " + name);
         request.setNotificationVisibility(
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationInExternalPublicDir(IMAGE_PATH_DOWNLOAD,

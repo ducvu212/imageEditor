@@ -23,7 +23,6 @@ import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.databinding.ActivityMainBinding;
 import com.example.ducvu212.demomvvm.screen.base.BaseActivity;
 import com.example.ducvu212.demomvvm.screen.home.HomeFragment;
-import com.example.ducvu212.demomvvm.screen.search.SearchFragment;
 import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 import java.io.File;
@@ -128,7 +127,6 @@ public class MainActivity extends BaseActivity
         }
         switch (id) {
             case R.id.action_search:
-                addSearchFragment();
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -157,7 +155,6 @@ public class MainActivity extends BaseActivity
             case R.id.nav_offline:
                 break;
             case R.id.nav_search:
-                addSearchFragment();
                 break;
             case R.id.nav_about_us:
                 break;
@@ -206,12 +203,5 @@ public class MainActivity extends BaseActivity
                     Manifest.permission.READ_EXTERNAL_STORAGE
             }, MY_PERMISSION);
         }
-    }
-
-    private void addSearchFragment() {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame_main, SearchFragment.newInstance())
-                .addToBackStack(null)
-                .commit();
     }
 }

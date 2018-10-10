@@ -11,7 +11,7 @@
 
         <variable
             name="item"
-            type="com.example.ducvu212.demomvvm.data.model.ItemViewPager"/>
+            type="com.example.ducvu212.demomvvm.data.model.ImageRandom"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -23,13 +23,13 @@
             android:id="@+id/image_view_random"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_4"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/image_avatar"
-            bind:loadImg="@{item.getPath()}"/>
+            bind:loadImgRandom="@{item.getPath()}"/>
     </android.support.constraint.ConstraintLayout>
 </layout>

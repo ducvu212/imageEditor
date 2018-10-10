@@ -15,10 +15,14 @@ public class BindingHome {
 
     private static int mWidth;
     private static float mRatio;
+    private static float mHeight;
+    private static float mRatioView;
 
-    public BindingHome(int width, float ratio) {
+    BindingHome(int width, int height, float ratio) {
         mWidth = width;
         mRatio = ratio;
+        mHeight = height;
+        mRatioView = (float) (0.01 * ((100 * height) / width));
     }
 
     @BindingAdapter({ "loadImg" })
@@ -38,9 +42,23 @@ public class BindingHome {
     }
 
     private static RequestCreator createCreator(int width, int height, String url) {
-        return Picasso.get()
-                .load(url)
-                .placeholder(R.drawable.ic_launcher_foreground).resize(width, height)
-                .centerCrop();
+        return Picasso.get().load(url).placeholder(R.drawable.placeholder).resize(width, height);
+    }
+
+    @BindingAdapter({ "loadImgRandom" })
+    public static void loadImageRandom(ImageView imageView, String url) {
+        createCreator(mWidth, (int) (mWidth * mRatioView), url).networkPolicy(NetworkPolicy.OFFLINE)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        createCreator(mWidth, (int) (mWidth * mRatioView), url).centerCrop()
+                                .into(imageView);
+                    }
+                });
     }
 }
