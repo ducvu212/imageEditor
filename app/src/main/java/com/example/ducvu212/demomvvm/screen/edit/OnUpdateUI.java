@@ -9,4 +9,16 @@ public interface OnUpdateUI {
     void updateBrightness(int progress);
 
     void OnDoneClickListener(String type, String name);
+
+    void OnDrawClickListener();
+
+    void OnChangeColorListener(int color);
+
+    void OnUndoAction();
+
+    void OnRedoAction();
+
+    void OnClearAction();
+
+    void OnDrawCompleteAction();
 }

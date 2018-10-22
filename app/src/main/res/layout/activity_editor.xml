@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <com.example.ducvu212.demomvvm.screen.editor.CustomImageView
             android:id="@+id/imageViewContentEdit"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_400"
@@ -22,6 +22,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/image_test_edit"/>
+
+        <com.example.ducvu212.demomvvm.screen.editor.DrawableView
+            android:id="@+id/draw_view"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_400"
+            android:layout_gravity="bottom"/>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"

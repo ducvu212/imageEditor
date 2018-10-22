@@ -5,11 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.SeekBar;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemEdit;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
 import com.example.ducvu212.demomvvm.databinding.ItemEditBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +19,15 @@ import java.util.List;
 public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder> {
 
     private List<ItemEdit> mEditList;
-    private SeekBar mSeekBar;
     private ImageRepository mImageRepository;
-    private FrameLayout mFrameLayout;
     private OnUpdateUI mOnUpdateUI;
+    private FragmentEditBinding mBinding;
 
-    public EditAdapter(List<ItemEdit> editList, ImageRepository repository, SeekBar seekBar,
-            FrameLayout frameLayout, OnUpdateUI onUpdateUI) {
+    public EditAdapter(List<ItemEdit> editList, ImageRepository repository,
+            FragmentEditBinding binding, OnUpdateUI onUpdateUI) {
         mEditList = new ArrayList<>();
         mEditList.addAll(editList);
-        mSeekBar = seekBar;
-        mFrameLayout = frameLayout;
+        mBinding = binding;
         mImageRepository = repository;
         mOnUpdateUI = onUpdateUI;
     }
@@ -49,8 +46,7 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull EditViewHolder holder, int position) {
-        holder.binding(mEditList.get(position), mImageRepository, mSeekBar, mFrameLayout,
-                mOnUpdateUI);
+        holder.binding(mEditList.get(position), mImageRepository, mBinding, mOnUpdateUI);
     }
 
     @Override
@@ -67,11 +63,10 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
             mBinding = itemView;
         }
 
-        void binding(ItemEdit edit, ImageRepository imageRepository, SeekBar seekBar,
-                FrameLayout frameLayout, OnUpdateUI onUpdateUI) {
+        void binding(ItemEdit edit, ImageRepository imageRepository, FragmentEditBinding binding,
+                OnUpdateUI onUpdateUI) {
             mBinding.setItem(edit);
-            mBinding.setListener(
-                    new HandleItemEditClick(seekBar, imageRepository, frameLayout, onUpdateUI));
+            mBinding.setListener(new HandleItemEditClick(imageRepository, binding, onUpdateUI));
             mBinding.executePendingBindings();
         }
     }

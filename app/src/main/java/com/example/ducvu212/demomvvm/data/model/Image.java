@@ -27,10 +27,10 @@ public class Image implements Parcelable {
     @SerializedName("updated_at")
     @Expose
     private String mUpdatedAt;
-    @SerializedName("width")
+    @SerializedName("mWidth")
     @Expose
     private Integer mWidth;
-    @SerializedName("height")
+    @SerializedName("mHeight")
     @Expose
     private Integer mHeight;
     @SerializedName("urls")

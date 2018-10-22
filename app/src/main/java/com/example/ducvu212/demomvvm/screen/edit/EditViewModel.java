@@ -8,11 +8,10 @@ import android.content.Context;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.widget.FrameLayout;
-import android.widget.SeekBar;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemEdit;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
 import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
@@ -35,15 +34,15 @@ public class EditViewModel extends BaseViewModel implements LifecycleOwner {
     private RecyclerView mRecyclerView;
     private ImageRepository mImageRepository;
 
-    public EditViewModel(Context context, ImageRepository repository, RecyclerView recyclerView,
-            SeekBar seekBar, FrameLayout frameLayout, OnUpdateUI onUpdateUI) {
+    public EditViewModel(Context context, ImageRepository repository, FragmentEditBinding binding,
+            OnUpdateUI onUpdateUI) {
         mContext = context;
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
         mEditList = new ArrayList<>();
         mEditData = new MutableLiveData();
-        mEditAdapter = new EditAdapter(mEditList, repository, seekBar, frameLayout, onUpdateUI);
-        mRecyclerView = recyclerView;
+        mEditAdapter = new EditAdapter(mEditList, repository, binding, onUpdateUI);
+        mRecyclerView = binding.recyclerEdit;
         mImageRepository = repository;
         initData();
     }

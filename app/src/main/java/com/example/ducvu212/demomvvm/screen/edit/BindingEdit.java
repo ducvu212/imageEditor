@@ -19,4 +19,9 @@ public class BindingEdit {
     public static void loadImage(ImageView imageView, int drawable) {
         imageView.setImageResource(drawable);
     }
+
+    @BindingAdapter({ "loadColor" })
+    public static void loadColor(ImageView imageView, int id) {
+
+    }
 }

@@ -3,10 +3,13 @@ package com.example.ducvu212.demomvvm.screen.editor;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LifecycleRegistry;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
 import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by CuD HniM on 18/10/10.
@@ -16,8 +19,10 @@ public class EditorViewModel extends BaseViewModel implements LifecycleOwner {
     private BaseSchedulerProvider mSchedulerProvider;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private LifecycleRegistry mLifecycleRegistry;
+    private ImageRepository mRepository;
 
-    public EditorViewModel() {
+    public EditorViewModel(ImageRepository imageRepository) {
+        mRepository = imageRepository;
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
     }
@@ -40,5 +45,9 @@ public class EditorViewModel extends BaseViewModel implements LifecycleOwner {
 
     void setSchedulerProvider(BaseSchedulerProvider schedulerProvider) {
         mSchedulerProvider = schedulerProvider;
+    }
+
+    public Bitmap convertBitmap(String url) throws ExecutionException, InterruptedException {
+        return mRepository.getBitmap(url);
     }
 }

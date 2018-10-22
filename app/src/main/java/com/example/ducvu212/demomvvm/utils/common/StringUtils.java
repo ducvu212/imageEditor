@@ -1,5 +1,10 @@
 package com.example.ducvu212.demomvvm.utils.common;
 
+import android.os.Environment;
+
+import static com.example.ducvu212.demomvvm.data.source.remote.Download.IMAGE_DIRECTORY;
+import static com.example.ducvu212.demomvvm.data.source.remote.Download.IMAGE_FILE_EXTENSION;
+
 /**
  * Created by framgia on 27/04/2017.
  */
@@ -24,5 +29,15 @@ public final class StringUtils {
         } catch (NumberFormatException e) {
             return Integer.MIN_VALUE;
         }
+    }
+
+    public static String buildPath(String name) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
+                .append(IMAGE_DIRECTORY)
+                .append(name)
+                .append(IMAGE_FILE_EXTENSION);
+        return builder.toString();
     }
 }

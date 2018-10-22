@@ -9,4 +9,16 @@ public interface OnEditClickListener {
     void OnUpdateBrightness(int progress);
 
     void OnDoneClickListener(String type, String name);
+
+    void OnDrawClickListener();
+
+    void OnChangeColorClickListener(int color);
+
+    void OnUndoAction();
+
+    void OnRedoAction();
+
+    void OnClearAction();
+
+    void OnDrawCompleteAction();
 }

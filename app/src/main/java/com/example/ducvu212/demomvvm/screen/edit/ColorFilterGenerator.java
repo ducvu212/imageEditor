@@ -10,7 +10,7 @@ import android.graphics.ColorMatrixColorFilter;
 public class ColorFilterGenerator {
 
     public static ColorMatrix mBrightnessCM;
-    public static ColorMatrix mContrastCM;
+    private static ColorMatrix mContrastCM;
     private static double DELTA_INDEX[] = {
             0, 0.01, 0.02, 0.04, 0.05, 0.06, 0.07, 0.08, 0.1, 0.11, 0.12, 0.14, 0.15, 0.16, 0.17,
             0.18, 0.20, 0.21, 0.22, 0.24, 0.25, 0.27, 0.28, 0.30, 0.32, 0.34, 0.36, 0.38, 0.40,
@@ -23,33 +23,24 @@ public class ColorFilterGenerator {
 
     public static ColorFilter adjustHue(float value) {
         ColorMatrix cm = new ColorMatrix();
-
         adjustHue(cm, value);
-
         return new ColorMatrixColorFilter(cm);
     }
 
     public static ColorFilter adjustExposure(float value) {
         ColorMatrix cm = new ColorMatrix();
-
         adjustExposure(cm, value);
-
         return new ColorMatrixColorFilter(cm);
     }
 
     public static ColorFilter adjustTemperature(int r, int g, int b) {
         ColorMatrix cm = new ColorMatrix();
-
         adjustTemperature(cm, r, g, b);
-
         return new ColorMatrixColorFilter(cm);
     }
 
     public static ColorFilter adjustContrast(float value) {
         ColorMatrix cm = new ColorMatrix();
-
-        //adjustContrast(cm, value);
-
         setContrast(cm, value);
         mContrastCM = cm;
         return new ColorMatrixColorFilter(cm);
@@ -136,17 +127,15 @@ public class ColorFilterGenerator {
         mContrastCM = cm;
     }
 
-    public static void adjustSaturation(ColorMatrix cm, float value) {
+    private static void adjustSaturation(ColorMatrix cm, float value) {
         value = cleanValue(value, 100);
         if (value == 0) {
             return;
         }
-
         float x = 1 + ((value > 0) ? 3 * value / 100 : value / 100);
         float lumR = 0.3086f;
         float lumG = 0.6094f;
         float lumB = 0.0820f;
-
         float[] mat = new float[] {
                 lumR * (1 - x) + x, lumG * (1 - x), lumB * (1 - x), 0, 0, lumR * (1 - x),
                 lumG * (1 - x) + x, lumB * (1 - x), 0, 0, lumR * (1 - x), lumG * (1 - x),
@@ -160,7 +149,6 @@ public class ColorFilterGenerator {
         if (value == 0) {
             return;
         }
-
         float[] mat = new float[] {
                 1, 0, 0, 0, value, 0, 1, 0, 0, value, 0, 0, 1, 0, value, 0, 0, 0, 1, 0, 0, 0, 0, 0,
                 1

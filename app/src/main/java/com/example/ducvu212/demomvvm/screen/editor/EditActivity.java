@@ -10,23 +10,28 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ImageRandom;
+import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
+import com.example.ducvu212.demomvvm.data.source.local.ImageDatabase;
+import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
+import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.databinding.ActivityEditorBinding;
 import com.example.ducvu212.demomvvm.screen.edit.ColorFilterGenerator;
 import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
+import com.example.ducvu212.demomvvm.utils.common.StringUtils;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 import com.squareup.picasso.Picasso;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
-import static com.example.ducvu212.demomvvm.data.source.remote.Download.IMAGE_DIRECTORY;
-import static com.example.ducvu212.demomvvm.data.source.remote.Download.IMAGE_FILE_EXTENSION;
 import static com.example.ducvu212.demomvvm.screen.edit.ColorFilterGenerator.mBrightnessCM;
 import static com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick.TITTLE_BRIGHTNESS;
 
@@ -35,11 +40,13 @@ public class EditActivity extends AppCompatActivity implements OnEditClickListen
     private static final String EXTRA_IMAGE = "EXTRA_IMAGE";
     public static String mPath;
     public static String mName;
-    private EditorViewModel mEditorViewModel;
+    public static Bitmap sBitmap;
     private ActivityEditorBinding mBinding;
     private ImageRandom mImageRandom;
     private int mProgress;
     private Exception mException;
+    private ProgressDialog mProgressDialog;
+    private EditorViewModel mEditorViewModel;
 
     public static Intent getProfileIntent(Context context, ImageRandom imageRandom) {
         Intent intent = new Intent(context, EditActivity.class);
@@ -55,25 +62,46 @@ public class EditActivity extends AppCompatActivity implements OnEditClickListen
 
     private void inits() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_editor);
-        FragmentManager manager = getSupportFragmentManager();
-        PagerAdapter adapter = new EditAdapter(manager);
-        mEditorViewModel = new EditorViewModel();
+        ImageDatabase database = ImageDatabase.getInstance(this);
+        mProgressDialog = new ProgressDialog(this);
+        mEditorViewModel = new EditorViewModel(
+                ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
+                        ImageLocalDataSource.getsInstance(database.mImageDAO())));
         mEditorViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mBinding.setViewModel(mEditorViewModel);
-        mBinding.viewPagger.setAdapter(adapter);
-        mBinding.tabLayout.setupWithViewPager(mBinding.viewPagger);
-        mBinding.viewPagger.addOnPageChangeListener(
-                new TabLayout.TabLayoutOnPageChangeListener(mBinding.tabLayout));
-        mBinding.tabLayout.setTabsFromPagerAdapter(adapter);
+        setupTabAdapter();
+        getDataFromIntent();
+    }
+
+    private void getDataFromIntent() {
         if (getIntent() != null) {
             mImageRandom = getIntent().getParcelableExtra(EXTRA_IMAGE);
         }
         mPath = mImageRandom.getPath();
         mName = mImageRandom.getImageId();
+        try {
+            sBitmap = mEditorViewModel.convertBitmap(mPath);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            DisplayUtils.makeToast(this, e.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            DisplayUtils.makeToast(this, e.toString());
+        }
         Picasso.get()
                 .load(mPath)
                 .placeholder(R.drawable.placeholder)
                 .into(mBinding.imageViewContentEdit);
+    }
+
+    private void setupTabAdapter() {
+        FragmentManager manager = getSupportFragmentManager();
+        PagerAdapter adapter = new EditAdapter(manager);
+        mBinding.viewPagger.setAdapter(adapter);
+        mBinding.tabLayout.setupWithViewPager(mBinding.viewPagger);
+        mBinding.viewPagger.addOnPageChangeListener(
+                new TabLayout.TabLayoutOnPageChangeListener(mBinding.tabLayout));
+        mBinding.tabLayout.setTabsFromPagerAdapter(adapter);
     }
 
     @Override
@@ -91,43 +119,72 @@ public class EditActivity extends AppCompatActivity implements OnEditClickListen
 
     @Override
     public void OnDoneClickListener(String type, String name) {
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.save_dialog));
-        saveToInternalStorage(progressDialog, name, type);
+        mProgressDialog.setMessage(getString(R.string.save_dialog));
+        saveToInternalStorage(name, type);
     }
 
-    private void saveToInternalStorage(ProgressDialog progressDialog, String name, String type) {
+    @Override
+    public void OnDrawClickListener() {
+        mBinding.imageViewContentEdit.setZoomEnable(false);
+        mBinding.drawView.setDrawingEnabled(true);
+    }
+
+    @Override
+    public void OnChangeColorClickListener(int color) {
+        mBinding.drawView.setPaintColor(color);
+    }
+
+    @Override
+    public void OnUndoAction() {
+        mBinding.drawView.onClickUndo();
+    }
+
+    @Override
+    public void OnRedoAction() {
+        mBinding.drawView.onClickRedo();
+    }
+
+    @Override
+    public void OnClearAction() {
+        mBinding.drawView.clearCanvas();
+    }
+
+    @Override
+    public void OnDrawCompleteAction() {
+        saveImage(mBinding.drawView.getBitmapMaster());
+    }
+
+    private void saveToInternalStorage(String name, String type) {
         BitmapDrawable draw = (BitmapDrawable) mBinding.imageViewContentEdit.getDrawable();
         Bitmap bitmap = draw.getBitmap();
         Bitmap newBitmap = changeBitmapContrastBrightness(bitmap, type);
-        StringBuilder builder = new StringBuilder();
-        builder.append(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
-                .append(IMAGE_DIRECTORY)
-                .append(name)
-                .append(IMAGE_FILE_EXTENSION);
-        FileOutputStream fos = null;
+        saveImage(newBitmap);
+    }
+
+    private void saveImage(Bitmap newBitmap) {
+        mProgressDialog.setMessage(getString(R.string.save_dialog));
+        File newFile = new File(StringUtils.buildPath(mName));
         try {
-            fos = new FileOutputStream(builder.toString());
-            newBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-            mException = e;
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                mException = e;
-            }
+            showError(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError(e);
         }
-        if (mException != null) {
-            progressDialog.dismiss();
-            DisplayUtils.makeToast(this, mException.getMessage());
-        } else {
-            progressDialog.dismiss();
+        if (mException == null) {
             DisplayUtils.makeToast(this, getString(R.string.save_success));
         }
+    }
+
+    private void showError(Exception e) {
+        mException = e;
+        mProgressDialog.dismiss();
+        DisplayUtils.makeToast(this, mException.getMessage());
     }
 
     public Bitmap changeBitmapContrastBrightness(Bitmap bmp, String type) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -77,9 +78,88 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/dp_48"
+            android:layout_marginBottom="@dimen/dp_64"
             android:orientation="horizontal"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/contrainsColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dp_64"
+            android:layout_marginTop="@dimen/dp_8"
+            android:visibility="gone">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewColorPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginRight="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_32"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewColor"/>
+
+            <ImageView
+                android:id="@+id/imageViewClearColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_32"
+                android:layout_marginRight="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_32"
+                android:onClick="@{() -> listener.OnClearColorClickListener()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewClearUndo"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewColorPicker"
+                app:srcCompat="@drawable/ic_clear"/>
+
+            <ImageView
+                android:id="@+id/imageViewClearUndo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_48"
+                android:layout_marginRight="@dimen/dp_64"
+                android:layout_marginTop="@dimen/dp_32"
+                android:onClick="@{() -> listener.OnUndoAction()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewClearRedo"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageViewClearColor"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewColorPicker"
+                app:srcCompat="@drawable/ic_undo"/>
+
+            <ImageView
+                android:id="@+id/imageViewClearRedo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_64"
+                android:layout_marginTop="@dimen/dp_32"
+                android:onClick="@{() -> listener.OnRedoAction()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewClearDone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageViewClearUndo"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewColorPicker"
+                app:srcCompat="@drawable/ic_redo"/>
+
+            <ImageView
+                android:onClick="@{() -> listener.OnDrawCompleteAction()}"
+                android:id="@+id/imageViewClearDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_32"
+                android:layout_marginTop="@dimen/dp_32"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewColorPicker"
+                app:srcCompat="@drawable/ic_done"/>
+        </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 </layout>
