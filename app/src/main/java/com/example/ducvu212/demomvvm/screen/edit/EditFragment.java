@@ -13,25 +13,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemColorPicker;
+import com.example.ducvu212.demomvvm.data.model.ItemSticker;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.data.source.local.ImageDatabase;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
+import com.example.ducvu212.demomvvm.screen.edit.adapter.ColorPickerAdapter;
+import com.example.ducvu212.demomvvm.screen.edit.adapter.StickerAdapter;
 import com.example.ducvu212.demomvvm.screen.editor.OnEditClickListener;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EditFragment extends Fragment implements OnUpdateUI {
 
-    private EditViewModel mViewModel;
     private FragmentEditBinding mBinding;
-    private ImageRepository mImageRepository;
     private OnEditClickListener mOnEditClickListener;
-    private ArrayList<ItemColorPicker> mPickerList;
+    private List<ItemColorPicker> mPickerList;
+    private List<ItemSticker> mStickerList;
 
     public EditFragment() {
 
@@ -54,14 +57,34 @@ public class EditFragment extends Fragment implements OnUpdateUI {
     private void initBinding() {
         new BindingEdit(getContext());
         mPickerList = new ArrayList<>();
-        intiColorPicker();
-        ImageDatabase database = ImageDatabase.getInstance(getContext());
-        mImageRepository = ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
-                ImageLocalDataSource.getsInstance(database.mImageDAO()));
-        mViewModel = new EditViewModel(getContext(), mImageRepository, mBinding, this);
-        mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
-        mBinding.setViewModel(mViewModel);
-        mBinding.setListener(new HandleItemEditClick(mImageRepository, mBinding, this));
+        mStickerList = new ArrayList<>();
+        initSticker();
+        intiViewModel();
+        initColorPicker();
+    }
+
+    private void initSticker() {
+        initListSticker();
+        StickerAdapter adapter = new StickerAdapter(this);
+        adapter.setStickerList(mStickerList);
+        adapter.notifyDataSetChanged();
+        mBinding.recyclerviewSticker.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        mBinding.recyclerviewSticker.setAdapter(adapter);
+    }
+
+    private void initListSticker() {
+        mStickerList.add(new ItemSticker(R.drawable.sticker_1, 1));
+        mStickerList.add(new ItemSticker(R.drawable.sticker_2, 2));
+        mStickerList.add(new ItemSticker(R.drawable.sticker_3, 3));
+        mStickerList.add(new ItemSticker(R.drawable.sticker_4, 4));
+        mStickerList.add(new ItemSticker(R.drawable.sticker_5, 5));
+        mStickerList.add(new ItemSticker(R.drawable.sticker_6, 6));
+        mStickerList.add(new ItemSticker(R.drawable.sticker_7, 7));
+        mStickerList.add(new ItemSticker(R.drawable.sticker_8, 8));
+    }
+
+    private void initColorPicker() {
+        intitListColorPicker();
         ColorPickerAdapter adapter = new ColorPickerAdapter(getContext(), this);
         adapter.setPickerList(mPickerList);
         adapter.notifyDataSetChanged();
@@ -69,7 +92,18 @@ public class EditFragment extends Fragment implements OnUpdateUI {
         mBinding.recyclerViewColorPicker.setAdapter(adapter);
     }
 
-    private void intiColorPicker() {
+    private void intiViewModel() {
+        ImageDatabase database = ImageDatabase.getInstance(getContext());
+        ImageRepository imageRepository =
+                ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
+                        ImageLocalDataSource.getsInstance(database.mImageDAO()));
+        EditViewModel viewModel = new EditViewModel(getContext(), imageRepository, mBinding, this);
+        viewModel.setSchedulerProvider(SchedulerProvider.getInstance());
+        mBinding.setViewModel(viewModel);
+        mBinding.setListener(new HandleItemEditClick(imageRepository, mBinding, this));
+    }
+
+    private void intitListColorPicker() {
         mPickerList.add(new ItemColorPicker(Color.WHITE, R.drawable.ic_white));
         mPickerList.add(new ItemColorPicker(Color.BLACK, R.drawable.ic_black));
         mPickerList.add(new ItemColorPicker(Color.BLUE, R.drawable.ic_blue));
@@ -87,6 +121,7 @@ public class EditFragment extends Fragment implements OnUpdateUI {
 
     @Override
     public void updateContrast(int progress) {
+
         mOnEditClickListener.OnUpdateContrast(progress);
     }
 
@@ -111,22 +146,42 @@ public class EditFragment extends Fragment implements OnUpdateUI {
     }
 
     @Override
-    public void OnUndoAction() {
-        mOnEditClickListener.OnUndoAction();
+    public void OnUndoListener() {
+        mOnEditClickListener.OnUndoListener();
     }
 
     @Override
-    public void OnRedoAction() {
-        mOnEditClickListener.OnRedoAction();
+    public void OnRedoListener() {
+        mOnEditClickListener.OnRedoListener();
     }
 
     @Override
-    public void OnClearAction() {
-        mOnEditClickListener.OnClearAction();
+    public void OnClearListener() {
+        mOnEditClickListener.OnClearListener();
     }
 
     @Override
-    public void OnDrawCompleteAction() {
-        mOnEditClickListener.OnDrawCompleteAction();
+    public void OnDrawCompleteListener() {
+        mOnEditClickListener.OnDrawCompleteListener();
+    }
+
+    @Override
+    public void OnCropListener() {
+        mOnEditClickListener.OnCropListener();
+    }
+
+    @Override
+    public void OnStickerItemClickListener(ItemSticker itemSticker) {
+        mOnEditClickListener.OnStickerItemClickListener(itemSticker);
+    }
+
+    @Override
+    public void OnStickerDoneClickListener() {
+        mOnEditClickListener.OnStickerDoneClickListener();
+    }
+
+    @Override
+    public void OnStickerClearClickListener() {
+        mOnEditClickListener.OnStickerClearClickListener();
     }
 }

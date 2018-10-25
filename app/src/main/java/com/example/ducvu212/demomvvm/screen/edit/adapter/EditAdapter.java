@@ -1,4 +1,4 @@
-package com.example.ducvu212.demomvvm.screen.edit;
+package com.example.ducvu212.demomvvm.screen.edit.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -10,6 +10,8 @@ import com.example.ducvu212.demomvvm.data.model.ItemEdit;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
 import com.example.ducvu212.demomvvm.databinding.ItemEditBinding;
+import com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick;
+import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUI;
 import java.util.ArrayList;
 import java.util.List;
 

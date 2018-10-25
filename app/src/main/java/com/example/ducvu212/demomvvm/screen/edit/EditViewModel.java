@@ -13,6 +13,7 @@ import com.example.ducvu212.demomvvm.data.model.ItemEdit;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
+import com.example.ducvu212.demomvvm.screen.edit.adapter.EditAdapter;
 import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
 import java.util.ArrayList;

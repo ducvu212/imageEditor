@@ -1,4 +1,4 @@
-package com.example.ducvu212.demomvvm.screen.editor;
+package com.example.ducvu212.demomvvm.screen.editor.customview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,11 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import com.example.ducvu212.demomvvm.data.model.CustomPath;
+import com.example.ducvu212.demomvvm.screen.editor.EditActivity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,9 +125,10 @@ public class DrawableView extends View {
     }
 
     public void clearCanvas() {
-        mDrawPath.reset();
-        mDrawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
-        invalidate();
+        if (mPaths.size() > 0) {
+            mPaths.clear();
+            invalidate();
+        }
     }
 
     public void onClickUndo() {

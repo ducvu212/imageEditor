@@ -24,13 +24,13 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="@dimen/dp_100"
-            android:layout_height="@dimen/dp_100">
+            android:layout_height="@dimen/dp_80">
 
             <ImageView
                 android:id="@+id/imageViewIcon"
                 android:layout_width="@dimen/dp_48"
                 android:layout_height="@dimen/dp_48"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -40,7 +40,7 @@
                 android:id="@+id/textViewNameItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_4"
                 android:gravity="center"
                 android:text="@{item.getName()}"
                 android:textSize="@dimen/sp_16"

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.ducvu212.demomvvm.data.model.ItemSticker"/>
+
+        <variable
+            name="listener"
+            type="com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:onClick="@{() -> listener.OnStickerClickListener(item)}">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/sticker_1"
+            bind:loadImg="@{item.getDrawable()}"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

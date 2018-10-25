@@ -41,7 +41,8 @@ public class ColorFilterGenerator {
 
     public static ColorFilter adjustContrast(float value) {
         ColorMatrix cm = new ColorMatrix();
-        setContrast(cm, value);
+        //        setContrast(cm, value);
+        adjustContrast(cm, (int) value);
         mContrastCM = cm;
         return new ColorMatrixColorFilter(cm);
     }
@@ -56,9 +57,7 @@ public class ColorFilterGenerator {
 
     public static ColorFilter adjustBrightness(int value) {
         ColorMatrix cm = new ColorMatrix();
-
         adjustBrightness(cm, value);
-
         return new ColorMatrixColorFilter(cm);
     }
 

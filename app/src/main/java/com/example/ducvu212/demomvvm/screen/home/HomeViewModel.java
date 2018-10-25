@@ -243,7 +243,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
     //        for (Image image : images) {
     //            ImageRandom imageRandom = new ImageRandom.Builder().mImageId(image.getId())
     //                    .mRawImage(image.getUrls().getRaw())
-    //                    .mPath(image.getUrls().getRegular())
+    //                    .sPath(image.getUrls().getRegular())
     //                    .mUserName(image.getUser().getUsername())
     //                    .build();
     //            getUserById(imageRandom);

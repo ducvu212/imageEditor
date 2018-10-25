@@ -1,4 +1,4 @@
-package com.example.ducvu212.demomvvm.screen.edit;
+package com.example.ducvu212.demomvvm.screen.edit.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemColorPicker;
 import com.example.ducvu212.demomvvm.databinding.ItemColorPickerBinding;
+import com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick;
+import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUI;
 import java.util.ArrayList;
 import java.util.List;
 

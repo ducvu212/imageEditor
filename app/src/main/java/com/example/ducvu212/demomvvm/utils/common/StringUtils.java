@@ -40,4 +40,14 @@ public final class StringUtils {
                 .append(IMAGE_FILE_EXTENSION);
         return builder.toString();
     }
+
+    public static String buildPathCropped(String name) {
+        StringBuilder builder = new StringBuilder();
+        name = name.concat("_crop");
+        builder.append(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
+                .append(IMAGE_DIRECTORY)
+                .append(name)
+                .append(IMAGE_FILE_EXTENSION);
+        return builder.toString();
+    }
 }

@@ -49,8 +49,8 @@ public class UnderView extends View implements OnTouchListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //mPath = new CustomPath();
-        //canvas.drawPath(mPath, mPaint);
+        //sPath = new CustomPath();
+        //canvas.drawPath(sPath, mPaint);
         for (Path p : paths) {
             canvas.drawPath(p, mPaint);
         }

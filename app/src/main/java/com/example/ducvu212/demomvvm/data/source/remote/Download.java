@@ -13,8 +13,8 @@ import java.io.IOException;
  */
 public class Download {
 
-    private static final String IMAGE_PATH_DOWNLOAD = "sdcard/Download/ImageEditor";
-    private static final String PATH_DOWNLOAD = "sdcard/Download/";
+    private static final String IMAGE_PATH_DOWNLOAD = "/Download/ImageEditor";
+    private static final String PATH_DOWNLOAD = "/Download/";
     public static final String IMAGE_DIRECTORY = "/ImageEditor/";
     public static final String IMAGE_FILE_EXTENSION = ".png";
     private String mPathFile;
