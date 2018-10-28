@@ -53,6 +53,7 @@ public class EditActivity extends AppCompatActivity
         implements OnEditClickListener, View.OnTouchListener {
 
     private static final String EXTRA_IMAGE = "EXTRA_IMAGE";
+    private static final String EXTRA_TYPE = "EXTRA_TYPE";
     private static final int RESULT_CROP = 111;
     public static String sPath;
     public static String sName;
@@ -91,7 +92,7 @@ public class EditActivity extends AppCompatActivity
         mProgressDialog = new ProgressDialog(this);
         mEditorViewModel = new EditorViewModel(
                 ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance(database.mImageDAO())));
+                        ImageLocalDataSource.getsInstance(database.mImageDAO(), this)));
         mEditorViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mBinding.setListener(new HandleOnClickListener(this));
         mBinding.setViewModel(mEditorViewModel);
@@ -105,6 +106,13 @@ public class EditActivity extends AppCompatActivity
         }
         sPath = mImageRandom.getPath();
         sName = mImageRandom.getImageId();
+        //        if (mImageRandom.getType().equals(ImageType.LOCAL)) {
+        //            sBitmap = mEditorViewModel.convertbitmapGallary(mPath);
+        //            Picasso.get()
+        //                    .load(new File(mPath))
+        //                    .placeholder(R.drawable.placeholder)
+        //                    .into(mBinding.imageViewContentEdit);
+        //        } else {
         try {
             sBitmap = mEditorViewModel.convertBitmap(sPath);
         } catch (ExecutionException e) {
@@ -114,7 +122,11 @@ public class EditActivity extends AppCompatActivity
             e.printStackTrace();
             DisplayUtils.makeToast(this, e.toString());
         }
-        loadImage();
+        Picasso.get()
+                .load(sPath)
+                .placeholder(R.drawable.placeholder)
+                .into(mBinding.imageViewContentEdit);
+        //        }
     }
 
     private void setupTabAdapter() {
@@ -215,6 +227,11 @@ public class EditActivity extends AppCompatActivity
         for (StickerImageView i : mStickerImageViewList) {
             i.setHidden(isHidden);
         }
+    }
+
+    @Override
+    public void OnFilter(Bitmap bitmap) {
+        mBinding.imageViewContentEdit.setImageBitmap(bitmap);
     }
 
     @Override

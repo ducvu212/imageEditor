@@ -29,10 +29,10 @@ public class CoverPhoto implements Parcelable {
     @SerializedName("updated_at")
     @Expose
     private String mUpdatedAt;
-    @SerializedName("mWidth")
+    @SerializedName("width")
     @Expose
     private Integer mWidth;
-    @SerializedName("mHeight")
+    @SerializedName("height")
     @Expose
     private Integer mHeight;
     @SerializedName("description")

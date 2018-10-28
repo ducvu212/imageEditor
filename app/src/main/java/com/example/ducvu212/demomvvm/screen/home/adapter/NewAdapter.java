@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.model.ImageRandom;
+import com.example.ducvu212.demomvvm.data.model.ImageType;
 import com.example.ducvu212.demomvvm.databinding.ItemNewBinding;
 import com.example.ducvu212.demomvvm.screen.home.HandleItemClick;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.NewHolder> {
                     .mUserName(image.getUser().getUsername())
                     .mImageId(image.getId())
                     .mRawImage(image.getUrls().getRaw())
+                    .mType(ImageType.REMOTE)
                     .build());
             mBinding.setListener(new HandleItemClick(context, manager));
             mBinding.executePendingBindings();

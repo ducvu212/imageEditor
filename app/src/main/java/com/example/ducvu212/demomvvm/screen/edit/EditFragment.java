@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import java.util.List;
  */
 public class EditFragment extends Fragment implements OnUpdateUI {
 
+    private FragmentActivity mContext;
     private FragmentEditBinding mBinding;
     private OnEditClickListener mOnEditClickListener;
     private List<ItemColorPicker> mPickerList;
@@ -43,6 +45,7 @@ public class EditFragment extends Fragment implements OnUpdateUI {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = (FragmentActivity) context;
         mOnEditClickListener = (OnEditClickListener) context;
     }
 
@@ -96,7 +99,7 @@ public class EditFragment extends Fragment implements OnUpdateUI {
         ImageDatabase database = ImageDatabase.getInstance(getContext());
         ImageRepository imageRepository =
                 ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance(database.mImageDAO()));
+                        ImageLocalDataSource.getsInstance(database.mImageDAO(), mContext));
         EditViewModel viewModel = new EditViewModel(getContext(), imageRepository, mBinding, this);
         viewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mBinding.setViewModel(viewModel);

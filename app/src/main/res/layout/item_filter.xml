@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.example.ducvu212.demomvvm.data.model.ItemFilter"/>
+
+        <variable
+            name="listener"
+            type="com.example.ducvu212.demomvvm.screen.filtter.HandleClickItemFilter" />
+    </data>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_150"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:onClick="@{() -> listener.updateFilter(item)}">
+
+            <ImageView
+                android:id="@+id/image_filter"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/image_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/text_name_filter"
+                bind:imageBitmap="@{item.getFilter()}"
+                />
+
+            <TextView
+                android:id="@+id/text_name_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="@dimen/dp_8"
+                android:text="@{item.getName()}"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+        </android.support.constraint.ConstraintLayout>
+</layout>

@@ -27,10 +27,10 @@ public class Image implements Parcelable {
     @SerializedName("updated_at")
     @Expose
     private String mUpdatedAt;
-    @SerializedName("mWidth")
+    @SerializedName("width")
     @Expose
     private Integer mWidth;
-    @SerializedName("mHeight")
+    @SerializedName("height")
     @Expose
     private Integer mHeight;
     @SerializedName("urls")
@@ -48,6 +48,13 @@ public class Image implements Parcelable {
     @SerializedName("user")
     @Expose
     private User mUser;
+
+    private String mPath;
+
+    public Image(String path, String createdAt) {
+        mPath = path;
+        mCreatedAt = createdAt;
+    }
 
     private Image(Builder builder) {
         setId(builder.mId);
@@ -73,6 +80,7 @@ public class Image implements Parcelable {
         mLikes = (Integer) in.readValue(Integer.class.getClassLoader());
         mLikedByUser = (Boolean) in.readValue(Boolean.class.getClassLoader());
         mUser = in.readParcelable(User.class.getClassLoader());
+        mPath = in.readString();
     }
 
     public String getId() {
@@ -155,6 +163,14 @@ public class Image implements Parcelable {
         mUser = user;
     }
 
+    public String getPath() {
+        return mPath;
+    }
+
+    public void setPath(String path) {
+        mPath = path;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -172,6 +188,7 @@ public class Image implements Parcelable {
         dest.writeValue(mLikes);
         dest.writeValue(mLikedByUser);
         dest.writeParcelable(mUser, flags);
+        dest.writeString(mPath);
     }
 
     public static final class Builder {

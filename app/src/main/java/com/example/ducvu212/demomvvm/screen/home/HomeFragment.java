@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
         mViewModel = new HomeViewModel(mContext, mBinding.viewPagerImage,
                 mContext.getSupportFragmentManager(),
                 new ImageRepository(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance(database.mImageDAO())));
+                        ImageLocalDataSource.getsInstance(database.mImageDAO(), mContext)));
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mBinding.setViewModel(mViewModel);
         initViews();
@@ -89,6 +89,11 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         mViewModel.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.model.ImageRandom;
+import com.example.ducvu212.demomvvm.data.model.ImageType;
 import com.example.ducvu212.demomvvm.databinding.ItemRandomImageBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class RandomPagerAdapter extends PagerAdapter {
                 .mUserName(image.getUser().getUsername())
                 .mImageId(image.getId())
                 .mRawImage(image.getUrls().getRaw())
+                .mType(ImageType.REMOTE)
                 .build());
         ViewPager viewPager = (ViewPager) container;
         viewPager.addView(view, 0);

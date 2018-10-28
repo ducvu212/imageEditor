@@ -7,6 +7,7 @@ import com.example.ducvu212.demomvvm.data.api.ApiClient;
 import com.example.ducvu212.demomvvm.data.api.ApiInterface;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
+import com.example.ducvu212.demomvvm.data.model.SearchRespond;
 import com.example.ducvu212.demomvvm.data.source.ImageDataSource;
 import com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewListener;
 import io.reactivex.Single;
@@ -61,6 +62,11 @@ public class ImageRemoteDataSource implements ImageDataSource.ImageRemoteDataSou
     @Override
     public Bitmap getBitmapFromUrl(String url) throws ExecutionException, InterruptedException {
         return new ConvertBitmapAsyncTask().execute(url).get();
+    }
+
+    @Override
+    public Single<SearchRespond> searchCollection(int page, String query, String apiKey) {
+        return createApiInterface().searchCollection(page, query, apiKey);
     }
 
     private ApiInterface createApiInterface() {

@@ -18,6 +18,7 @@ import com.example.ducvu212.demomvvm.BuildConfig;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.model.ImageRandom;
+import com.example.ducvu212.demomvvm.data.model.ImageType;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
 import com.example.ducvu212.demomvvm.screen.home.adapter.CollectionAdapter;
@@ -189,6 +190,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
                                 .mRawImage(image.getUrls().getRaw())
                                 .mPath(image.getUrls().getRegular())
                                 .mUserName(image.getUser().getUsername())
+                                .mType(ImageType.REMOTE)
                                 .build();
                         insertImage(imageRandom);
                     }
@@ -243,7 +245,7 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
     //        for (Image image : images) {
     //            ImageRandom imageRandom = new ImageRandom.Builder().mImageId(image.getId())
     //                    .mRawImage(image.getUrls().getRaw())
-    //                    .sPath(image.getUrls().getRegular())
+    //                    .mPath(image.getUrls().getRegular())
     //                    .mUserName(image.getUser().getUsername())
     //                    .build();
     //            getUserById(imageRandom);
@@ -259,12 +261,12 @@ public class HomeViewModel extends BaseViewModel implements LifecycleOwner {
         timer.scheduleAtFixedRate(new RandomTimer(), TIME_DELAY, TIME_PRERIOD);
     }
 
-    private void initImageSize() {
+    public void initImageSize() {
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
         float ratio = (100 * mPager.getMeasuredHeight()) / width;
-        new BindingHome(width, height, (float) (ratio * 0.01));
+        new BindingHome(width, height, (float) (ratio * 0.01), ImageType.REMOTE);
     }
 
     private class RandomTimer extends TimerTask {

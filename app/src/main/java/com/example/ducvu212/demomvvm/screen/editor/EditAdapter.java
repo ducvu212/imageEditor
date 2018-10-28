@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.example.ducvu212.demomvvm.screen.edit.EditFragment;
-import com.example.ducvu212.demomvvm.screen.filtter.FillterFragment;
+import com.example.ducvu212.demomvvm.screen.filtter.FilterFragment;
 
 /**
  * Created by CuD HniM on 18/10/10.
@@ -20,7 +20,7 @@ public class EditAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new FillterFragment();
+                fragment = FilterFragment.newInstance(EditActivity.sBitmap);
                 break;
             case 1:
                 fragment = new EditFragment();

@@ -56,7 +56,7 @@ public class CollectionFragment extends BaseFragment {
         ImageDatabase database = ImageDatabase.getInstance(mContext);
         mViewModel = new CollectionViewModel(mContext,
                 ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance(database.mImageDAO())),
+                        ImageLocalDataSource.getsInstance(database.mImageDAO(), mContext)),
                 mContext.getSupportFragmentManager(), mCollectionId);
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
     }

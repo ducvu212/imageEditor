@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class UrlImage implements Parcelable {
 
-    public static final Parcelable.Creator<UrlImage> CREATOR = new Parcelable.Creator<UrlImage>() {
+    public static final Creator<UrlImage> CREATOR = new Creator<UrlImage>() {
         @Override
         public UrlImage createFromParcel(Parcel source) {
             return new UrlImage(source);

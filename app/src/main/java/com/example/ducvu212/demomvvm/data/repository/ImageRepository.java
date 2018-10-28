@@ -2,13 +2,18 @@ package com.example.ducvu212.demomvvm.data.repository;
 
 import android.app.DownloadManager;
 import android.graphics.Bitmap;
+import com.example.ducvu212.demomvvm.data.model.Album;
 import com.example.ducvu212.demomvvm.data.model.Collection;
 import com.example.ducvu212.demomvvm.data.model.Image;
 import com.example.ducvu212.demomvvm.data.model.ImageRandom;
+import com.example.ducvu212.demomvvm.data.model.ItemFilter;
+import com.example.ducvu212.demomvvm.data.model.RecentSearch;
+import com.example.ducvu212.demomvvm.data.model.SearchRespond;
 import com.example.ducvu212.demomvvm.data.source.local.ImageLocalDataSource;
 import com.example.ducvu212.demomvvm.data.source.remote.ImageRemoteDataSource;
 import com.example.ducvu212.demomvvm.screen.details.ImageDetailsViewListener;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -86,7 +91,43 @@ public class ImageRepository {
         mLocalDataSource.updateDownload(imageRandom);
     }
 
+    public Single<SearchRespond> searchCollection(int page, String query, String apiKey) {
+        return mRemoteDataSource.searchCollection(page, query, apiKey);
+    }
+
+    public Maybe<List<String>> getKeyTrendCollections() {
+        return mLocalDataSource.getTrends();
+    }
+
+    public Maybe<List<RecentSearch>> getRecentSearchs() {
+        return mLocalDataSource.getRecentSearch();
+    }
+
+    public void addRecentSearchToRealm(RecentSearch recentSearch) {
+        mLocalDataSource.putRecentSearchToRealm(recentSearch);
+    }
+
+    public void deleteRecentSearch(RecentSearch recentSearch) {
+        mLocalDataSource.deleteRecentSearch(recentSearch);
+    }
+
+    public Maybe<List<Album>> getCollectionsFromLoacl() {
+        return mLocalDataSource.getCollectionLocals();
+    }
+
+    public Maybe<Album> getAlbumFromLocal(String albumName) {
+        return mLocalDataSource.getAlbumFromLocal(albumName);
+    }
+
+    public Maybe<List<ItemFilter>> getItemFiltersFromLocal (Bitmap path) {
+        return mLocalDataSource.getAllItemFilter(path);
+    }
+
     public Bitmap getBitmap(String url) throws ExecutionException, InterruptedException {
         return mRemoteDataSource.getBitmapFromUrl(url);
+    }
+
+    public Bitmap getBitmapGallary(String path) {
+        return mLocalDataSource.getBitmapGallary(path);
     }
 }

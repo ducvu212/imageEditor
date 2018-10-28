@@ -50,4 +50,8 @@ public class EditorViewModel extends BaseViewModel implements LifecycleOwner {
     public Bitmap convertBitmap(String url) throws ExecutionException, InterruptedException {
         return mRepository.getBitmap(url);
     }
+
+    public Bitmap convertbitmapGallary(String path) {
+        return mRepository.getBitmapGallary(path);
+    }
 }

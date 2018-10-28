@@ -23,6 +23,12 @@
     <string name="save_error">Save Error. Please try again</string>
     <string name="save_success">Save Success</string>
     <string name="save_dialog">Saving Image</string>
-    <string name="crop_error">your device doesn\'t support the crop action!</string>
+
+    <string name="msg_hint_search">Search...</string>
+    <string name="msg_hot_key">Trends</string>
+    <string name="msg_history_search">History Search</string>
+    <string name="msg_delete">Delete</string>
+    <string name="titile_search">Search</string>
+    <string name="crop_error">error</string>
 
 </resources>

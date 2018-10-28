@@ -20,10 +20,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.example.ducvu212.demomvvm.R;
+import com.example.ducvu212.demomvvm.data.model.ImageType;
 import com.example.ducvu212.demomvvm.databinding.ActivityMainBinding;
 import com.example.ducvu212.demomvvm.screen.base.BaseActivity;
+import com.example.ducvu212.demomvvm.screen.home.BindingHome;
 import com.example.ducvu212.demomvvm.screen.home.HomeFragment;
+import com.example.ducvu212.demomvvm.screen.library.LibraryFragment;
+import com.example.ducvu212.demomvvm.screen.search.SearchFragment;
 import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
+import com.example.ducvu212.demomvvm.utils.common.FragmentTransactionUtils;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 import java.io.File;
 
@@ -114,12 +119,6 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (mToggle.isDrawerIndicatorEnabled() && mToggle.onOptionsItemSelected(item)) {
@@ -145,22 +144,34 @@ public class MainActivity extends BaseActivity
 
     public void displaySelectedScreen(int itemId) {
         Fragment fragment = null;
+        String tag = null;
         switch (itemId) {
             case android.R.id.home:
                 break;
 
             case R.id.nav_home:
                 fragment = HomeFragment.newInstance();
+                tag = HomeFragment.TAG;
+                BindingHome.setmType(ImageType.REMOTE);
                 break;
             case R.id.nav_offline:
+                fragment = LibraryFragment.newInstance();
+                tag = LibraryFragment.TAG;
+                BindingHome.setmType(ImageType.LOCAL);
                 break;
             case R.id.nav_search:
+                fragment = SearchFragment.newInstance();
+                tag = SearchFragment.TAG;
+                BindingHome.setmType(ImageType.REMOTE);
                 break;
             case R.id.nav_about_us:
                 break;
+            default:
+                break;
         }
         if (fragment != null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.frame_main, fragment).commit();
+            FragmentTransactionUtils.addFragment(getSupportFragmentManager(), fragment,
+                    R.id.frame_main, tag, false);
         }
         DrawerLayout drawer = mMainBinding.drawerLayout;
         drawer.closeDrawer(GravityCompat.START);

@@ -38,6 +38,8 @@ public class ImageRandom implements Parcelable {
     private int mDownloaded;
     @ColumnInfo(name = "raw")
     private String mRawImage;
+//    @ColumnInfo(name = "type")
+//    private String mType;
 
     public String getPath() {
         return mPath;
@@ -65,6 +67,7 @@ public class ImageRandom implements Parcelable {
         setImageId(builder.mImageId);
         setRawImage(builder.mRawImage);
         setDownloaded(builder.mDownloaded);
+//        setType(builder.mType);
     }
 
     protected ImageRandom(Parcel in) {
@@ -73,6 +76,14 @@ public class ImageRandom implements Parcelable {
         mImageId = in.readString();
         mRawImage = in.readString();
     }
+
+//    public String getType() {
+//        return mType;
+//    }
+//
+//    public void setType(String type) {
+//        mType = type;
+//    }
 
     public int getLikeByUser() {
         return mLikeByUser;
@@ -119,6 +130,7 @@ public class ImageRandom implements Parcelable {
         dest.writeString(mRawImage);
         dest.writeInt(mLikeByUser);
         dest.writeInt(mDownloaded);
+        dest.writeString(mPath);
     }
 
     public static final class Builder {
@@ -128,6 +140,7 @@ public class ImageRandom implements Parcelable {
         private String mImageId;
         private String mRawImage;
         private int mDownloaded;
+        private String mType;
 
         public Builder() {
         }
@@ -159,6 +172,11 @@ public class ImageRandom implements Parcelable {
 
         public Builder mDownloaded(int downloaded) {
             mDownloaded = downloaded;
+            return this;
+        }
+
+        public Builder mType (String type) {
+            mType = type;
             return this;
         }
 

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Links implements Parcelable {
 
-    public static final Parcelable.Creator<Links> CREATOR = new Parcelable.Creator<Links>() {
+    public static final Creator<Links> CREATOR = new Creator<Links>() {
         @Override
         public Links createFromParcel(Parcel source) {
             return new Links(source);

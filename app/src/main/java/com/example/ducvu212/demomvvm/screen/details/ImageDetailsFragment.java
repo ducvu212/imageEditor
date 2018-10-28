@@ -61,7 +61,7 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
         ImageDatabase database = ImageDatabase.getInstance(mContext);
         mViewModel = new ImageDetailsViewModel(mContext,
                 ImageRepository.getsInstance(ImageRemoteDataSource.getsInstance(),
-                        ImageLocalDataSource.getsInstance(database.mImageDAO())), this);
+                        ImageLocalDataSource.getsInstance(database.mImageDAO(), mContext)), this);
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mActionBar = ((AppCompatActivity) mContext).getSupportActionBar();
     }

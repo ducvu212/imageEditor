@@ -1,5 +1,6 @@
 package com.example.ducvu212.demomvvm.screen.editor;
 
+import android.graphics.Bitmap;
 import com.example.ducvu212.demomvvm.data.model.ItemSticker;
 
 /**
@@ -23,6 +24,8 @@ public interface OnEditClickListener {
     void OnClearListener();
 
     void OnDrawCompleteListener();
+
+    void OnFilter(Bitmap bitmap);
 
     void OnCropListener();
 

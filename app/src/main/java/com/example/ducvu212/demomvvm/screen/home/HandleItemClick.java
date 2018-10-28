@@ -23,7 +23,7 @@ public class HandleItemClick {
 
     public void OnItemClickListener(ImageRandom imageRandom) {
         FragmentTransactionUtils.addFragment(mManager,
-                ImageDetailsFragment.newInstance(imageRandom), R.id.relative_main,
+                ImageDetailsFragment.newInstance(imageRandom), R.id.frame_main,
                 ImageDetailsFragment.TAG, true);
     }
 
