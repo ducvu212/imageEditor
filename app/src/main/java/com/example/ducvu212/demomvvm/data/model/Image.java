@@ -191,7 +191,7 @@ public class Image implements Parcelable {
         dest.writeString(mPath);
     }
 
-    public static final class Builder {
+    public static final class Builder implements Parcelable {
         private String mId;
         private String mCreatedAt;
         private String mUpdatedAt;
@@ -259,5 +259,49 @@ public class Image implements Parcelable {
         public Image build() {
             return new Image(this);
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.mId);
+            dest.writeString(this.mCreatedAt);
+            dest.writeString(this.mUpdatedAt);
+            dest.writeValue(this.mWidth);
+            dest.writeValue(this.mHeight);
+            dest.writeParcelable(this.mUrls, flags);
+            dest.writeParcelable(this.mLinks, flags);
+            dest.writeValue(this.mLikes);
+            dest.writeValue(this.mLikedByUser);
+            dest.writeParcelable(this.mUser, flags);
+        }
+
+        protected Builder(Parcel in) {
+            this.mId = in.readString();
+            this.mCreatedAt = in.readString();
+            this.mUpdatedAt = in.readString();
+            this.mWidth = (Integer) in.readValue(Integer.class.getClassLoader());
+            this.mHeight = (Integer) in.readValue(Integer.class.getClassLoader());
+            this.mUrls = in.readParcelable(UrlImage.class.getClassLoader());
+            this.mLinks = in.readParcelable(Links.class.getClassLoader());
+            this.mLikes = (Integer) in.readValue(Integer.class.getClassLoader());
+            this.mLikedByUser = (Boolean) in.readValue(Boolean.class.getClassLoader());
+            this.mUser = in.readParcelable(User.class.getClassLoader());
+        }
+
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel source) {
+                return new Builder(source);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
     }
 }

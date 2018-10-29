@@ -7,17 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Links implements Parcelable {
 
-    public static final Creator<Links> CREATOR = new Creator<Links>() {
-        @Override
-        public Links createFromParcel(Parcel source) {
-            return new Links(source);
-        }
-
-        @Override
-        public Links[] newArray(int size) {
-            return new Links[size];
-        }
-    };
     @SerializedName("self")
     @Expose
     private String mSelf;
@@ -32,12 +21,6 @@ public class Links implements Parcelable {
         setSelf(builder.mSelf);
         setHtml(builder.mHtml);
         setDownload(builder.mDownload);
-    }
-
-    private Links(Parcel in) {
-        mSelf = in.readString();
-        mHtml = in.readString();
-        mDownload = in.readString();
     }
 
     public String getSelf() {
@@ -62,18 +45,6 @@ public class Links implements Parcelable {
 
     public void setDownload(String download) {
         mDownload = download;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mSelf);
-        dest.writeString(mHtml);
-        dest.writeString(mDownload);
     }
 
     public static final class Builder {
@@ -103,4 +74,34 @@ public class Links implements Parcelable {
             return new Links(this);
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mSelf);
+        dest.writeString(this.mHtml);
+        dest.writeString(this.mDownload);
+    }
+
+    protected Links(Parcel in) {
+        this.mSelf = in.readString();
+        this.mHtml = in.readString();
+        this.mDownload = in.readString();
+    }
+
+    public static final Creator<Links> CREATOR = new Creator<Links>() {
+        @Override
+        public Links createFromParcel(Parcel source) {
+            return new Links(source);
+        }
+
+        @Override
+        public Links[] newArray(int size) {
+            return new Links[size];
+        }
+    };
 }

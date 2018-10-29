@@ -125,7 +125,7 @@ public class ImageLocalDataSource implements ImageDataSource.ImageLocalDataSourc
     @Override
     public Maybe<List<ItemFilter>> getAllItemFilter(Bitmap pathImage) {
         return Maybe.create(new MaybeOnSubscribe<List<ItemFilter>>() {
-            List<ItemFilter> filters = GetItemFilter.getAllItemFilter(mContext, pathImage);
+            List<ItemFilter> filters = GetItemFilter.getAllItemFilter(mContext);
 
             @Override
             public void subscribe(MaybeEmitter<List<ItemFilter>> emitter) throws Exception {

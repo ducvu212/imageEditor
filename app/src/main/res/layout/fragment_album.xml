@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
+            android:background="@android:color/white"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
             app:spanCount="3"
             app:layout_constraintEnd_toEndOf="parent"

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ImageRandom;
+import com.example.ducvu212.demomvvm.data.model.ImageType;
 import com.example.ducvu212.demomvvm.data.model.ItemSticker;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.data.source.local.ImageDatabase;
@@ -106,27 +107,27 @@ public class EditActivity extends AppCompatActivity
         }
         sPath = mImageRandom.getPath();
         sName = mImageRandom.getImageId();
-        //        if (mImageRandom.getType().equals(ImageType.LOCAL)) {
-        //            sBitmap = mEditorViewModel.convertbitmapGallary(mPath);
-        //            Picasso.get()
-        //                    .load(new File(mPath))
-        //                    .placeholder(R.drawable.placeholder)
-        //                    .into(mBinding.imageViewContentEdit);
-        //        } else {
-        try {
-            sBitmap = mEditorViewModel.convertBitmap(sPath);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            DisplayUtils.makeToast(this, e.toString());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            DisplayUtils.makeToast(this, e.toString());
+        if (mImageRandom.getType().equals(ImageType.LOCAL)) {
+            sBitmap = mEditorViewModel.convertbitmapGallary(sPath);
+            Picasso.get()
+                    .load(new File(sPath))
+                    .placeholder(R.drawable.placeholder)
+                    .into(mBinding.imageViewContentEdit);
+        } else {
+            try {
+                sBitmap = mEditorViewModel.convertBitmap(sPath);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+                DisplayUtils.makeToast(this, e.toString());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                DisplayUtils.makeToast(this, e.toString());
+            }
+            Picasso.get()
+                    .load(sPath)
+                    .placeholder(R.drawable.placeholder)
+                    .into(mBinding.imageViewContentEdit);
         }
-        Picasso.get()
-                .load(sPath)
-                .placeholder(R.drawable.placeholder)
-                .into(mBinding.imageViewContentEdit);
-        //        }
     }
 
     private void setupTabAdapter() {
@@ -211,7 +212,11 @@ public class EditActivity extends AppCompatActivity
     @Override
     public void OnCropListener() {
         hideButtonCrop(View.VISIBLE);
-        performCrop(StringUtils.buildPath(sName));
+        if (mImageRandom.getType().equals(ImageType.REMOTE)) {
+            performCrop(StringUtils.buildPath(sName));
+        } else {
+            performCrop(mImageRandom.getPath());
+        }
     }
 
     @Override
@@ -261,6 +266,11 @@ public class EditActivity extends AppCompatActivity
         loadImage();
     }
 
+    @Override
+    public void OnDoneFilterListener() {
+        saveFilterToInternalStorage();
+    }
+
     private void deleteSticker() {
         for (StickerImageView i : mStickerImageViewList) {
             i.deleteSticker();
@@ -305,6 +315,12 @@ public class EditActivity extends AppCompatActivity
         Bitmap bitmap = draw.getBitmap();
         Bitmap newBitmap = changeBitmapContrastBrightness(bitmap, type);
         saveImage(newBitmap, false);
+    }
+
+    private void saveFilterToInternalStorage() {
+        BitmapDrawable draw = (BitmapDrawable) mBinding.imageViewContentEdit.getDrawable();
+        Bitmap bitmap = draw.getBitmap();
+        saveImage(bitmap, false);
     }
 
     private void saveImage(Bitmap newBitmap, boolean isCrop) {

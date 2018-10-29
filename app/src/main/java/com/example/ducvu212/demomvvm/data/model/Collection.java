@@ -146,7 +146,7 @@ public class Collection implements Parcelable {
         dest.writeParcelable(mCoverPhoto, flags);
     }
 
-    public static final class Builder {
+    public static final class Builder implements Parcelable {
         private Integer mId;
         private String mTitle;
         private String mDescription;
@@ -202,5 +202,45 @@ public class Collection implements Parcelable {
         public Collection build() {
             return new Collection(this);
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeValue(this.mId);
+            dest.writeString(this.mTitle);
+            dest.writeString(this.mDescription);
+            dest.writeString(this.mPublishedAt);
+            dest.writeString(this.mUpdatedAt);
+            dest.writeValue(this.mFeatured);
+            dest.writeValue(this.mTotalPhotos);
+            dest.writeParcelable(this.mCoverPhoto, flags);
+        }
+
+        protected Builder(Parcel in) {
+            this.mId = (Integer) in.readValue(Integer.class.getClassLoader());
+            this.mTitle = in.readString();
+            this.mDescription = in.readString();
+            this.mPublishedAt = in.readString();
+            this.mUpdatedAt = in.readString();
+            this.mFeatured = (Boolean) in.readValue(Boolean.class.getClassLoader());
+            this.mTotalPhotos = (Integer) in.readValue(Integer.class.getClassLoader());
+            this.mCoverPhoto = in.readParcelable(CoverPhoto.class.getClassLoader());
+        }
+
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel source) {
+                return new Builder(source);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
     }
 }

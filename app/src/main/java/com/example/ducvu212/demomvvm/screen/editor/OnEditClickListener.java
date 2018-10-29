@@ -38,4 +38,6 @@ public interface OnEditClickListener {
     void OnDoneCropListener();
 
     void OnClearCropListener();
+
+    void OnDoneFilterListener();
 }

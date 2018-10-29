@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import com.example.ducvu212.demomvvm.data.model.ItemFilter;
+import com.example.ducvu212.demomvvm.screen.editor.EditActivity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class GetItemFilter {
 
-    public static List<ItemFilter> getAllItemFilter(Context context, Bitmap path) {
+    public static List<ItemFilter> getAllItemFilter(Context context) {
         List<ItemFilter> filters = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             String name;
@@ -28,10 +29,10 @@ public class GetItemFilter {
                 name = "Filter " + i;
             }
             String pathGradient = "gradientfilter/gradient" + i + ".png";
-            ItemFilter itemFilter = new ItemFilter(path, name, pathGradient);
+            ItemFilter itemFilter = new ItemFilter(EditActivity.sBitmap, name, pathGradient);
             filters.add(itemFilter);
         }
-        return getBitmapFilter(context, filters, 100, path);
+        return getBitmapFilter(context, filters, 100, EditActivity.sBitmap);
     }
 
     public static Bitmap getBitmapFromGallary(String path) {

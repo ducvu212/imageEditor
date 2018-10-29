@@ -7,17 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class UrlImage implements Parcelable {
 
-    public static final Creator<UrlImage> CREATOR = new Creator<UrlImage>() {
-        @Override
-        public UrlImage createFromParcel(Parcel source) {
-            return new UrlImage(source);
-        }
-
-        @Override
-        public UrlImage[] newArray(int size) {
-            return new UrlImage[size];
-        }
-    };
     @SerializedName("raw")
     @Expose
     private String mRaw;
@@ -40,14 +29,6 @@ public class UrlImage implements Parcelable {
         setRegular(builder.mRegular);
         setSmall(builder.mSmall);
         setThumb(builder.mThumb);
-    }
-
-    protected UrlImage(Parcel in) {
-        mRaw = in.readString();
-        mFull = in.readString();
-        mRegular = in.readString();
-        mSmall = in.readString();
-        mThumb = in.readString();
     }
 
     public String getRaw() {
@@ -90,20 +71,6 @@ public class UrlImage implements Parcelable {
         mThumb = thumb;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mRaw);
-        dest.writeString(mFull);
-        dest.writeString(mRegular);
-        dest.writeString(mSmall);
-        dest.writeString(mThumb);
-    }
-
     public static final class Builder {
         private String mRaw;
         private String mFull;
@@ -143,4 +110,38 @@ public class UrlImage implements Parcelable {
             return new UrlImage(this);
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mRaw);
+        dest.writeString(this.mFull);
+        dest.writeString(this.mRegular);
+        dest.writeString(this.mSmall);
+        dest.writeString(this.mThumb);
+    }
+
+    protected UrlImage(Parcel in) {
+        this.mRaw = in.readString();
+        this.mFull = in.readString();
+        this.mRegular = in.readString();
+        this.mSmall = in.readString();
+        this.mThumb = in.readString();
+    }
+
+    public static final Creator<UrlImage> CREATOR = new Creator<UrlImage>() {
+        @Override
+        public UrlImage createFromParcel(Parcel source) {
+            return new UrlImage(source);
+        }
+
+        @Override
+        public UrlImage[] newArray(int size) {
+            return new UrlImage[size];
+        }
+    };
 }

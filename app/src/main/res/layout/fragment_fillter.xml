@@ -9,6 +9,10 @@
             type="com.example.ducvu212.demomvvm.screen.filtter.FilterViewModel"
             />
 
+        <variable
+            name="listener"
+            type="com.example.ducvu212.demomvvm.screen.filtter.HandleClickItemFilter" />
+
     </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,46 +23,13 @@
             android:id="@+id/image_done_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/seekBar_filter"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/seekBar_filter"
-            app:layout_constraintTop_toTopOf="@+id/seekBar_filter"
-            app:srcCompat="@drawable/ic_done"
-            />
-        <SeekBar
-            android:id="@+id/seekBar_filter"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
-        <ImageView
-            android:id="@+id/image_close_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/seekBar_filter"
-            app:layout_constraintEnd_toStartOf="@+id/seekBar_filter"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/seekBar_filter"
-            app:srcCompat="@drawable/ic_close_black_24dp"
-            />
-
-        <android.support.constraint.Group
-            android:id="@+id/group_seekbar_filter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:constraint_referenced_ids="image_done_filter,seekBar_filter,image_close_filter"
+            app:srcCompat="@drawable/ic_done"
+            android:onClick="@{() -> listener.saveFilter()}"
             />
 
         <android.support.v7.widget.RecyclerView
@@ -66,11 +37,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/dp_4"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seekBar_filter"
+            app:layout_constraintTop_toBottomOf="@+id/image_done_filter"
             recyclerAdapter="@{viewModel.getFilterObservableField()}"
             />
     </android.support.constraint.ConstraintLayout>

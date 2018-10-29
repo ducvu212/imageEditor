@@ -15,11 +15,9 @@ import java.util.List;
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
     private List<ItemFilter> mFilters;
     private OnUpdateUIFilter mOnUpdateUIFilter;
-    private SeekBar mSeekBar;
 
-    public FilterAdapter(OnUpdateUIFilter onUpdateUIFilter, SeekBar seekBar) {
+    public FilterAdapter(OnUpdateUIFilter onUpdateUIFilter) {
         mOnUpdateUIFilter = onUpdateUIFilter;
-        mSeekBar = seekBar;
         mFilters = new ArrayList<>();
     }
 
@@ -38,7 +36,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
 
     @Override
     public void onBindViewHolder(@NonNull FilterViewHolder holder, int position) {
-        holder.binding(mFilters.get(position), mOnUpdateUIFilter, mSeekBar);
+        holder.binding(mFilters.get(position), mOnUpdateUIFilter);
     }
 
     @Override
@@ -54,10 +52,9 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             mBinding = binding;
         }
 
-        public void binding(ItemFilter itemFilter, OnUpdateUIFilter onUpdateUIFilter,
-                SeekBar seekBar) {
+        public void binding(ItemFilter itemFilter, OnUpdateUIFilter onUpdateUIFilter) {
             mBinding.setItem(itemFilter);
-            mBinding.setListener(new HandleClickItemFilter(onUpdateUIFilter, seekBar));
+            mBinding.setListener(new HandleClickItemFilter(onUpdateUIFilter));
             mBinding.executePendingBindings();
         }
     }

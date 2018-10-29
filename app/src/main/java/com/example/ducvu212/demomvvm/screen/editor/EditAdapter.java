@@ -20,7 +20,7 @@ public class EditAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = FilterFragment.newInstance(EditActivity.sBitmap);
+                fragment = FilterFragment.newInstance();
                 break;
             case 1:
                 fragment = new EditFragment();

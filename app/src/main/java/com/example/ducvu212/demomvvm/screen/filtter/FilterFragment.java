@@ -36,11 +36,8 @@ public class FilterFragment extends BaseFragment implements OnUpdateUIFilter {
     private Bitmap mPath;
     private OnEditClickListener mOnEditClickListener;
 
-    public static FilterFragment newInstance(Bitmap bitmap) {
+    public static FilterFragment newInstance() {
         FilterFragment fragment = new FilterFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ARGUMENT_FILTER, bitmap);
-        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -65,10 +62,10 @@ public class FilterFragment extends BaseFragment implements OnUpdateUIFilter {
         }
         ImageDatabase database = ImageDatabase.getInstance(mContext);
         mViewModel = new FilterViewModel(new ImageRepository(ImageRemoteDataSource.getsInstance(),
-                ImageLocalDataSource.getsInstance(database.mImageDAO(), mContext)), mPath, this,
-                mBinding.seekBarFilter);
+                ImageLocalDataSource.getsInstance(database.mImageDAO(), mContext)), mPath, this);
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mBinding.setViewModel(mViewModel);
+        mBinding.setListener(new HandleClickItemFilter(this));
     }
 
     @Override
@@ -90,5 +87,10 @@ public class FilterFragment extends BaseFragment implements OnUpdateUIFilter {
     @Override
     public void OnUpdateBitmapBilter(Bitmap bitmap, int count) {
         mOnEditClickListener.OnFilter(bitmap);
+    }
+
+    @Override
+    public void OnSaveFilter() {
+        mOnEditClickListener.OnDoneFilterListener();
     }
 }

@@ -13,17 +13,6 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "images")
 public class ImageRandom implements Parcelable {
 
-    public static final Creator<ImageRandom> CREATOR = new Creator<ImageRandom>() {
-        @Override
-        public ImageRandom createFromParcel(Parcel in) {
-            return new ImageRandom(in);
-        }
-
-        @Override
-        public ImageRandom[] newArray(int size) {
-            return new ImageRandom[size];
-        }
-    };
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "image_id")
@@ -38,8 +27,8 @@ public class ImageRandom implements Parcelable {
     private int mDownloaded;
     @ColumnInfo(name = "raw")
     private String mRawImage;
-//    @ColumnInfo(name = "type")
-//    private String mType;
+    @ColumnInfo(name = "type")
+    private String mType;
 
     public String getPath() {
         return mPath;
@@ -67,23 +56,16 @@ public class ImageRandom implements Parcelable {
         setImageId(builder.mImageId);
         setRawImage(builder.mRawImage);
         setDownloaded(builder.mDownloaded);
-//        setType(builder.mType);
+        setType(builder.mType);
     }
 
-    protected ImageRandom(Parcel in) {
-        mPath = in.readString();
-        mUserName = in.readString();
-        mImageId = in.readString();
-        mRawImage = in.readString();
+    public String getType() {
+        return mType;
     }
 
-//    public String getType() {
-//        return mType;
-//    }
-//
-//    public void setType(String type) {
-//        mType = type;
-//    }
+    public void setType(String type) {
+        mType = type;
+    }
 
     public int getLikeByUser() {
         return mLikeByUser;
@@ -115,22 +97,6 @@ public class ImageRandom implements Parcelable {
 
     public void setRawImage(String rawImage) {
         mRawImage = rawImage;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mPath);
-        dest.writeString(mUserName);
-        dest.writeString(mImageId);
-        dest.writeString(mRawImage);
-        dest.writeInt(mLikeByUser);
-        dest.writeInt(mDownloaded);
-        dest.writeString(mPath);
     }
 
     public static final class Builder {
@@ -175,7 +141,7 @@ public class ImageRandom implements Parcelable {
             return this;
         }
 
-        public Builder mType (String type) {
+        public Builder mType(String type) {
             mType = type;
             return this;
         }
@@ -184,4 +150,42 @@ public class ImageRandom implements Parcelable {
             return new ImageRandom(this);
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mImageId);
+        dest.writeString(this.mPath);
+        dest.writeString(this.mUserName);
+        dest.writeInt(this.mLikeByUser);
+        dest.writeInt(this.mDownloaded);
+        dest.writeString(this.mRawImage);
+        dest.writeString(this.mType);
+    }
+
+    protected ImageRandom(Parcel in) {
+        this.mImageId = in.readString();
+        this.mPath = in.readString();
+        this.mUserName = in.readString();
+        this.mLikeByUser = in.readInt();
+        this.mDownloaded = in.readInt();
+        this.mRawImage = in.readString();
+        this.mType = in.readString();
+    }
+
+    public static final Creator<ImageRandom> CREATOR = new Creator<ImageRandom>() {
+        @Override
+        public ImageRandom createFromParcel(Parcel source) {
+            return new ImageRandom(source);
+        }
+
+        @Override
+        public ImageRandom[] newArray(int size) {
+            return new ImageRandom[size];
+        }
+    };
 }

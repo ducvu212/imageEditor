@@ -28,13 +28,13 @@ public class FilterViewModel extends BaseViewModel implements LifecycleOwner{
     private ObservableField<FilterAdapter> mFilterObservableField = new ObservableField<>();
 
     public FilterViewModel(ImageRepository repository, Bitmap path,
-            OnUpdateUIFilter onUpdateUIFilter, SeekBar seekBar) {
+            OnUpdateUIFilter onUpdateUIFilter) {
         mRepository = repository;
         mPath = path;
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
         mFilerData = new MutableLiveData();
-        mFilterAdapter =  new FilterAdapter(onUpdateUIFilter, seekBar);
+        mFilterAdapter =  new FilterAdapter(onUpdateUIFilter);
     }
 
     @Override
