@@ -13,8 +13,8 @@ import static com.example.ducvu212.demomvvm.data.source.local.ImageDatabase.DATA
  */
 @Database(entities = { ImageRandom.class }, version = DATABASE_VERSION)
 public abstract class ImageDatabase extends RoomDatabase {
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "images-db";
+    static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "images-db";
 
     private static ImageDatabase sImageDatabase;
 

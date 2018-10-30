@@ -35,8 +35,6 @@ import com.example.ducvu212.demomvvm.screen.editor.sticker.StickerImageView;
 import com.example.ducvu212.demomvvm.utils.common.DisplayUtils;
 import com.example.ducvu212.demomvvm.utils.common.StringUtils;
 import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import java.io.File;
@@ -47,6 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.example.ducvu212.demomvvm.screen.edit.ColorFilterGenerator.mBrightnessCM;
 import static com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick.TITTLE_BRIGHTNESS;
 
@@ -66,9 +66,10 @@ public class EditActivity extends AppCompatActivity
     private ProgressDialog mProgressDialog;
     private EditorViewModel mEditorViewModel;
     private int mImageWidth, mImageHeight;
-    private Matrix matrix = new Matrix();//Các lớp Matrix giữ một ma trận 3x3 để di chuyển tọa độ.
+    private Matrix matrix = new Matrix();
     private List<StickerImageView> mStickerImageViewList;
     private Bitmap mCropppedBitmap;
+    private boolean mIsCrop;
 
     public static Intent getProfileIntent(Context context, ImageRandom imageRandom) {
         Intent intent = new Intent(context, EditActivity.class);
@@ -123,10 +124,7 @@ public class EditActivity extends AppCompatActivity
                 e.printStackTrace();
                 DisplayUtils.makeToast(this, e.toString());
             }
-            Picasso.get()
-                    .load(sPath)
-                    .placeholder(R.drawable.placeholder)
-                    .into(mBinding.imageViewContentEdit);
+            loadImage();
         }
     }
 
@@ -144,6 +142,8 @@ public class EditActivity extends AppCompatActivity
     public void OnUpdateContrast(int progress) {
         mBinding.imageViewContentEdit.setColorFilter(ColorFilterGenerator.adjustContrast(progress));
         mProgress = progress;
+        hideButtonCrop(GONE);
+        mIsCrop = false;
     }
 
     @Override
@@ -151,66 +151,56 @@ public class EditActivity extends AppCompatActivity
         mBinding.imageViewContentEdit.setColorFilter(
                 ColorFilterGenerator.adjustBrightness(progress));
         mProgress = progress;
+        hideButtonCrop(GONE);
+        mIsCrop = false;
     }
 
     private void loadImage() {
-        Picasso.get()
-                .load(sPath)
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .placeholder(R.drawable.placeholder)
-                .into(mBinding.imageViewContentEdit, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        createCreator(sPath).into(mBinding.imageViewContentEdit);
-                    }
-                });
+       mBinding.imageViewContentEdit.setImageBitmap(sBitmap);
     }
 
     @Override
-    public void OnDrawClickListener() {
+    public void OnDraw() {
         mBinding.imageViewContentEdit.setZoomEnable(false);
         mBinding.drawView.setDrawingEnabled(true);
-        hideButtonCrop(View.GONE);
+        hideButtonCrop(GONE);
+        mIsCrop = false;
     }
 
     @Override
-    public void OnChangeColorClickListener(int color) {
+    public void OnChangeColor(int color) {
         mBinding.drawView.setPaintColor(color);
     }
 
     @Override
-    public void OnDoneClickListener(String type, String name) {
+    public void OnDone(String type, String name) {
         mProgressDialog.setMessage(getString(R.string.save_dialog));
         saveToInternalStorage(type);
     }
 
     @Override
-    public void OnUndoListener() {
+    public void OnUndo() {
         mBinding.drawView.onClickUndo();
     }
 
     @Override
-    public void OnRedoListener() {
+    public void OnRedo() {
         mBinding.drawView.onClickRedo();
     }
 
     @Override
-    public void OnClearListener() {
+    public void OnClear() {
         mBinding.drawView.clearCanvas();
     }
 
     @Override
-    public void OnDrawCompleteListener() {
+    public void OnDrawComplete() {
         saveImage(getBitmapView(), false);
     }
 
     @Override
-    public void OnCropListener() {
+    public void OnCrop() {
+        mIsCrop = true;
         hideButtonCrop(View.VISIBLE);
         if (mImageRandom.getType().equals(ImageType.REMOTE)) {
             performCrop(StringUtils.buildPath(sName));
@@ -220,12 +210,14 @@ public class EditActivity extends AppCompatActivity
     }
 
     @Override
-    public void OnStickerItemClickListener(ItemSticker itemSticker) {
+    public void OnSticker(ItemSticker itemSticker) {
+        hideButtonCrop(GONE);
         StickerImageView imageView = new StickerImageView(this);
         imageView.setImageDrawable(getResources().getDrawable(itemSticker.getDrawable()));
         setHidden(false);
         mBinding.constraintEdit.addView(imageView);
         mStickerImageViewList.add(imageView);
+        mIsCrop = false;
     }
 
     private void setHidden(boolean isHidden) {
@@ -236,24 +228,30 @@ public class EditActivity extends AppCompatActivity
 
     @Override
     public void OnFilter(Bitmap bitmap) {
+        mIsCrop = false;
+        hideButtonCrop(VISIBLE);
         mBinding.imageViewContentEdit.setImageBitmap(bitmap);
     }
 
     @Override
-    public void OnStickerDoneClickListener() {
+    public void OnStickerDone() {
         saveImage(getBitmapView(), false);
     }
 
     @Override
-    public void OnStickerClearClickListener() {
+    public void OnStickerClear() {
         deleteSticker();
-        hideButtonCrop(View.GONE);
+        hideButtonCrop(GONE);
     }
 
     @Override
-    public void OnDoneCropListener() {
-        saveImage(mCropppedBitmap, true);
-        hideButtonCrop(View.GONE);
+    public void OnDoneCrop(boolean isCrop) {
+        if (mIsCrop) {
+            saveImage(mCropppedBitmap, true);
+            hideButtonCrop(GONE);
+        } else {
+            saveFilterToInternalStorage();
+        }
     }
 
     private void hideButtonCrop(int visible) {
@@ -262,12 +260,12 @@ public class EditActivity extends AppCompatActivity
     }
 
     @Override
-    public void OnClearCropListener() {
+    public void OnClearCrop() {
         loadImage();
     }
 
     @Override
-    public void OnDoneFilterListener() {
+    public void OnDoneFilter() {
         saveFilterToInternalStorage();
     }
 
@@ -327,7 +325,7 @@ public class EditActivity extends AppCompatActivity
         mProgressDialog.setMessage(getString(R.string.save_dialog));
         File newFile;
         if (isCrop) {
-            newFile = new File(StringUtils.buildPathCropped(sName));
+            newFile = new File(StringUtils.buildPath(sName));
         } else {
             newFile = new File(StringUtils.buildPath(sName));
         }
@@ -345,6 +343,8 @@ public class EditActivity extends AppCompatActivity
         }
         if (mException == null) {
             DisplayUtils.makeToast(this, getString(R.string.save_success));
+            sBitmap = newBitmap;
+            mBinding.imageViewContentEdit.setImageBitmap(sBitmap);
         }
     }
 
@@ -372,15 +372,15 @@ public class EditActivity extends AppCompatActivity
         float scaleFactor = 0.5f;
         float scaleImageCenterX = (mImageWidth * scaleFactor) / 2;
         float scaleImageCenterY = (mImageHeight * scaleFactor) / 2;
-        matrix.reset();//Thiết lập ma trận để tính
-        matrix.postScale(scaleFactor, scaleFactor);//Bài concats ma trận với quy mô quy định.
+        matrix.reset();
+        matrix.postScale(scaleFactor, scaleFactor);
         float rotationDegree = 0.f;
         matrix.postRotate(rotationDegree, scaleImageCenterX,
-                scaleImageCenterY);//Postconcats ma trận với vòng xoay cảng quy định.
+                scaleImageCenterY);
         float focusX = 0.f;
         float focusY = 0.f;
         matrix.postTranslate(focusX - scaleImageCenterX,
-                focusY - scaleImageCenterY);//Postconcats ma trận với các dịch quy định.
+                focusY - scaleImageCenterY);
         ImageView view = (ImageView) v;
         view.setImageMatrix(matrix);
         return true;

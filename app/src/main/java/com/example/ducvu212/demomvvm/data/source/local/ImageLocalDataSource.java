@@ -77,12 +77,9 @@ public class ImageLocalDataSource implements ImageDataSource.ImageLocalDataSourc
     @Override
     public Maybe<List<RecentSearch>> getRecentSearch() {
         List<RecentSearch> recentSearches = RealmRecentSearch.getRecentSearchList();
-        return Maybe.create(new MaybeOnSubscribe<List<RecentSearch>>() {
-            @Override
-            public void subscribe(MaybeEmitter<List<RecentSearch>> emitter) throws Exception {
-                emitter.onSuccess(recentSearches);
-                emitter.onComplete();
-            }
+        return Maybe.create(emitter -> {
+            emitter.onSuccess(recentSearches);
+            emitter.onComplete();
         });
     }
 
@@ -102,7 +99,7 @@ public class ImageLocalDataSource implements ImageDataSource.ImageLocalDataSourc
             List<Album> albums = new GetCollectionsFromLocal(mContext).getAllCollectionLocal();
 
             @Override
-            public void subscribe(MaybeEmitter<List<Album>> emitter) throws Exception {
+            public void subscribe(MaybeEmitter<List<Album>> emitter) {
                 emitter.onSuccess(albums);
                 emitter.onComplete();
             }
@@ -115,7 +112,7 @@ public class ImageLocalDataSource implements ImageDataSource.ImageLocalDataSourc
             Album album = new GetCollectionsFromLocal(mContext).getAlbumFromLocal(albumName);
 
             @Override
-            public void subscribe(MaybeEmitter<Album> emitter) throws Exception {
+            public void subscribe(MaybeEmitter<Album> emitter) {
                 emitter.onSuccess(album);
                 emitter.onComplete();
             }
@@ -128,7 +125,7 @@ public class ImageLocalDataSource implements ImageDataSource.ImageLocalDataSourc
             List<ItemFilter> filters = GetItemFilter.getAllItemFilter(mContext);
 
             @Override
-            public void subscribe(MaybeEmitter<List<ItemFilter>> emitter) throws Exception {
+            public void subscribe(MaybeEmitter<List<ItemFilter>> emitter) {
                 emitter.onSuccess(filters);
                 emitter.onComplete();
             }

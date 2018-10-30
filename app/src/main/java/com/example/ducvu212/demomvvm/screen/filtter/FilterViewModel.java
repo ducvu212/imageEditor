@@ -8,7 +8,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.databinding.ObservableField;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.widget.SeekBar;
 import com.example.ducvu212.demomvvm.data.model.ItemFilter;
 import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
@@ -27,8 +26,7 @@ public class FilterViewModel extends BaseViewModel implements LifecycleOwner{
     private Bitmap mPath;
     private ObservableField<FilterAdapter> mFilterObservableField = new ObservableField<>();
 
-    public FilterViewModel(ImageRepository repository, Bitmap path,
-            OnUpdateUIFilter onUpdateUIFilter) {
+    FilterViewModel(ImageRepository repository, Bitmap path, OnUpdateUIFilter onUpdateUIFilter) {
         mRepository = repository;
         mPath = path;
         mLifecycleRegistry = new LifecycleRegistry(this);
@@ -76,7 +74,7 @@ public class FilterViewModel extends BaseViewModel implements LifecycleOwner{
         return mFilerData;
     }
 
-    public void subcribeData(Bitmap path) {
+    private void subcribeData(Bitmap path) {
         getFilterFromLocal(mFilterAdapter, path).observe(this, itemFilters -> {
             mFilterAdapter.setFilters(itemFilters);
             mFilterAdapter.notifyDataSetChanged();

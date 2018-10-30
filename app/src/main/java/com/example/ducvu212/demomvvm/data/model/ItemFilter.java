@@ -1,10 +1,8 @@
 package com.example.ducvu212.demomvvm.data.model;
 
 import android.graphics.Bitmap;
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class ItemFilter implements Parcelable {
+public class ItemFilter {
     private Bitmap mPath;
     private String mName;
     private String mPathGradient;
@@ -56,39 +54,4 @@ public class ItemFilter implements Parcelable {
     public void setPathGradient(String pathGradient) {
         mPathGradient = pathGradient;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.mPath, flags);
-        dest.writeString(this.mName);
-        dest.writeString(this.mPathGradient);
-        dest.writeParcelable(this.mFilter, flags);
-        dest.writeInt(this.mCountClick);
-    }
-
-    protected ItemFilter(Parcel in) {
-        this.mPath = in.readParcelable(Bitmap.class.getClassLoader());
-        this.mName = in.readString();
-        this.mPathGradient = in.readString();
-        this.mFilter = in.readParcelable(Bitmap.class.getClassLoader());
-        this.mCountClick = in.readInt();
-    }
-
-    public static final Parcelable.Creator<ItemFilter> CREATOR =
-            new Parcelable.Creator<ItemFilter>() {
-                @Override
-                public ItemFilter createFromParcel(Parcel source) {
-                    return new ItemFilter(source);
-                }
-
-                @Override
-                public ItemFilter[] newArray(int size) {
-                    return new ItemFilter[size];
-                }
-            };
 }

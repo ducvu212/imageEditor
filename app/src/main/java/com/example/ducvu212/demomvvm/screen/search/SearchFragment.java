@@ -63,8 +63,7 @@ public class SearchFragment extends BaseFragment implements SearchView.OnQueryTe
 
     private void initBinding() {
         ImageDatabase database = ImageDatabase.getInstance(mContext);
-        mViewModel = new SearchViewModel((mContext),
-                new ImageRepository(ImageRemoteDataSource.getsInstance(),
+        mViewModel = new SearchViewModel(new ImageRepository(ImageRemoteDataSource.getsInstance(),
                         ImageLocalDataSource.getsInstance(database.mImageDAO(), mContext)),
                 mContext.getSupportFragmentManager());
         mViewModel.setSchedulerProvider(SchedulerProvider.getInstance());

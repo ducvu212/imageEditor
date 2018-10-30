@@ -19,8 +19,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class ImageRemoteDataSource implements ImageDataSource.ImageRemoteDataSource {
 
-    private static ImageRemoteDataSource sInstance;
     private static final int NUMBER_RANDOM = 10;
+    private static ImageRemoteDataSource sInstance;
 
     public static synchronized ImageRemoteDataSource getsInstance() {
         if (sInstance == null) {

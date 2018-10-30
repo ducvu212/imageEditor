@@ -50,7 +50,7 @@ public class CollectionSearchAdapter
     static class CollectionHolder extends RecyclerView.ViewHolder {
         private ItemCollectionSearchBinding mBinding;
 
-        public CollectionHolder(@NonNull ItemCollectionSearchBinding binding) {
+        CollectionHolder(@NonNull ItemCollectionSearchBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }

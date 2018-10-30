@@ -19,9 +19,9 @@ import java.util.List;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder> {
     private Context mContext;
     private FragmentManager mManager;
-    public List<Image> mImages;
+    private List<Image> mImages;
 
-    public AlbumAdapter(Context context, FragmentManager manager) {
+    AlbumAdapter(Context context, FragmentManager manager) {
         mContext = context;
         mManager = manager;
         mImages = new ArrayList<>();
@@ -53,7 +53,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumHolder>
 
     static class AlbumHolder extends RecyclerView.ViewHolder {
         private ItemAlbumBinding mBinding;
-        public AlbumHolder(@NonNull ItemAlbumBinding binding) {
+        AlbumHolder(@NonNull ItemAlbumBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }

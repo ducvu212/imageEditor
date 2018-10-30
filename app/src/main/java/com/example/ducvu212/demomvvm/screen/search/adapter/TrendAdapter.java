@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.TrendViewHolder> {
+
     private List<String> mTrends;
 
     public TrendAdapter () {
@@ -44,7 +45,7 @@ public class TrendAdapter extends RecyclerView.Adapter<TrendAdapter.TrendViewHol
     static class TrendViewHolder extends RecyclerView.ViewHolder {
         private ItemTrendSearchBinding mBinding;
 
-        public TrendViewHolder(@NonNull ItemTrendSearchBinding binding) {
+        TrendViewHolder(@NonNull ItemTrendSearchBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }

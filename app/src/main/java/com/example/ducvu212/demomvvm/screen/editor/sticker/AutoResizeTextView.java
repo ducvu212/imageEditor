@@ -16,21 +16,13 @@ import android.widget.TextView;
 public class AutoResizeTextView extends TextView {
     private static final int NO_LINE_LIMIT = -1;
     private RectF mTextRect = new RectF();
-
     private RectF mAvailableSpaceRect;
-
     private SparseIntArray mTextCachedSizes;
-
     private TextPaint mPaint;
-
     private float mMaxTextSize;
-
     private float mSpacingMult = 1.0f;
-
     private float mSpacingAdd = 0.0f;
-
     private float mMinTextSize = 20;
-
     private int mWidthLimit;
     private int mMaxLines;
     private final SizeTester mSizeTester = new SizeTester() {

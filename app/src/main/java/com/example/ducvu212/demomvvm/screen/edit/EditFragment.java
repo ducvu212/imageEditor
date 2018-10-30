@@ -30,8 +30,9 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EditFragment extends Fragment implements OnUpdateUI {
+public class EditFragment extends Fragment implements OnUpdateUIListener {
 
+    private static final int NUMBER_SPAN_COUNT = 4;
     private FragmentActivity mContext;
     private FragmentEditBinding mBinding;
     private OnEditClickListener mOnEditClickListener;
@@ -50,7 +51,7 @@ public class EditFragment extends Fragment implements OnUpdateUI {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit, container, false);
         initBinding();
@@ -58,7 +59,6 @@ public class EditFragment extends Fragment implements OnUpdateUI {
     }
 
     private void initBinding() {
-        new BindingEdit(getContext());
         mPickerList = new ArrayList<>();
         mStickerList = new ArrayList<>();
         initSticker();
@@ -91,7 +91,7 @@ public class EditFragment extends Fragment implements OnUpdateUI {
         ColorPickerAdapter adapter = new ColorPickerAdapter(getContext(), this);
         adapter.setPickerList(mPickerList);
         adapter.notifyDataSetChanged();
-        mBinding.recyclerViewColorPicker.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        mBinding.recyclerViewColorPicker.setLayoutManager(new GridLayoutManager(getContext(), NUMBER_SPAN_COUNT));
         mBinding.recyclerViewColorPicker.setAdapter(adapter);
     }
 
@@ -103,7 +103,7 @@ public class EditFragment extends Fragment implements OnUpdateUI {
         EditViewModel viewModel = new EditViewModel(getContext(), imageRepository, mBinding, this);
         viewModel.setSchedulerProvider(SchedulerProvider.getInstance());
         mBinding.setViewModel(viewModel);
-        mBinding.setListener(new HandleItemEditClick(imageRepository, mBinding, this));
+        mBinding.setListener(new HandleItemEditClick(mBinding, this));
     }
 
     private void intitListColorPicker() {
@@ -134,57 +134,57 @@ public class EditFragment extends Fragment implements OnUpdateUI {
     }
 
     @Override
-    public void OnDoneClickListener(String type, String name) {
-        mOnEditClickListener.OnDoneClickListener(type, name);
+    public void OnDoneClick(String type, String name) {
+        mOnEditClickListener.OnDone(type, name);
     }
 
     @Override
-    public void OnDrawClickListener() {
-        mOnEditClickListener.OnDrawClickListener();
+    public void OnDrawClick() {
+        mOnEditClickListener.OnDraw();
     }
 
     @Override
-    public void OnChangeColorListener(int color) {
-        mOnEditClickListener.OnChangeColorClickListener(color);
+    public void OnChangeColor(int color) {
+        mOnEditClickListener.OnChangeColor(color);
     }
 
     @Override
-    public void OnUndoListener() {
-        mOnEditClickListener.OnUndoListener();
+    public void OnUndo() {
+        mOnEditClickListener.OnUndo();
     }
 
     @Override
-    public void OnRedoListener() {
-        mOnEditClickListener.OnRedoListener();
+    public void OnRedo() {
+        mOnEditClickListener.OnRedo();
     }
 
     @Override
-    public void OnClearListener() {
-        mOnEditClickListener.OnClearListener();
+    public void OnClear() {
+        mOnEditClickListener.OnClear();
     }
 
     @Override
-    public void OnDrawCompleteListener() {
-        mOnEditClickListener.OnDrawCompleteListener();
+    public void OnDrawComplete() {
+        mOnEditClickListener.OnDrawComplete();
     }
 
     @Override
-    public void OnCropListener() {
-        mOnEditClickListener.OnCropListener();
+    public void OnCrop(boolean isCrop) {
+        mOnEditClickListener.OnCrop();
     }
 
     @Override
-    public void OnStickerItemClickListener(ItemSticker itemSticker) {
-        mOnEditClickListener.OnStickerItemClickListener(itemSticker);
+    public void OnStickerItemClick(ItemSticker itemSticker) {
+        mOnEditClickListener.OnSticker(itemSticker);
     }
 
     @Override
-    public void OnStickerDoneClickListener() {
-        mOnEditClickListener.OnStickerDoneClickListener();
+    public void OnStickerDoneClick() {
+        mOnEditClickListener.OnStickerDone();
     }
 
     @Override
-    public void OnStickerClearClickListener() {
-        mOnEditClickListener.OnStickerClearClickListener();
+    public void OnStickerClearClick() {
+        mOnEditClickListener.OnStickerClear();
     }
 }

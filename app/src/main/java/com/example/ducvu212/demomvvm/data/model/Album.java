@@ -1,10 +1,8 @@
 package com.example.ducvu212.demomvvm.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import java.util.List;
 
-public class Album implements Parcelable {
+public class Album {
     private String mPath;
     private String mTotalImage;
     private String mTitle;
@@ -52,36 +50,4 @@ public class Album implements Parcelable {
     public void setTitle(String title) {
         mTitle = title;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mPath);
-        dest.writeString(this.mTotalImage);
-        dest.writeString(this.mTitle);
-        dest.writeTypedList(this.mImages);
-    }
-
-    protected Album(Parcel in) {
-        this.mPath = in.readString();
-        this.mTotalImage = in.readString();
-        this.mTitle = in.readString();
-        this.mImages = in.createTypedArrayList(Image.CREATOR);
-    }
-
-    public static final Creator<Album> CREATOR = new Creator<Album>() {
-        @Override
-        public Album createFromParcel(Parcel source) {
-            return new Album(source);
-        }
-
-        @Override
-        public Album[] newArray(int size) {
-            return new Album[size];
-        }
-    };
 }

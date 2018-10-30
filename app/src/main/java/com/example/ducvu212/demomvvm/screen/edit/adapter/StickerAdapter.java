@@ -9,7 +9,7 @@ import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemSticker;
 import com.example.ducvu212.demomvvm.databinding.ItemStickerBinding;
 import com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick;
-import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUI;
+import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUIListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +19,11 @@ import java.util.List;
 public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerViewHolder> {
 
     private List<ItemSticker> mStickerList;
-    private OnUpdateUI mOnUpdateUi;
+    private OnUpdateUIListener mOnUpdateUiListener;
 
-    public StickerAdapter(OnUpdateUI onUpdateUI) {
+    public StickerAdapter(OnUpdateUIListener onUpdateUIListener) {
         mStickerList = new ArrayList<>();
-        mOnUpdateUi = onUpdateUI;
+        mOnUpdateUiListener = onUpdateUIListener;
     }
 
     public void setStickerList(List<ItemSticker> stickerList) {
@@ -41,7 +41,7 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerV
 
     @Override
     public void onBindViewHolder(@NonNull StickerViewHolder holder, int position) {
-        holder.binding(mStickerList.get(position), mOnUpdateUi);
+        holder.binding(mStickerList.get(position), mOnUpdateUiListener);
     }
 
     @Override
@@ -58,9 +58,9 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerV
             mBinding = itemView;
         }
 
-        void binding(ItemSticker itemSticker, OnUpdateUI onUpdateUi) {
+        void binding(ItemSticker itemSticker, OnUpdateUIListener onUpdateUiListener) {
             mBinding.setItem(itemSticker);
-            mBinding.setListener(new HandleItemEditClick(onUpdateUi));
+            mBinding.setListener(new HandleItemEditClick(onUpdateUiListener));
             mBinding.executePendingBindings();
         }
     }

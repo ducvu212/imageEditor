@@ -11,17 +11,18 @@ import com.example.ducvu212.demomvvm.utils.common.MethodUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetCollectionsFromLocal{
+class GetCollectionsFromLocal {
 
-    public static final String SELECTION = "_data IS NOT NULL) GROUP BY (bucket_display_name";
-    public static final String BUCKET_DISPLAY_NAME = "bucket_display_name =";
+    private static final String SELECTION = "_data IS NOT NULL) GROUP BY (bucket_display_name";
+    private static final String BUCKET_DISPLAY_NAME = "bucket_display_name = \"";
+    private static final String PHOTOS = "photos";
     private Context mContext;
 
-    public GetCollectionsFromLocal(Context context) {
+    GetCollectionsFromLocal(Context context) {
         mContext = context;
     }
 
-    public List<Album> getAllCollectionLocal() {
+    List<Album> getAllCollectionLocal() {
         List<Album> albums = new ArrayList<>();
         Uri uriExternal = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Uri uriInternal = MediaStore.Images.Media.INTERNAL_CONTENT_URI;
@@ -43,12 +44,12 @@ public class GetCollectionsFromLocal{
             String title = cursor.getString(
                     cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
             int countPhoto = getCount(mContext.getApplicationContext(), title);
-            albums.add(new Album(path, countPhoto + " photos", title));
+            albums.add(new Album(path, countPhoto + PHOTOS, title));
         }
         return albums;
     }
 
-    public Album getAlbumFromLocal(String albumName) {
+    Album getAlbumFromLocal(String albumName) {
         List<Image> images = new ArrayList<>();
         Uri uriExternal = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         Uri uriInternal = MediaStore.Images.Media.INTERNAL_CONTENT_URI;
@@ -59,16 +60,15 @@ public class GetCollectionsFromLocal{
         };
 
         Cursor cursorExternal = mContext.getContentResolver()
-                .query(uriExternal, projection, "bucket_display_name = \"" + albumName + "\"", null,
-                        null);
+                .query(uriExternal, projection, BUCKET_DISPLAY_NAME + albumName + "\"", null, null);
         Cursor cursorInternal = mContext.getContentResolver()
-                .query(uriInternal, projection, "bucket_display_name = \"" + albumName + "\"", null,
-                        null);
+                .query(uriInternal, projection, BUCKET_DISPLAY_NAME + albumName + "\"", null, null);
         Cursor cursor = new MergeCursor(new Cursor[] { cursorExternal, cursorInternal });
         while (cursor.moveToNext()) {
             String path =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA));
-            String createAt = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED));
+            String createAt = cursor.getString(
+                    cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED));
             images.add(new Image(path, createAt));
         }
         cursor.close();
@@ -84,11 +84,11 @@ public class GetCollectionsFromLocal{
                 MediaStore.MediaColumns.DATE_MODIFIED
         };
         Cursor cursorExternal = c.getContentResolver()
-                .query(uriExternal, projection, "bucket_display_name = \"" + album_name + "\"",
-                        null, null);
+                .query(uriExternal, projection, BUCKET_DISPLAY_NAME + album_name + "\"", null,
+                        null);
         Cursor cursorInternal = c.getContentResolver()
-                .query(uriInternal, projection, "bucket_display_name = \"" + album_name + "\"",
-                        null, null);
+                .query(uriInternal, projection, BUCKET_DISPLAY_NAME + album_name + "\"", null,
+                        null);
         Cursor cursor = new MergeCursor(new Cursor[] { cursorExternal, cursorInternal });
 
         return cursor.getCount();

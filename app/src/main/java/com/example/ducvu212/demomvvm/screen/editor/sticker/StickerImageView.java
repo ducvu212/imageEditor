@@ -12,23 +12,18 @@ public class StickerImageView extends StickerView {
 
     private String owner_id;
     private ImageView iv_main;
-
     public StickerImageView(Context context) {
         super(context);
     }
-
     public StickerImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
     public StickerImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-
     public String getOwnerId() {
         return this.owner_id;
     }
-
     public void setOwnerId(String owner_id) {
         this.owner_id = owner_id;
     }

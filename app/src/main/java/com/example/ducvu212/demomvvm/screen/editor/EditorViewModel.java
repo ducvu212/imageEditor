@@ -47,11 +47,11 @@ public class EditorViewModel extends BaseViewModel implements LifecycleOwner {
         mSchedulerProvider = schedulerProvider;
     }
 
-    public Bitmap convertBitmap(String url) throws ExecutionException, InterruptedException {
+    Bitmap convertBitmap(String url) throws ExecutionException, InterruptedException {
         return mRepository.getBitmap(url);
     }
 
-    public Bitmap convertbitmapGallary(String path) {
+    Bitmap convertbitmapGallary(String path) {
         return mRepository.getBitmapGallary(path);
     }
 }

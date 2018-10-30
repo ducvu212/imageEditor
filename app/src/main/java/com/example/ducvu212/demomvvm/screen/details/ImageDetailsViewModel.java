@@ -14,8 +14,6 @@ import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Exposes the data to be used in the ImageDetails screen.
@@ -28,10 +26,8 @@ public class ImageDetailsViewModel extends BaseViewModel implements LifecycleOwn
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private LifecycleRegistry mLifecycleRegistry;
     private ImageRepository mRepository;
-    private List<ImageRandom> mRandomList;
     private ImageRandom mImageRandomDownload;
     private ImageDetailsViewListener mListener;
-    private ImageRandom mImageRandom;
 
     ImageDetailsViewModel(Context context, ImageRepository repository,
             ImageDetailsViewListener imageDetailsViewListener) {
@@ -39,7 +35,6 @@ public class ImageDetailsViewModel extends BaseViewModel implements LifecycleOwn
         mRepository = repository;
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
-        mRandomList = new ArrayList<>();
         mListener = imageDetailsViewListener;
     }
 
@@ -78,24 +73,15 @@ public class ImageDetailsViewModel extends BaseViewModel implements LifecycleOwn
         Disposable disposable = Observable.create(emitter -> {
             mRepository.updateDownload(mImageRandomDownload);
             emitter.onComplete();
-        }).subscribeOn(mSchedulerProvider.io()).observeOn(mSchedulerProvider.ui()).subscribe(o -> {
-            mImageRandomDownload.setDownloaded(1);
-        }, throwable -> DisplayUtils.makeToast(mContext, throwable.getMessage()), () -> {
-            mListener.updateDownloadButton(mImageRandomDownload.getDownloaded());
-            mImageRandomDownload.setDownloaded(1);
-        });
-        mCompositeDisposable.add(disposable);
-    }
-
-    void deleteImage(ImageRandom imageRandom) {
-        Disposable disposable = Observable.create(emitter -> {
-            mRepository.deleteImage(imageRandom);
-            emitter.onComplete();
         })
                 .subscribeOn(mSchedulerProvider.io())
                 .observeOn(mSchedulerProvider.ui())
-                .subscribe(o -> mListener.updateLikeButton(0),
-                        throwable -> DisplayUtils.makeToast(mContext, throwable.getMessage()));
+                .subscribe(o -> mImageRandomDownload.setDownloaded(1),
+                        throwable -> DisplayUtils.makeToast(mContext, throwable.getMessage()),
+                        () -> {
+                            mListener.updateDownloadButton(mImageRandomDownload.getDownloaded());
+                            mImageRandomDownload.setDownloaded(1);
+                        });
         mCompositeDisposable.add(disposable);
     }
 
@@ -106,36 +92,6 @@ public class ImageDetailsViewModel extends BaseViewModel implements LifecycleOwn
         mRepository.dowloadImage(
                 (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE),
                 imageRandom.getPath(), imageRandom.getImageId(), mListener);
-    }
-
-    public ImageRandom getUserById(ImageRandom imageRandom) {
-        mImageRandom = null;
-        /*Disposable disposable = Observable.create(emitter -> {
-            mImageRandom = mRepository.getImageById(imageRandom.getImageId());
-            emitter.onComplete();
-        }).subscribeOn(mSchedulerProvider.io()).observeOn(mSchedulerProvider.ui())
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-
-                    }
-                }, throwable -> {
-
-                }, () -> {
-
-                });
-//        if (mImageRandom == null) {
-//            insertImage(imageRandom);
-//        }
-//        try {
-//            Log.d("TAGGGGG", mImageRandom.getLikeByUser() + "\n");
-//        } catch (Exception e){
-//            Log.d("TAGGGGG", e.getMessage() + "\n");
-//        };
-        mCompositeDisposable.add(disposable);*/
-
-        mImageRandom = mRepository.getImageById("'" + imageRandom.getImageId() + "'");
-        return mImageRandom;
     }
 
     void insertImage(ImageRandom imageRandom) {

@@ -1,11 +1,9 @@
 package com.example.ducvu212.demomvvm.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UrlImage implements Parcelable {
+public class UrlImage {
 
     @SerializedName("raw")
     @Expose
@@ -110,38 +108,4 @@ public class UrlImage implements Parcelable {
             return new UrlImage(this);
         }
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mRaw);
-        dest.writeString(this.mFull);
-        dest.writeString(this.mRegular);
-        dest.writeString(this.mSmall);
-        dest.writeString(this.mThumb);
-    }
-
-    protected UrlImage(Parcel in) {
-        this.mRaw = in.readString();
-        this.mFull = in.readString();
-        this.mRegular = in.readString();
-        this.mSmall = in.readString();
-        this.mThumb = in.readString();
-    }
-
-    public static final Creator<UrlImage> CREATOR = new Creator<UrlImage>() {
-        @Override
-        public UrlImage createFromParcel(Parcel source) {
-            return new UrlImage(source);
-        }
-
-        @Override
-        public UrlImage[] newArray(int size) {
-            return new UrlImage[size];
-        }
-    };
 }

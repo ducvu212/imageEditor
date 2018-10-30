@@ -25,13 +25,14 @@ public class DrawableView extends View {
     private Canvas mDrawCanvas;
     private boolean mIsEditable;
     private List<CustomPath> mPaths;
-    private List<CustomPath> undonePaths = new ArrayList<>();
+    private List<CustomPath> mUndonePaths;
     private int mPaintColor = Color.WHITE;
     private Bitmap mBitmapMaster;
 
     public DrawableView(Context context) {
         super(context);
         mPaths = new ArrayList<>();
+        mUndonePaths = new ArrayList<>();
     }
 
     public DrawableView(Context context, AttributeSet attrs) {
@@ -100,7 +101,7 @@ public class DrawableView extends View {
             float touchY = event.getY();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    undonePaths.clear();
+                    mUndonePaths.clear();
                     mDrawPath.reset();
                     mDrawPath.moveTo(touchX, touchY);
                     break;
@@ -133,19 +134,15 @@ public class DrawableView extends View {
 
     public void onClickUndo() {
         if (mPaths.size() > 0) {
-            undonePaths.add(mPaths.remove(mPaths.size() - 1));
+            mUndonePaths.add(mPaths.remove(mPaths.size() - 1));
             invalidate();
         }
     }
 
     public void onClickRedo() {
-        if (undonePaths.size() > 0) {
-            mPaths.add(undonePaths.remove(undonePaths.size() - 1));
+        if (mUndonePaths.size() > 0) {
+            mPaths.add(mUndonePaths.remove(mUndonePaths.size() - 1));
             invalidate();
         }
-    }
-
-    public Bitmap getBitmapMaster() {
-        return mBitmapMaster;
     }
 }

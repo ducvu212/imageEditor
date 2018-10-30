@@ -13,17 +13,9 @@ import java.net.URL;
  */
 public class ConvertBitmapAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
-    public static Bitmap mBitmap;
-
     @Override
     protected Bitmap doInBackground(String... strings) {
         return convert(strings[0]);
-    }
-
-    @Override
-    protected void onPostExecute(Bitmap bitmap) {
-        super.onPostExecute(bitmap);
-        mBitmap = bitmap;
     }
 
     private Bitmap convert(String src) {
@@ -33,8 +25,7 @@ public class ConvertBitmapAsyncTask extends AsyncTask<String, Void, Bitmap> {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             return null;
         }

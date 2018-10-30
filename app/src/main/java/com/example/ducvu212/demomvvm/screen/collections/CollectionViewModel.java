@@ -43,7 +43,7 @@ public class CollectionViewModel extends BaseViewModel implements LifecycleOwner
     private int mPageNumber = 1;
     private int mId;
 
-    public CollectionViewModel(Context context, ImageRepository repository, FragmentManager manager,
+    CollectionViewModel(Context context, ImageRepository repository, FragmentManager manager,
             int id) {
         mContext = context;
         mRepository = repository;

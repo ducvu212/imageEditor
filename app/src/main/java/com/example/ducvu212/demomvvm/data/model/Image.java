@@ -267,29 +267,29 @@ public class Image implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.mId);
-            dest.writeString(this.mCreatedAt);
-            dest.writeString(this.mUpdatedAt);
-            dest.writeValue(this.mWidth);
-            dest.writeValue(this.mHeight);
-            dest.writeParcelable(this.mUrls, flags);
-            dest.writeParcelable(this.mLinks, flags);
-            dest.writeValue(this.mLikes);
-            dest.writeValue(this.mLikedByUser);
-            dest.writeParcelable(this.mUser, flags);
+            dest.writeString(mId);
+            dest.writeString(mCreatedAt);
+            dest.writeString(mUpdatedAt);
+            dest.writeValue(mWidth);
+            dest.writeValue(mHeight);
+            dest.writeParcelable(mUrls, flags);
+            dest.writeParcelable(mLinks, flags);
+            dest.writeValue(mLikes);
+            dest.writeValue(mLikedByUser);
+            dest.writeParcelable(mUser, flags);
         }
 
         protected Builder(Parcel in) {
-            this.mId = in.readString();
-            this.mCreatedAt = in.readString();
-            this.mUpdatedAt = in.readString();
-            this.mWidth = (Integer) in.readValue(Integer.class.getClassLoader());
-            this.mHeight = (Integer) in.readValue(Integer.class.getClassLoader());
-            this.mUrls = in.readParcelable(UrlImage.class.getClassLoader());
-            this.mLinks = in.readParcelable(Links.class.getClassLoader());
-            this.mLikes = (Integer) in.readValue(Integer.class.getClassLoader());
-            this.mLikedByUser = (Boolean) in.readValue(Boolean.class.getClassLoader());
-            this.mUser = in.readParcelable(User.class.getClassLoader());
+            mId = in.readString();
+            mCreatedAt = in.readString();
+            mUpdatedAt = in.readString();
+            mWidth = (Integer) in.readValue(Integer.class.getClassLoader());
+            mHeight = (Integer) in.readValue(Integer.class.getClassLoader());
+            mUrls = in.readParcelable(UrlImage.class.getClassLoader());
+            mLinks = in.readParcelable(Links.class.getClassLoader());
+            mLikes = (Integer) in.readValue(Integer.class.getClassLoader());
+            mLikedByUser = (Boolean) in.readValue(Boolean.class.getClassLoader());
+            mUser = in.readParcelable(User.class.getClassLoader());
         }
 
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {

@@ -68,7 +68,6 @@ public class CollectionFragment extends BaseFragment {
         mBinding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_collection, container, false);
         mBinding.setViewModel(mViewModel);
-        //        mBinding.setListener(new HandleImageClick(mViewModel));
         mBinding.recyclerCollection.addOnScrollListener(new EndlessScrollListener(
                 (LinearLayoutManager) mBinding.recyclerCollection.getLayoutManager()) {
             @Override

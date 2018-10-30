@@ -20,7 +20,6 @@ import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 
 public class LibraryFragment extends BaseFragment {
     public static final String TAG = LibraryFragment.class.getSimpleName();
-
     private static LibraryFragment sInstance;
     private FragmentActivity mContext;
     private LibraryViewModel mViewModel;

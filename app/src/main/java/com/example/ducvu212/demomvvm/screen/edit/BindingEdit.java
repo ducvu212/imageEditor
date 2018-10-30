@@ -1,6 +1,5 @@
 package com.example.ducvu212.demomvvm.screen.edit;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
@@ -9,19 +8,8 @@ import android.widget.ImageView;
  */
 public class BindingEdit {
 
-    private Context mContext;
-
-    public BindingEdit(Context context) {
-        mContext = context;
-    }
-
     @BindingAdapter({ "loadImg" })
     public static void loadImage(ImageView imageView, int drawable) {
         imageView.setImageResource(drawable);
-    }
-
-    @BindingAdapter({ "loadColor" })
-    public static void loadColor(ImageView imageView, int id) {
-
     }
 }

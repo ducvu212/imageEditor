@@ -47,7 +47,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryH
     static class LibraryHolder extends RecyclerView.ViewHolder {
         private ItemLibraryBinding mBinding;
 
-        public LibraryHolder(@NonNull ItemLibraryBinding binding) {
+        LibraryHolder(@NonNull ItemLibraryBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }

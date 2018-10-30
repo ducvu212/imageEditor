@@ -41,7 +41,6 @@ public class ColorFilterGenerator {
 
     public static ColorFilter adjustContrast(float value) {
         ColorMatrix cm = new ColorMatrix();
-        //        setContrast(cm, value);
         adjustContrast(cm, (int) value);
         mContrastCM = cm;
         return new ColorMatrixColorFilter(cm);
@@ -86,7 +85,7 @@ public class ColorFilterGenerator {
         cm.postConcat(new ColorMatrix(mat));
     }
 
-    public static void adjustContrast(ColorMatrix cm, int value) {
+    private static void adjustContrast(ColorMatrix cm, int value) {
         value = (int) cleanValue(value, 100);
         if (value == 0) {
             return;
@@ -95,15 +94,8 @@ public class ColorFilterGenerator {
         if (value < 0) {
             x = 127 + value / 100 * 127;
         } else {
-            x = value % 1;
-            if (x == 0) {
-                x = (float) DELTA_INDEX[value];
-            } else {
-                //x = DELTA_INDEX[(p_val<<0)]; // this is how the IDE does it.
-                x = (float) DELTA_INDEX[(value << 0)] * (1 - x)
-                        + (float) DELTA_INDEX[(value << 0) + 1]
-                        * x; // use linear interpolation for more granularity.
-            }
+            x = 0;
+            x = (float) DELTA_INDEX[value];
             x = x * 127 + 127;
         }
 
@@ -143,7 +135,7 @@ public class ColorFilterGenerator {
         cm.postConcat(new ColorMatrix(mat));
     }
 
-    public static void adjustBrightness(ColorMatrix cm, float value) {
+    private static void adjustBrightness(ColorMatrix cm, float value) {
         value = cleanValue(value, 100);
         if (value == 0) {
             return;
@@ -156,7 +148,7 @@ public class ColorFilterGenerator {
         mBrightnessCM = cm;
     }
 
-    public static void adjustTemperature(ColorMatrix cm, int r, int g, int b) {
+    private static void adjustTemperature(ColorMatrix cm, int r, int g, int b) {
 
         cm.set(new float[] {
                 r / 255.0f, 0, 0, 0, 0, 0, g / 255.0f, 0, 0, 0, 0, 0, b / 255.0f, 0, 0, 0, 0, 0, 1,
@@ -164,14 +156,14 @@ public class ColorFilterGenerator {
         });
     }
 
-    public static void adjustExposure(ColorMatrix cm, float value) {
+    private static void adjustExposure(ColorMatrix cm, float value) {
         value = cleanValue(value, 100);
         cm.set(new float[] {
                 value, 0, 0, 0, 0, 0, value, 0, 0, 0, 0, 0, value, 0, 0, 0, 0, 0, 1, 0,
         });
     }
 
-    protected static float cleanValue(float p_val, float p_limit) {
+    private static float cleanValue(float p_val, float p_limit) {
         return Math.min(p_limit, Math.max(-p_limit, p_val));
     }
 }

@@ -158,23 +158,23 @@ public class ImageRandom implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mImageId);
-        dest.writeString(this.mPath);
-        dest.writeString(this.mUserName);
-        dest.writeInt(this.mLikeByUser);
-        dest.writeInt(this.mDownloaded);
-        dest.writeString(this.mRawImage);
-        dest.writeString(this.mType);
+        dest.writeString(mImageId);
+        dest.writeString(mPath);
+        dest.writeString(mUserName);
+        dest.writeInt(mLikeByUser);
+        dest.writeInt(mDownloaded);
+        dest.writeString(mRawImage);
+        dest.writeString(mType);
     }
 
     protected ImageRandom(Parcel in) {
-        this.mImageId = in.readString();
-        this.mPath = in.readString();
-        this.mUserName = in.readString();
-        this.mLikeByUser = in.readInt();
-        this.mDownloaded = in.readInt();
-        this.mRawImage = in.readString();
-        this.mType = in.readString();
+        mImageId = in.readString();
+        mPath = in.readString();
+        mUserName = in.readString();
+        mLikeByUser = in.readInt();
+        mDownloaded = in.readInt();
+        mRawImage = in.readString();
+        mType = in.readString();
     }
 
     public static final Creator<ImageRandom> CREATOR = new Creator<ImageRandom>() {

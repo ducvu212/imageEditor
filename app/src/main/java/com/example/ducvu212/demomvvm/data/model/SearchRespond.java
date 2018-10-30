@@ -1,12 +1,11 @@
 package com.example.ducvu212.demomvvm.data.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
-public class SearchRespond implements Parcelable {
+public class SearchRespond {
 
     @SerializedName("total")
     @Expose
@@ -18,38 +17,14 @@ public class SearchRespond implements Parcelable {
     @Expose
     private ArrayList<Collection> mCollections;
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.mTotal);
-        dest.writeInt(this.mTotalPages);
-        dest.writeTypedList(this.mCollections);
-    }
-
     public SearchRespond() {
     }
 
     protected SearchRespond(Parcel in) {
-        this.mTotal = in.readInt();
-        this.mTotalPages = in.readInt();
-        this.mCollections = in.createTypedArrayList(Collection.CREATOR);
+        mTotal = in.readInt();
+        mTotalPages = in.readInt();
+        mCollections = in.createTypedArrayList(Collection.CREATOR);
     }
-
-    public static final Creator<SearchRespond> CREATOR = new Creator<SearchRespond>() {
-        @Override
-        public SearchRespond createFromParcel(Parcel source) {
-            return new SearchRespond(source);
-        }
-
-        @Override
-        public SearchRespond[] newArray(int size) {
-            return new SearchRespond[size];
-        }
-    };
 
     public int getTotal() {
         return mTotal;

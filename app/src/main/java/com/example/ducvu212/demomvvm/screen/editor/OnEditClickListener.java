@@ -11,33 +11,33 @@ public interface OnEditClickListener {
 
     void OnUpdateBrightness(int progress);
 
-    void OnDoneClickListener(String type, String name);
+    void OnDone(String type, String name);
 
-    void OnDrawClickListener();
+    void OnDraw();
 
-    void OnChangeColorClickListener(int color);
+    void OnChangeColor(int color);
 
-    void OnUndoListener();
+    void OnUndo();
 
-    void OnRedoListener();
+    void OnRedo();
 
-    void OnClearListener();
+    void OnClear();
 
-    void OnDrawCompleteListener();
+    void OnDrawComplete();
 
     void OnFilter(Bitmap bitmap);
 
-    void OnCropListener();
+    void OnCrop();
 
-    void OnStickerItemClickListener(ItemSticker itemSticker);
+    void OnSticker(ItemSticker itemSticker);
 
-    void OnStickerDoneClickListener();
+    void OnStickerDone();
 
-    void OnStickerClearClickListener();
+    void OnStickerClear();
 
-    void OnDoneCropListener();
+    void OnDoneCrop(boolean isCrop);
 
-    void OnClearCropListener();
+    void OnClearCrop();
 
-    void OnDoneFilterListener();
+    void OnDoneFilter();
 }

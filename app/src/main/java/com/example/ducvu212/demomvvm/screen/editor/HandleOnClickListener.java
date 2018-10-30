@@ -7,15 +7,15 @@ public class HandleOnClickListener {
 
     private OnEditClickListener mListener;
 
-    public HandleOnClickListener(OnEditClickListener listener) {
+    HandleOnClickListener(OnEditClickListener listener) {
         mListener = listener;
     }
 
     public void OnClearCropListener() {
-        mListener.OnClearCropListener();
+        mListener.OnClearCrop();
     }
 
     public void OnDoneCropListener() {
-        mListener.OnDoneCropListener();
+        mListener.OnDoneCrop(true);
     }
 }

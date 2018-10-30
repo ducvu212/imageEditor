@@ -28,7 +28,8 @@ public class AlbumViewModel extends BaseViewModel implements LifecycleOwner {
     private String mAlbumName;
     private ObservableField<AlbumAdapter> mAlbumObservableField = new ObservableField<>();
 
-    public AlbumViewModel(Context context, FragmentManager manager, ImageRepository repository, String albumName) {
+    AlbumViewModel(Context context, FragmentManager manager, ImageRepository repository,
+            String albumName) {
         mRepository = repository;
         mAlbumName = albumName;
         mLifecycleRegistry = new LifecycleRegistry(this);
@@ -76,7 +77,7 @@ public class AlbumViewModel extends BaseViewModel implements LifecycleOwner {
         return mAlbumData;
     }
 
-    public void subcribeData(String albumName) {
+    private void subcribeData(String albumName) {
         getAlbumFromLocal(mAlbumAdapter, albumName).observe(this, album -> {
             List<Image> images = album.getImages();
             mAlbumAdapter.setAdapter(images);

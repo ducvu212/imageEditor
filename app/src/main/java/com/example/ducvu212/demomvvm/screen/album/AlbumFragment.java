@@ -22,10 +22,8 @@ import com.example.ducvu212.demomvvm.utils.rx.SchedulerProvider;
 public class AlbumFragment extends BaseFragment {
     public static final String ARGUMENT_ALBUM_NAME = "ARGUMENT_ALBUM_NAME";
     public static final String TAG = AlbumFragment.class.getSimpleName();
-
     private FragmentActivity mContext;
     private AlbumViewModel mViewModel;
-    private FragmentAlbumBinding mBinding;
     private String mAlbumName;
 
     public static AlbumFragment newInstance(String albumName) {
@@ -54,9 +52,10 @@ public class AlbumFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_album, container, false);
-        mBinding.setViewModel(mViewModel);
-        return mBinding.getRoot();
+        FragmentAlbumBinding binding =
+                DataBindingUtil.inflate(inflater, R.layout.fragment_album, container, false);
+        binding.setViewModel(mViewModel);
+        return binding.getRoot();
     }
 
     private void initBinding() {

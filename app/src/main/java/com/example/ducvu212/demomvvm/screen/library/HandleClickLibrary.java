@@ -10,7 +10,7 @@ public class HandleClickLibrary {
 
     private FragmentManager mManager;
 
-    public HandleClickLibrary(FragmentManager manager) {
+    HandleClickLibrary(FragmentManager manager) {
         mManager = manager;
     }
 

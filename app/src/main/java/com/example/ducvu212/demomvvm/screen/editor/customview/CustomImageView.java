@@ -17,19 +17,17 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
     static final int ZOOM = 2;
     static final int CLICK = 3;
     protected float origWidth, origHeight;
-    Matrix matrix;
-    int mode = NONE;
+    private Matrix matrix;
+    private int mode = NONE;
     // Zoom
-    PointF last = new PointF();
-    PointF start = new PointF();
-    float minScale = 1f;
-    float maxScale = 5f;
-    float[] m;
-    int viewWidth, viewHeight;
-    float saveScale = 1f;
-    int oldMeasuredWidth, oldMeasuredHeight;
-    ScaleGestureDetector mScaleDetector;
-    Context context;
+    private PointF last = new PointF();
+    private PointF start = new PointF();
+    private float maxScale = 5f;
+    private float[] m;
+    private int viewWidth, viewHeight;
+    private float saveScale = 1f;
+    private int oldMeasuredHeight;
+    private ScaleGestureDetector mScaleDetector;
     private boolean zoomEnable = true;
 
     public CustomImageView(Context context) {
@@ -48,7 +46,6 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
 
     private void sharedConstructing(Context context) {
         super.setClickable(true);
-        this.context = context;
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
         matrix = new Matrix();
         m = new float[9];
@@ -59,7 +56,6 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
             if (zoomEnable) {
                 mScaleDetector.onTouchEvent(event);
                 PointF curr = new PointF(event.getX(), event.getY());
-
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         last.set(curr);
@@ -110,10 +106,8 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
         matrix.getValues(m);
         float transX = m[Matrix.MTRANS_X];
         float transY = m[Matrix.MTRANS_Y];
-
         float fixTransX = getFixTrans(transX, viewWidth, origWidth * saveScale);
         float fixTransY = getFixTrans(transY, viewHeight, origHeight * saveScale);
-
         if (fixTransX != 0 || fixTransY != 0) matrix.postTranslate(fixTransX, fixTransY);
     }
 
@@ -151,7 +145,6 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
             return;
         }
         oldMeasuredHeight = viewHeight;
-        oldMeasuredWidth = viewWidth;
         if (saveScale == 1) {
             float scale;
             Drawable drawable = getDrawable();
@@ -190,6 +183,7 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
             float mScaleFactor = detector.getScaleFactor();
             float origScale = saveScale;
             saveScale *= mScaleFactor;
+            float minScale = 1f;
             if (saveScale > maxScale) {
                 saveScale = maxScale;
                 mScaleFactor = maxScale / origScale;
@@ -204,7 +198,6 @@ public class CustomImageView extends android.support.v7.widget.AppCompatImageVie
                 matrix.postScale(mScaleFactor, mScaleFactor, detector.getFocusX(),
                         detector.getFocusY());
             }
-
             fixTrans();
             return true;
         }

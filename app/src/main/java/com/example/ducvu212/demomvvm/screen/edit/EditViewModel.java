@@ -14,7 +14,6 @@ import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
 import com.example.ducvu212.demomvvm.screen.base.BaseViewModel;
 import com.example.ducvu212.demomvvm.screen.edit.adapter.EditAdapter;
-import com.example.ducvu212.demomvvm.utils.rx.BaseSchedulerProvider;
 import io.reactivex.disposables.CompositeDisposable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.List;
 public class EditViewModel extends BaseViewModel implements LifecycleOwner {
 
     private Context mContext;
-    private BaseSchedulerProvider mSchedulerProvider;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private LifecycleRegistry mLifecycleRegistry;
     private MutableLiveData mEditData;
@@ -33,18 +31,16 @@ public class EditViewModel extends BaseViewModel implements LifecycleOwner {
     private EditAdapter mEditAdapter;
     private List<ItemEdit> mEditList;
     private RecyclerView mRecyclerView;
-    private ImageRepository mImageRepository;
 
-    public EditViewModel(Context context, ImageRepository repository, FragmentEditBinding binding,
-            OnUpdateUI onUpdateUI) {
+    EditViewModel(Context context, ImageRepository repository, FragmentEditBinding binding,
+            OnUpdateUIListener onUpdateUIListener) {
         mContext = context;
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
         mEditList = new ArrayList<>();
         mEditData = new MutableLiveData();
-        mEditAdapter = new EditAdapter(mEditList, repository, binding, onUpdateUI);
+        mEditAdapter = new EditAdapter(mEditList, repository, binding, onUpdateUIListener);
         mRecyclerView = binding.recyclerEdit;
-        mImageRepository = repository;
         initData();
     }
 
@@ -66,10 +62,6 @@ public class EditViewModel extends BaseViewModel implements LifecycleOwner {
     @Override
     protected void onStop() {
         mCompositeDisposable.clear();
-    }
-
-    void setSchedulerProvider(BaseSchedulerProvider schedulerProvider) {
-        mSchedulerProvider = schedulerProvider;
     }
 
     private void initData() {

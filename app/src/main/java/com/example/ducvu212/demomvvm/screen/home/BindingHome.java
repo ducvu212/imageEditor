@@ -58,7 +58,11 @@ public class BindingHome {
     }
 
     private static RequestCreator createCreator(int width, int height, String url) {
-        return Picasso.get().load(url).placeholder(R.drawable.placeholder).resize(width, height);
+        return Picasso.get()
+                .load(url)
+                .placeholder(R.drawable.placeholder)
+                .resize(width, height)
+                .onlyScaleDown();
     }
 
     @BindingAdapter({ "loadImgRandom" })

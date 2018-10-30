@@ -68,7 +68,7 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_image_details, container,
                 false);
@@ -80,8 +80,10 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        }
         if (getArguments() != null) {
             ImageRandom imageRandom = getArguments().getParcelable(ARGUMENT_IMAGE);
             ImageRandom imageCheck = mViewModel.getUserById(imageRandom);
@@ -92,6 +94,10 @@ public class ImageDetailsFragment extends BaseFragment implements ImageDetailsVi
                 updateUI(imageCheck);
             }
         }
+        registerDownloadComplete();
+    }
+
+    private void registerDownloadComplete() {
         mOnComplete = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

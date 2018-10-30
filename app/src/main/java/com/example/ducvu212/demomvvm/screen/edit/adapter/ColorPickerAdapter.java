@@ -10,7 +10,7 @@ import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemColorPicker;
 import com.example.ducvu212.demomvvm.databinding.ItemColorPickerBinding;
 import com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick;
-import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUI;
+import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUIListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +21,12 @@ public class ColorPickerAdapter extends RecyclerView.Adapter<ColorPickerAdapter.
 
     private Context mContext;
     private List<ItemColorPicker> mPickerList;
-    private OnUpdateUI mOnUpdateUI;
+    private OnUpdateUIListener mOnUpdateUIListener;
 
-    public ColorPickerAdapter(Context context, OnUpdateUI updateUI) {
+    public ColorPickerAdapter(Context context, OnUpdateUIListener updateUI) {
         mContext = context;
         mPickerList = new ArrayList<>();
-        mOnUpdateUI = updateUI;
+        mOnUpdateUIListener = updateUI;
     }
 
     public void setPickerList(List<ItemColorPicker> pickerList) {
@@ -44,7 +44,7 @@ public class ColorPickerAdapter extends RecyclerView.Adapter<ColorPickerAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ColorHolder holder, int position) {
-        holder.binding(mContext, mPickerList.get(position), mOnUpdateUI);
+        holder.binding(mContext, mPickerList.get(position), mOnUpdateUIListener);
     }
 
     @Override
@@ -61,10 +61,10 @@ public class ColorPickerAdapter extends RecyclerView.Adapter<ColorPickerAdapter.
             mBinding = itemView;
         }
 
-        void binding(Context context, ItemColorPicker itemColorPicker, OnUpdateUI onUpdateUI) {
+        void binding(Context context, ItemColorPicker itemColorPicker, OnUpdateUIListener onUpdateUIListener) {
             mBinding.imageColor.setImageDrawable(context.getDrawable(itemColorPicker.getId()));
             mBinding.setColor(itemColorPicker);
-            mBinding.setListener(new HandleItemEditClick(onUpdateUI));
+            mBinding.setListener(new HandleItemEditClick(onUpdateUIListener));
             mBinding.executePendingBindings();
         }
     }

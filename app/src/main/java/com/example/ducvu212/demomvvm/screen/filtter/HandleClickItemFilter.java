@@ -1,6 +1,5 @@
 package com.example.ducvu212.demomvvm.screen.filtter;
 
-import android.widget.SeekBar;
 import com.example.ducvu212.demomvvm.data.model.ItemFilter;
 
 public class HandleClickItemFilter {
@@ -12,7 +11,7 @@ public class HandleClickItemFilter {
 
     public void updateFilter(ItemFilter itemFilter) {
         itemFilter.setCountClick(itemFilter.getCountClick() + 1);
-        mOnUpdateUIFilter.OnUpdateBitmapBilter(itemFilter.getFilter(), itemFilter.getCountClick());
+        mOnUpdateUIFilter.OnUpdateBitmapFilter(itemFilter.getFilter(), itemFilter.getCountClick());
     }
 
     public void saveFilter() {

@@ -28,7 +28,7 @@ public class LibraryViewModel extends BaseViewModel implements LifecycleOwner {
     private LibraryAdapter mLibraryAdapter;
     private MutableLiveData mLibraryData;private ObservableField<LibraryAdapter> mLibraryObservableField = new ObservableField<>();
 
-    public LibraryViewModel(Context context, ImageRepository repository, FragmentManager manager) {
+    LibraryViewModel(Context context, ImageRepository repository, FragmentManager manager) {
         mContext = context;
         mRepository = repository;
         mLifecycleRegistry = new LifecycleRegistry(this);
@@ -78,7 +78,7 @@ public class LibraryViewModel extends BaseViewModel implements LifecycleOwner {
         return mLibraryData;
     }
 
-    public void subcribeData() {
+    private void subcribeData() {
         getAlbumFromLocal(mLibraryAdapter).observe(this, albums ->  {
             mLibraryAdapter.setAlbums(albums);
             mLibraryAdapter.notifyDataSetChanged();

@@ -8,7 +8,6 @@ import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.ItemColorPicker;
 import com.example.ducvu212.demomvvm.data.model.ItemEdit;
 import com.example.ducvu212.demomvvm.data.model.ItemSticker;
-import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
 
 import static android.view.View.GONE;
@@ -21,28 +20,25 @@ import static com.example.ducvu212.demomvvm.screen.editor.EditActivity.sName;
 public class HandleItemEditClick {
 
     public static final String TITTLE_BRIGHTNESS = "Brightness";
-    public static final String TITTLE_CONTRAST = "Contrast";
-    public static String sType;
+    private static final String TITTLE_CONTRAST = "Contrast";
+    private static String sType;
     private static int sValue;
     private SeekBar mSeekBar;
-    private OnUpdateUI mOnUpdateUI;
+    private OnUpdateUIListener mOnUpdateUIListener;
     private FrameLayout mFrameLayout;
     private ConstraintLayout mConstraintLayout;
-    private ImageRepository mImageRepository;
     private FragmentEditBinding mBinding;
 
-    public HandleItemEditClick(ImageRepository repository, FragmentEditBinding binding,
-            OnUpdateUI onUpdateUI) {
+    public HandleItemEditClick(FragmentEditBinding binding, OnUpdateUIListener onUpdateUIListener) {
         mBinding = binding;
         mSeekBar = binding.seekBar;
         mFrameLayout = binding.frameSeekbar;
         mConstraintLayout = binding.contrainsColor;
-        mOnUpdateUI = onUpdateUI;
-        mImageRepository = repository;
+        mOnUpdateUIListener = onUpdateUIListener;
     }
 
-    public HandleItemEditClick(OnUpdateUI onUpdateUI) {
-        mOnUpdateUI = onUpdateUI;
+    public HandleItemEditClick(OnUpdateUIListener onUpdateUIListener) {
+        mOnUpdateUIListener = onUpdateUIListener;
     }
 
     public void OnEditItemClickListener(ItemEdit itemEdit) {
@@ -51,7 +47,7 @@ public class HandleItemEditClick {
                 sType = TITTLE_BRIGHTNESS;
                 mSeekBar.setProgress(0);
                 mSeekBar.setMin(-255);
-                mOnUpdateUI.updateContrast(0);
+                mOnUpdateUIListener.updateContrast(0);
                 mConstraintLayout.setVisibility(GONE);
                 mFrameLayout.setVisibility(VISIBLE);
                 setupEdit(TITTLE_BRIGHTNESS);
@@ -61,7 +57,7 @@ public class HandleItemEditClick {
                 sType = TITTLE_CONTRAST;
                 mSeekBar.setMin(0);
                 mSeekBar.setProgress(0);
-                mOnUpdateUI.updateBrightness(0);
+                mOnUpdateUIListener.updateBrightness(0);
                 mConstraintLayout.setVisibility(GONE);
                 mFrameLayout.setVisibility(VISIBLE);
                 setupEdit(TITTLE_CONTRAST);
@@ -69,13 +65,13 @@ public class HandleItemEditClick {
                 break;
             case R.drawable.ic_crop:
                 mBinding.recyclerEdit.setVisibility(VISIBLE);
-                OnCropAction();
+                OnCropAction(true);
                 break;
             case R.drawable.ic_draw:
                 mConstraintLayout.setVisibility(VISIBLE);
                 mFrameLayout.setVisibility(View.GONE);
                 mBinding.recyclerEdit.setVisibility(GONE);
-                mOnUpdateUI.OnDrawClickListener();
+                mOnUpdateUIListener.OnDrawClick();
                 break;
             case R.drawable.ic_add:
                 mConstraintLayout.setVisibility(GONE);
@@ -92,9 +88,9 @@ public class HandleItemEditClick {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 sValue = progress;
                 if (type.equals(TITTLE_CONTRAST)) {
-                    mOnUpdateUI.updateContrast(sValue);
+                    mOnUpdateUIListener.updateContrast(sValue);
                 } else {
-                    mOnUpdateUI.updateBrightness(sValue);
+                    mOnUpdateUIListener.updateBrightness(sValue);
                 }
             }
 
@@ -106,63 +102,68 @@ public class HandleItemEditClick {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (type.equals(TITTLE_CONTRAST)) {
-                    mOnUpdateUI.updateContrast(sValue);
+                    mOnUpdateUIListener.updateContrast(sValue);
                 } else {
-                    mOnUpdateUI.updateBrightness(sValue);
+                    mOnUpdateUIListener.updateBrightness(sValue);
                 }
             }
         });
     }
 
     public void OnDoneClickListener() {
-        mOnUpdateUI.updateContrast(sValue);
+        mOnUpdateUIListener.updateContrast(sValue);
         mFrameLayout.setVisibility(GONE);
-        mOnUpdateUI.OnDoneClickListener(sType, sName);
+        mOnUpdateUIListener.OnDoneClick(sType, sName);
     }
 
     public void OnClearClickListener() {
-        mOnUpdateUI.updateContrast(0);
+        mOnUpdateUIListener.updateContrast(0);
         mFrameLayout.setVisibility(GONE);
         mSeekBar.setProgress(0);
     }
 
     public void OnColorClickListener(ItemColorPicker itemColorPicker) {
-        mOnUpdateUI.OnChangeColorListener(itemColorPicker.getColor());
+        mOnUpdateUIListener.OnChangeColor(itemColorPicker.getColor());
     }
 
     public void OnUndoAction() {
-        mOnUpdateUI.OnUndoListener();
+        mOnUpdateUIListener.OnUndo();
     }
 
     public void OnRedoAction() {
-        mOnUpdateUI.OnRedoListener();
+        mOnUpdateUIListener.OnRedo();
     }
 
     public void OnClearColorClickListener() {
-        mOnUpdateUI.OnClearListener();
+        mOnUpdateUIListener.OnClear();
         mConstraintLayout.setVisibility(View.GONE);
         mBinding.recyclerEdit.setVisibility(VISIBLE);
     }
 
     public void OnDrawCompleteAction() {
-        mOnUpdateUI.OnDrawCompleteListener();
+        mConstraintLayout.setVisibility(GONE);
+        mBinding.recyclerEdit.setVisibility(VISIBLE);
+        mOnUpdateUIListener.OnDrawComplete();
     }
 
-    private void OnCropAction() {
-        mOnUpdateUI.OnCropListener();
+    private void OnCropAction(boolean isCrop) {
+        mOnUpdateUIListener.OnCrop(isCrop);
+        mBinding.frameSeekbar.setVisibility(GONE);
     }
 
     public void OnStickerClickListener(ItemSticker itemSticker) {
-        mOnUpdateUI.OnStickerItemClickListener(itemSticker);
+        mOnUpdateUIListener.OnStickerItemClick(itemSticker);
     }
 
     public void OnStickerDoneClickListener() {
-        mOnUpdateUI.OnStickerDoneClickListener();
+        mBinding.constraintSticker.setVisibility(GONE);
+        mBinding.recyclerEdit.setVisibility(VISIBLE);
+        mOnUpdateUIListener.OnStickerDoneClick();
     }
 
     public void OnStickerClearClickListener() {
         mBinding.constraintSticker.setVisibility(GONE);
         mBinding.recyclerEdit.setVisibility(VISIBLE);
-        mOnUpdateUI.OnStickerClearClickListener();
+        mOnUpdateUIListener.OnStickerClearClick();
     }
 }

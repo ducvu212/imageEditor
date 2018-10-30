@@ -11,7 +11,7 @@ import com.example.ducvu212.demomvvm.data.repository.ImageRepository;
 import com.example.ducvu212.demomvvm.databinding.FragmentEditBinding;
 import com.example.ducvu212.demomvvm.databinding.ItemEditBinding;
 import com.example.ducvu212.demomvvm.screen.edit.HandleItemEditClick;
-import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUI;
+import com.example.ducvu212.demomvvm.screen.edit.OnUpdateUIListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +22,16 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
 
     private List<ItemEdit> mEditList;
     private ImageRepository mImageRepository;
-    private OnUpdateUI mOnUpdateUI;
     private FragmentEditBinding mBinding;
+    private OnUpdateUIListener mOnUpdateUIListener;
 
     public EditAdapter(List<ItemEdit> editList, ImageRepository repository,
-            FragmentEditBinding binding, OnUpdateUI onUpdateUI) {
+            FragmentEditBinding binding, OnUpdateUIListener onUpdateUIListener) {
         mEditList = new ArrayList<>();
         mEditList.addAll(editList);
         mBinding = binding;
         mImageRepository = repository;
-        mOnUpdateUI = onUpdateUI;
+        mOnUpdateUIListener = onUpdateUIListener;
     }
 
     public void setEditList(List<ItemEdit> editList) {
@@ -48,7 +48,7 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull EditViewHolder holder, int position) {
-        holder.binding(mEditList.get(position), mImageRepository, mBinding, mOnUpdateUI);
+        holder.binding(mEditList.get(position), mImageRepository, mBinding, mOnUpdateUIListener);
     }
 
     @Override
@@ -66,9 +66,9 @@ public class EditAdapter extends RecyclerView.Adapter<EditAdapter.EditViewHolder
         }
 
         void binding(ItemEdit edit, ImageRepository imageRepository, FragmentEditBinding binding,
-                OnUpdateUI onUpdateUI) {
+                OnUpdateUIListener onUpdateUIListener) {
             mBinding.setItem(edit);
-            mBinding.setListener(new HandleItemEditClick(imageRepository, binding, onUpdateUI));
+            mBinding.setListener(new HandleItemEditClick(binding, onUpdateUIListener));
             mBinding.executePendingBindings();
         }
     }

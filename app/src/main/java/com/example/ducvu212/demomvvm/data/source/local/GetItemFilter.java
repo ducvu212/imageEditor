@@ -17,32 +17,38 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetItemFilter {
+class GetItemFilter {
 
-    public static List<ItemFilter> getAllItemFilter(Context context) {
+    private static final String FILTER_NONE = "None";
+    private static final String FILTER = "Filter ";
+    private static final String GRADIENT_PATH = "gradientfilter/gradient";
+    private static final String GRADIENT_END_FILE = ".png";
+    private static final int MAX_GRADIENT = 20;
+
+    static List<ItemFilter> getAllItemFilter(Context context) {
         List<ItemFilter> filters = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < MAX_GRADIENT; i++) {
             String name;
             if (i == 0) {
-                name = "None";
+                name = FILTER_NONE;
             } else {
-                name = "Filter " + i;
+                name = FILTER + i;
             }
-            String pathGradient = "gradientfilter/gradient" + i + ".png";
+            String pathGradient = GRADIENT_PATH + i + GRADIENT_END_FILE;
             ItemFilter itemFilter = new ItemFilter(EditActivity.sBitmap, name, pathGradient);
             filters.add(itemFilter);
         }
-        return getBitmapFilter(context, filters, 100, EditActivity.sBitmap);
+        return getBitmapFilter(context, filters, EditActivity.sBitmap);
     }
 
-    public static Bitmap getBitmapFromGallary(String path) {
+    static Bitmap getBitmapFromGallary(String path) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
         return bitmap;
     }
 
-    public static Bitmap getBitmapAsset(Context context, String path) {
+    private static Bitmap getBitmapAsset(Context context, String path) {
         AssetManager assetManager = context.getAssets();
         InputStream istr;
         Bitmap bitmap;
@@ -55,7 +61,7 @@ public class GetItemFilter {
         return bitmap;
     }
 
-    public static Bitmap mergeBitmap(Bitmap originBitmap, Bitmap gradientBitmap, int alpha) {
+    private static Bitmap mergeBitmap(Bitmap originBitmap, Bitmap gradientBitmap, int alpha) {
         int width = originBitmap.getWidth();
         int height = originBitmap.getHeight();
         Bitmap updatedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -75,17 +81,15 @@ public class GetItemFilter {
         return updatedBitmap;
     }
 
-    public static List<ItemFilter> getBitmapFilter(Context context, List<ItemFilter> filters, int alpha,
+    private static List<ItemFilter> getBitmapFilter(Context context, List<ItemFilter> filters,
             Bitmap path) {
-        List<ItemFilter> itemFilters = filters;
         if (path != null) {
             for (int i = 0; i < filters.size(); i++) {
                 Bitmap gradient = getBitmapAsset(context, filters.get(i).getPathGradient());
-                Bitmap filter = mergeBitmap(path, gradient, alpha);
-                itemFilters.get(i).setFilter(filter);
+                Bitmap filter = mergeBitmap(path, gradient, 100);
+                filters.get(i).setFilter(filter);
             }
-        } else {
         }
-        return itemFilters;
+        return filters;
     }
 }

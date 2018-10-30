@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecentSearchAdapter extends RecyclerView.Adapter<RecentSearchAdapter.RecentHolder> {
-    private List<RecentSearch> mSearchResponds;
 
+    private List<RecentSearch> mSearchResponds;
     public RecentSearchAdapter() {
         mSearchResponds = new ArrayList<>();
     }
@@ -45,7 +45,7 @@ public class RecentSearchAdapter extends RecyclerView.Adapter<RecentSearchAdapte
     static class RecentHolder extends RecyclerView.ViewHolder {
         private ItemRecentSearchBinding mBinding;
 
-        public RecentHolder(@NonNull ItemRecentSearchBinding binding) {
+        RecentHolder(@NonNull ItemRecentSearchBinding binding) {
             super(binding.getRoot());
             mBinding = binding;
         }

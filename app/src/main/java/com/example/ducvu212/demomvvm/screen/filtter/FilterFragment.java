@@ -29,7 +29,6 @@ public class FilterFragment extends BaseFragment implements OnUpdateUIFilter {
 
     public static final String ARGUMENT_FILTER = "ARGUMENT_FILTER";
     public static final String TAG = LibraryFragment.class.getSimpleName();
-
     private FragmentActivity mContext;
     private FilterViewModel mViewModel;
     private FragmentFillterBinding mBinding;
@@ -37,8 +36,7 @@ public class FilterFragment extends BaseFragment implements OnUpdateUIFilter {
     private OnEditClickListener mOnEditClickListener;
 
     public static FilterFragment newInstance() {
-        FilterFragment fragment = new FilterFragment();
-        return fragment;
+        return new FilterFragment();
     }
 
     @Override
@@ -85,12 +83,12 @@ public class FilterFragment extends BaseFragment implements OnUpdateUIFilter {
 
 
     @Override
-    public void OnUpdateBitmapBilter(Bitmap bitmap, int count) {
+    public void OnUpdateBitmapFilter(Bitmap bitmap, int count) {
         mOnEditClickListener.OnFilter(bitmap);
     }
 
     @Override
     public void OnSaveFilter() {
-        mOnEditClickListener.OnDoneFilterListener();
+        mOnEditClickListener.OnDoneFilter();
     }
 }

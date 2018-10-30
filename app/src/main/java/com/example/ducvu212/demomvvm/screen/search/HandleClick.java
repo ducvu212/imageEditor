@@ -1,7 +1,6 @@
 package com.example.ducvu212.demomvvm.screen.search;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import com.example.ducvu212.demomvvm.R;
 import com.example.ducvu212.demomvvm.data.model.Collection;
@@ -10,12 +9,9 @@ import com.example.ducvu212.demomvvm.screen.collections.CollectionFragment;
 import com.example.ducvu212.demomvvm.utils.common.FragmentTransactionUtils;
 
 public class HandleClick {
+
     private Activity mActivity;
     private FragmentManager mManager;
-
-    public HandleClick() {
-        Intent intent = new Intent();
-    }
 
     public HandleClick(FragmentManager manager) {
         mManager = manager;

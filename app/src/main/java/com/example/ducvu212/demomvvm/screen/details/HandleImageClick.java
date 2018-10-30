@@ -12,7 +12,7 @@ public class HandleImageClick {
     private Context mContext;
     private ImageDetailsViewModel mViewModel;
 
-    public HandleImageClick(Context context, ImageDetailsViewModel viewModel) {
+    HandleImageClick(Context context, ImageDetailsViewModel viewModel) {
         mContext = context;
         mViewModel = viewModel;
     }
